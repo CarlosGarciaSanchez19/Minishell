@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strisnumber.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/11/29 00:43:01 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/12/05 12:47:37 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+int	ft_strisnumber(char *str)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	int	count;
 
-#endif
+	count = 0;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+		if (*str == '.' && !count)
+		{
+			count++;
+			str++;
+		}
+	}
+	return (1);
+}

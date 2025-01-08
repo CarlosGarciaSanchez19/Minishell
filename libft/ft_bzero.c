@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/17 18:03:27 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/09/23 13:05:00 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+void	ft_bzero(void *str, size_t n)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	size_t			i;
+	unsigned char	*s;
 
-#endif
+	i = 0;
+	s = (unsigned char *)str;
+	while (i < n)
+	{
+		s[i] = '\0';
+		i++;
+	}
+}

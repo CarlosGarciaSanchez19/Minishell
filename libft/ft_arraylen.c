@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_arraylen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/12/10 15:01:33 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/12/10 15:01:45 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+int	ft_arraylen(char **array)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	int	i;
 
-#endif
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
+}

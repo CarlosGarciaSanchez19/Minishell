@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/01/08 13:26:19 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/01/08 15:37:31 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,12 @@ ERROR = "\033[1;31m[❌]\033[0m"
 
 all: $(NAME)
 
-$(NAME):
+libft/%.a:
+	@cd libft && make && make clean
+
+$(NAME): main.c libft/libft.a
 	@echo $(INFO) "Compiling minishell... 🚀"
-	@cc $(CFLAGS) -lreadline main.c -o $(NAME)
+	@cc $(CFLAGS) main.c -lreadline -Llibft -lft -o $(NAME)
 	@echo $(SUCCESS) "minishell compiled successfully 🎉"
 
 clean:

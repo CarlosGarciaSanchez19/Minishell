@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/20 16:03:42 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/11/26 12:54:40 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+int	ft_putnbr_fd(int n, int fd)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	char	nbr;
+	int		wrtcalls;
 
-#endif
+	wrtcalls = 0;
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return (11);
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -n;
+		wrtcalls++;
+	}
+	if (n > 9)
+		wrtcalls += ft_putnbr_fd(n / 10, fd);
+	nbr = (n % 10) + '0';
+	write(fd, &nbr, 1);
+	return (++wrtcalls);
+}

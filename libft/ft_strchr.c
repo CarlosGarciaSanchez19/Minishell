@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/17 19:19:18 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/09/27 16:41:44 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+char	*ft_strchr(const char *s, int c)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	int	i;
 
-#endif
+	if ((unsigned char)c == '\0')
+		return ((char *)(s + ft_strlen(s)));
+	i = 0;
+	while (s[i])
+	{
+		if ((unsigned char)s[i] == (unsigned char)c)
+			return ((char *)(s + i));
+		i++;
+	}
+	return (NULL);
+}

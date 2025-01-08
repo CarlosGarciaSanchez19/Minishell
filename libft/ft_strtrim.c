@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/19 15:33:46 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/09/25 01:39:32 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	int		first;
+	int		last;
+	char	*strtrimmed;
 
-#endif
+	first = 0;
+	last = ft_strlen(s1) - 1;
+	if (s1 == NULL || set == NULL)
+		return (NULL);
+	while (s1[first] && ft_strchr(set, s1[first]))
+		first++;
+	while (last >= 0 && ft_strchr(set, s1[last]))
+		last--;
+	strtrimmed = ft_substr(s1, first, last - first + 1);
+	return (strtrimmed);
+}

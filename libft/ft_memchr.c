@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/17 23:20:16 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/09/24 19:56:55 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+void	*ft_memchr(const void *str, int c, size_t n)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	size_t					i;
+	const unsigned char		*s;
 
-#endif
+	if (!n)
+		return (NULL);
+	s = (const unsigned char *)str;
+	i = 0;
+	while (i < n)
+	{
+		if (s[i] == (unsigned char)c)
+			return ((void *)(s + i));
+		i++;
+	}
+	return (NULL);
+}

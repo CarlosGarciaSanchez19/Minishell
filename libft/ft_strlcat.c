@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:27 by carlosg2         ###   ########.fr       */
+/*   Created: 2024/09/17 12:25:01 by carlosg2          #+#    #+#             */
+/*   Updated: 2024/09/23 13:24:57 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/libft.h"
-
-typedef struct s_shell
+size_t	ft_strlcat(char *dest, char *src, size_t size)
 {
-	char	**envp;
-	char	*exit_status;
-}	t_shell;
+	size_t	i;
+	size_t	lensrc;
+	size_t	lendest;
 
-#endif
+	lensrc = ft_strlen(src);
+	lendest = ft_strlen(dest);
+	i = 0;
+	if (size <= lendest)
+		return (size + lensrc);
+	while (i < (size - lendest - 1) && src[i] != '\0')
+	{
+		dest[lendest + i] = src[i];
+		i++;
+	}
+	dest[lendest + i] = '\0';
+	return (lendest + lensrc);
+}
