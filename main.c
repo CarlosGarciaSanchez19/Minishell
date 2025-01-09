@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 13:27:34 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:22:55 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 }
 
-static char	*my_getenv(char *name, char **envp)
+char	*my_getenv(char *name, char **envp)
 {
 	int		name_len;
 
@@ -80,6 +80,25 @@ int	find_command(char **command, char **envp)
 	return(ft_freearray(paths, path_len), 0);
 }
 
+int	is_built_in(char **command, t_shell *shell)
+{
+	if (ft_strcmp(command[0], "echo") == 0)
+		return (ft_echo(command, shell->envp));
+	if (ft_strcmp(command[0], "exit") == 0)
+		return (ft_exit(shell->envp));
+	if (ft_strcmp(command[0], "cd") == 0)
+		return (ft_cd(shell->envp));
+	if (ft_strcmp(command[0], "pwd") == 0)
+		return (ft_pwd(shell->envp));
+	if (ft_strcmp(command[0], "export") == 0)
+		return (ft_export(shell->envp));
+	if (ft_strcmp(command[0], "unset") == 0)
+		return (ft_unset(shell->envp));
+	if (ft_strcmp(command[0], "env") == 0)
+		return (ft_env(shell->envp));
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
@@ -102,11 +121,13 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		// Parse the command
+		command = ft_split(input, ' ');
+		if (is_built_in(command, &shell))
+			continue ;
 		// if (built_in)
 		// 	custom exe 
 		// else
 		//	Find and execute the command
-		command = ft_split(input, ' ');
 		free(input);
 		if (find_command(command, envp))
 		{
