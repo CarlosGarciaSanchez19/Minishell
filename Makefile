@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/01/08 15:37:31 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/01/09 13:29:27 by dsoriano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CFLAGS = -Wall -Wextra -Werror
+
+LIBFT_DIR = libft
 
 INFO = "\033[1;34m[INFO]\033[0m"
 SUCCESS = "\033[1;32m[✔️]\033[0m"
@@ -21,7 +23,8 @@ ERROR = "\033[1;31m[❌]\033[0m"
 all: $(NAME)
 
 libft/%.a:
-	@cd libft && make && make clean
+	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 $(NAME): main.c libft/libft.a
 	@echo $(INFO) "Compiling minishell... 🚀"
@@ -34,6 +37,7 @@ clean:
 	@echo $(SUCCESS) "Objects cleaned up successfully ✅"
 
 fclean: clean
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo $(INFO) "Cleaning up minishell... 🗑️"
 	@rm -rf $(NAME)
 	@echo $(SUCCESS) "minishell cleaned up successfully ✅"

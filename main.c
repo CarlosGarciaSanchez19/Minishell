@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/08 16:35:42 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:27:34 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static	int	command_found(char *path_bar_cmd, char **command)
 	return (0);
 }
 
-void	find_command(char **command, char **envp)
+int	find_command(char **command, char **envp)
 {
 	char	**paths;
 	char	*path_bar;
@@ -61,7 +61,7 @@ void	find_command(char **command, char **envp)
 
 	paths = ft_split(my_getenv("PATH", envp), ':');
 	if (!paths)
-		return ;
+		return (0);
 	path_len = ft_arraylen(paths);
 	i = 0;
 	while (paths[i])
@@ -69,15 +69,15 @@ void	find_command(char **command, char **envp)
 		path_bar = ft_strjoin(paths[i], "/");
 		path_bar_cmd = ft_strjoin(path_bar, command[0]);
 		if (!path_bar || !path_bar_cmd)
-			return (ft_freearray(paths, path_len));
+			return (ft_freearray(paths, path_len), 0);
 		free(path_bar);
 		if (command_found(path_bar_cmd, command))
-			return (ft_freearray(paths, path_len));
+			return (ft_freearray(paths, path_len), 1);
 		free(path_bar_cmd);
 		i++;
 	}
 	command_not_found(command);
-	ft_freearray(paths, path_len);
+	return(ft_freearray(paths, path_len), 0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -102,11 +102,17 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		// Parse the command
-		// Find and execute the command
+		// if (built_in)
+		// 	custom exe 
+		// else
+		//	Find and execute the command
 		command = ft_split(input, ' ');
-		find_command(command, envp);
-		execve(command[0], command, shell.envp);
 		free(input);
+		if (find_command(command, envp))
+		{
+			// create fork/pipe
+			execve(command[0], command, shell.envp);
+		}
 	}
 	return (0);
 }
