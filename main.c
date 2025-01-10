@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 15:27:17 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:11:03 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static	int	command_found(char *path_bar_cmd, char **command)
 	return (0);
 }
 
-int	find_command(char **command, char **envp)
+int	find_command(char **command, t_shell *shell)
 {
 	char	**paths;
 	char	*path_bar;
@@ -53,7 +53,7 @@ int	find_command(char **command, char **envp)
 	int		path_len;
 	int		i;
 
-	paths = ft_split(my_getenv("PATH", envp), ':');
+	paths = ft_split(shell->path, ':');
 	if (!paths)
 		return (0);
 	path_len = ft_arraylen(paths);
@@ -107,8 +107,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// Read the command
-		path = ft_strjoin("\033[1;38;5;220m", my_getenv("PWD", shell.envp));
-		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m$> \033[0m"));
+		path = ft_strjoin("\033[1;38;5;220m", shell.pwd);
+		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m $> \033[0m"));
 		free(path);
 		if (!input)
 			exit(1);
@@ -126,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 		if (command[0][0] == '.' && command[0][1] == '/')
 		// create fork/pipe
 			execve(command[0], command, shell.envp);
-		else if (find_command(command, shell.envp))
+		else if (find_command(command, &shell))
 		{
 			// create fork/pipe
 			execve(command[0], command, shell.envp);
