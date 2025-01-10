@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 16:11:16 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:38:38 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 
 typedef struct s_shell
@@ -25,7 +26,7 @@ typedef struct s_shell
 	char	**envp;
 	char	*pwd;
 	char	*path;
-	char	*exit_status;
+	int		exit_status;
 }	t_shell;
 
 char	*my_getenv(char *name, char **envp);
