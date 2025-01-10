@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:47:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:00:09 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ typedef struct s_shell
 }	t_shell;
 
 char	*my_getenv(char *name, char **envp);
-int		ft_pwd(char **envp);
+char	**array_cpy(char **array);
+void	free_shell(t_shell *shell);
+void	init_shell(t_shell *shell, char **envp);
+int		ft_pwd(t_shell *shell);
 int		ft_cd(char **envp);
-int		ft_env(char **envp);
+int		ft_env(t_shell *shell);
 int		ft_echo(char **command, char **envp);
 int		ft_exit(char **envp);
-int		ft_export(char **command, char **envp);
-int		ft_unset(char **envp);
+int		ft_export(char **command, t_shell *shell);
+int		ft_unset(char **command, t_shell *shell);
 
 #endif

@@ -6,17 +6,12 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 12:56:42 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:27:17 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_shell(t_shell *shell, char **envp)
-{
-	shell->envp = envp;
-	shell->exit_status = 0;
-}
 
 char	*my_getenv(char *name, char **envp)
 {
@@ -37,7 +32,6 @@ char	*my_getenv(char *name, char **envp)
 static	void	command_not_found(char **command)
 {
 	ft_printf("Command '%s' not found.\n", command[0]);
-	ft_freearray(command, ft_arraylen(command));
 }
 
 static	int	command_found(char *path_bar_cmd, char **command)
@@ -89,13 +83,13 @@ int	is_built_in(char **command, t_shell *shell)
 	if (ft_strcmp(command[0], "cd") == 0)
 		return (ft_cd(shell->envp));
 	if (ft_strcmp(command[0], "pwd") == 0)
-		return (ft_pwd(shell->envp));
+		return (ft_pwd(shell));
 	if (ft_strcmp(command[0], "export") == 0)
-		return (ft_export(command, shell->envp));
+		return (ft_export(command, shell));
 	if (ft_strcmp(command[0], "unset") == 0)
-		return (ft_unset(shell->envp));
+		return (ft_unset(command, shell));
 	if (ft_strcmp(command[0], "env") == 0)
-		return (ft_env(shell->envp));
+		return (ft_env(shell));
 	return (0);
 }
 
@@ -113,11 +107,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// Read the command
-		path = ft_strjoin("\033[1;38;5;220m", my_getenv("PWD", envp));
+		path = ft_strjoin("\033[1;38;5;220m", my_getenv("PWD", shell.envp));
 		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m$> \033[0m"));
 		free(path);
 		if (!input)
-			break ;
+			exit(1);
 		if (*input)
 			add_history(input);
 		// Parse the command
@@ -130,12 +124,15 @@ int	main(int argc, char **argv, char **envp)
 		// else
 		//	Find and execute the command
 		if (command[0][0] == '.' && command[0][1] == '/')
+		// create fork/pipe
 			execve(command[0], command, shell.envp);
-		else if (find_command(command, envp))
+		else if (find_command(command, shell.envp))
 		{
 			// create fork/pipe
 			execve(command[0], command, shell.envp);
 		}
+		ft_freearray(command, ft_arraylen(command));
 	}
+	free_shell(&shell);
 	return (0);
 }
