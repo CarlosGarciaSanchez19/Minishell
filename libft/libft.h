@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:41:47 by carlosg2          #+#    #+#             */
-/*   Updated: 2024/12/19 12:25:56 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:04:38 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_putendl_fd(char *s, int fd);
 int		ft_putnbr_fd(int n, int fd);
 int		ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
+char	**ft_splitquot(char const *str, char c);
 int		ft_strisnumber(char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *src);
