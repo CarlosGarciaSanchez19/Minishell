@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 16:47:42 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:54:45 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	char	**command;
 	char	*path;
+	int		pid;
 
 	if (argc != 1)
 		return (1);
@@ -118,18 +119,36 @@ int	main(int argc, char **argv, char **envp)
 		command = ft_splitquot(input, ' ');
 		free(input);
 		if (is_built_in(command, &shell))
+		{
+			ft_freearray(command, ft_arraylen(command));
 			continue ;
+		}
 		// if (built_in)
 		// 	custom exe 
 		// else
 		//	Find and execute the command
 		if (command[0][0] == '.' && command[0][1] == '/')
-		// create fork/pipe
-			execve(command[0], command, shell.envp);
+		{
+			if (access(command[0], F_OK) == 0)
+			{
+				pid = fork();
+				if (pid == 0)
+					execve(command[0], command, shell.envp);
+				else if (pid > 0)
+					waitpid(pid, &shell.exit_status, 0);
+			}
+			else
+			{
+				ft_printf("Command '%s' not found.\n", command[0]);
+			}
+		}
 		else if (find_command(command, &shell))
 		{
-			// create fork/pipe
-			execve(command[0], command, shell.envp);
+			pid = fork();
+				if (pid == 0)
+					execve(command[0], command, shell.envp);
+				else if (pid > 0)
+					waitpid(pid, &shell.exit_status, 0);
 		}
 		ft_freearray(command, ft_arraylen(command));
 	}
