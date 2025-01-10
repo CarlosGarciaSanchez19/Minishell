@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:22:55 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:56:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	is_built_in(char **command, t_shell *shell)
 	if (ft_strcmp(command[0], "pwd") == 0)
 		return (ft_pwd(shell->envp));
 	if (ft_strcmp(command[0], "export") == 0)
-		return (ft_export(shell->envp));
+		return (ft_export(command, shell->envp));
 	if (ft_strcmp(command[0], "unset") == 0)
 		return (ft_unset(shell->envp));
 	if (ft_strcmp(command[0], "env") == 0)
@@ -121,15 +121,17 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		// Parse the command
-		command = ft_split(input, ' ');
+		command = ft_splitquot(input, ' ');
+		free(input);
 		if (is_built_in(command, &shell))
 			continue ;
 		// if (built_in)
 		// 	custom exe 
 		// else
 		//	Find and execute the command
-		free(input);
-		if (find_command(command, envp))
+		if (command[0][0] == '.' && command[0][1] == '/')
+			execve(command[0], command, shell.envp);
+		else if (find_command(command, envp))
 		{
 			// create fork/pipe
 			execve(command[0], command, shell.envp);
