@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 16:11:26 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:46:54 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ char	**array_cpy(char **array)
 
 void	free_shell(t_shell *shell)
 {
+	free(shell->pwd);
+	free(shell->path);
 	ft_freearray(shell->envp, ft_arraylen(shell->envp));
 }
 
 void	init_shell(t_shell *shell, char **envp)
 {
+	shell->pwd = ft_strdup(my_getenv("PWD", envp));
+	shell->path = ft_strdup(my_getenv("PATH", envp));
 	shell->envp = array_cpy(envp);
-	shell->pwd = my_getenv("PWD", envp);
-	shell->path = my_getenv("PATH", envp);
 	shell->exit_status = 0;
 }
 
