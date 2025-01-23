@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 16:54:45 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:23:35 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,25 @@ int	is_built_in(char **command, t_shell *shell)
 	return (0);
 }
 
+char	*path_and_readline(t_shell *shell)
+{
+	char	*fst_part;
+	char	*final_str;
+	char	*input;
+
+	fst_part = ft_strjoin("\033[1;38;5;220m", shell->pwd);
+	final_str = ft_strjoin(fst_part, "\033[0m\033[38;5;51m $> \033[0m");
+	free(fst_part);
+	input = readline(final_str);
+	free(final_str);
+	return (input);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
 	char	*input;
 	char	**command;
-	char	*path;
 	int		pid;
 
 	if (argc != 1)
@@ -108,9 +121,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// Read the command
-		path = ft_strjoin("\033[1;38;5;220m", shell.pwd);
-		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m $> \033[0m"));
-		free(path);
+		input = path_and_readline(&shell);
 		if (!input)
 			exit(1);
 		if (*input)
