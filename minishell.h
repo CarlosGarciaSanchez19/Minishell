@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:26:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:36:23 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct s_shell
 {
+	char	**command;
 	char	**envp;
 	char	*pwd;
 	char	*path;

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:03:33 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 12:51:58 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:54:45 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char	**ft_splitquot(char const *str, char c)
 				return (ft_freearray(array, arr_idx), NULL);
 			array[arr_idx] = string;
 			arr_idx++;
-			str += ft_modstrlen(str, c);
+			str += ft_modquotstrlen(str, c);
 		}
 	}
 	array[arr_idx] = NULL;

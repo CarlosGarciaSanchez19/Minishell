@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:26:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:41:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
 	char	*input;
-	char	**command;
 	int		pid;
 
 	if (argc != 1)
@@ -127,41 +126,41 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		// Parse the command
-		command = ft_splitquot(input, ' ');
+		shell.command = ft_splitquot(input, ' ');
 		free(input);
 		// if (built_in)
 		// 	custom exe 
-		if (is_built_in(command, &shell))
+		if (is_built_in(shell.command, &shell))
 		{
-			ft_freearray(command, ft_arraylen(command));
+			ft_freearray(shell.command, ft_arraylen(shell.command));
 			continue ;
 		}
 		// else
 		//	Find and execute the command
-		if (command[0][0] == '.' && command[0][1] == '/')
+		if (shell.command[0][0] == '.' && shell.command[0][1] == '/')
 		{
-			if (access(command[0], F_OK) == 0)
+			if (access(shell.command[0], F_OK) == 0)
 			{
 				pid = fork();
 				if (pid == 0)
-					execve(command[0], command, shell.envp);
+					execve(shell.command[0], shell.command, shell.envp);
 				else if (pid > 0)
 					waitpid(pid, &shell.exit_status, 0);
 			}
 			else
 			{
-				ft_printf("Command '%s' not found.\n", command[0]);
+				ft_printf("Command '%s' not found.\n", shell.command[0]);
 			}
 		}
-		else if (find_command(command, &shell))
+		else if (find_command(shell.command, &shell))
 		{
 			pid = fork();
 				if (pid == 0)
-					execve(command[0], command, shell.envp);
+					execve(shell.command[0], shell.command, shell.envp);
 				else if (pid > 0)
 					waitpid(pid, &shell.exit_status, 0);
 		}
-		ft_freearray(command, ft_arraylen(command));
+		ft_freearray(shell.command, ft_arraylen(shell.command));
 	}
 	free_shell(&shell);
 	return (0);
