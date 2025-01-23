@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/10 16:54:52 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:26:23 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		ft_pwd(t_shell *shell);
 int		ft_cd(char **envp);
 int		ft_env(t_shell *shell);
 int		ft_echo(char **command, char **envp);
-int		ft_exit(char **envp);
+int		ft_exit(char ***command, t_shell *shell);
 int		ft_export(char **command, t_shell *shell);
 int		ft_unset(char **command, t_shell *shell);
 
