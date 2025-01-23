@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:43 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:19:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:00:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@ int	ft_echo(char **command, char **envp)
 {
 	(void)command;
 	(void)envp;
+	printf("echo");
 	return (1);
 }

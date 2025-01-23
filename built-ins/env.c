@@ -6,14 +6,17 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:03:38 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:04:16 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:00:15 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_env(char **envp)
+int	ft_env(t_shell *shell)
 {
+	char	**envp;
+
+	envp = shell->envp;
 	while (*envp)
 	{
 		ft_printf("%s\n", *envp);

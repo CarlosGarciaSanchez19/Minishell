@@ -6,17 +6,12 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:22:55 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:00:04 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_shell(t_shell *shell, char **envp)
-{
-	shell->envp = envp;
-	shell->exit_status = 0;
-}
 
 char	*my_getenv(char *name, char **envp)
 {
@@ -37,7 +32,6 @@ char	*my_getenv(char *name, char **envp)
 static	void	command_not_found(char **command)
 {
 	ft_printf("Command '%s' not found.\n", command[0]);
-	ft_freearray(command, ft_arraylen(command));
 }
 
 static	int	command_found(char *path_bar_cmd, char **command)
@@ -51,7 +45,7 @@ static	int	command_found(char *path_bar_cmd, char **command)
 	return (0);
 }
 
-int	find_command(char **command, char **envp)
+int	find_command(char **command, t_shell *shell)
 {
 	char	**paths;
 	char	*path_bar;
@@ -59,7 +53,7 @@ int	find_command(char **command, char **envp)
 	int		path_len;
 	int		i;
 
-	paths = ft_split(my_getenv("PATH", envp), ':');
+	paths = ft_split(shell->path, ':');
 	if (!paths)
 		return (0);
 	path_len = ft_arraylen(paths);
@@ -89,13 +83,13 @@ int	is_built_in(char **command, t_shell *shell)
 	if (ft_strcmp(command[0], "cd") == 0)
 		return (ft_cd(shell->envp));
 	if (ft_strcmp(command[0], "pwd") == 0)
-		return (ft_pwd(shell->envp));
+		return (ft_pwd(shell));
 	if (ft_strcmp(command[0], "export") == 0)
-		return (ft_export(shell->envp));
+		return (ft_export(command, shell));
 	if (ft_strcmp(command[0], "unset") == 0)
-		return (ft_unset(shell->envp));
+		return (ft_unset(command, shell));
 	if (ft_strcmp(command[0], "env") == 0)
-		return (ft_env(shell->envp));
+		return (ft_env(shell));
 	return (0);
 }
 
@@ -105,6 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	char	**command;
 	char	*path;
+	int		pid;
 
 	if (argc != 1)
 		return (1);
@@ -113,27 +108,50 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// Read the command
-		path = ft_strjoin("\033[1;38;5;220m", my_getenv("PWD", envp));
-		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m$> \033[0m"));
+		path = ft_strjoin("\033[1;38;5;220m", shell.pwd);
+		input = readline(ft_strjoin(path, "\033[0m\033[38;5;51m $> \033[0m"));
 		free(path);
 		if (!input)
-			break ;
+			exit(1);
 		if (*input)
 			add_history(input);
 		// Parse the command
-		command = ft_split(input, ' ');
+		command = ft_splitquot(input, ' ');
+		free(input);
 		if (is_built_in(command, &shell))
+		{
+			ft_freearray(command, ft_arraylen(command));
 			continue ;
+		}
 		// if (built_in)
 		// 	custom exe 
 		// else
 		//	Find and execute the command
-		free(input);
-		if (find_command(command, envp))
+		if (command[0][0] == '.' && command[0][1] == '/')
 		{
-			// create fork/pipe
-			execve(command[0], command, shell.envp);
+			if (access(command[0], F_OK) == 0)
+			{
+				pid = fork();
+				if (pid == 0)
+					execve(command[0], command, shell.envp);
+				else if (pid > 0)
+					waitpid(pid, &shell.exit_status, 0);
+			}
+			else
+			{
+				ft_printf("Command '%s' not found.\n", command[0]);
+			}
 		}
+		else if (find_command(command, &shell))
+		{
+			pid = fork();
+				if (pid == 0)
+					execve(command[0], command, shell.envp);
+				else if (pid > 0)
+					waitpid(pid, &shell.exit_status, 0);
+		}
+		ft_freearray(command, ft_arraylen(command));
 	}
+	free_shell(&shell);
 	return (0);
 }
