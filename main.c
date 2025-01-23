@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 11:23:35 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:26:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	is_built_in(char **command, t_shell *shell)
 	if (ft_strcmp(command[0], "echo") == 0)
 		return (ft_echo(command, shell->envp));
 	if (ft_strcmp(command[0], "exit") == 0)
-		return (ft_exit(shell->envp));
+		return (ft_exit(&command, shell));
 	if (ft_strcmp(command[0], "cd") == 0)
 		return (ft_cd(shell->envp));
 	if (ft_strcmp(command[0], "pwd") == 0)
@@ -129,13 +129,13 @@ int	main(int argc, char **argv, char **envp)
 		// Parse the command
 		command = ft_splitquot(input, ' ');
 		free(input);
+		// if (built_in)
+		// 	custom exe 
 		if (is_built_in(command, &shell))
 		{
 			ft_freearray(command, ft_arraylen(command));
 			continue ;
 		}
-		// if (built_in)
-		// 	custom exe 
 		// else
 		//	Find and execute the command
 		if (command[0][0] == '.' && command[0][1] == '/')

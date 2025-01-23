@@ -6,13 +6,13 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/01/10 16:45:58 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/01/23 12:58:32 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 BUILTINS = built-ins/cd.c \
 		   built-ins/echo.c \
