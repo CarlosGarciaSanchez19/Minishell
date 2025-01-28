@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:41:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:19:14 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,10 @@ int	main(int argc, char **argv, char **envp)
 		else if (find_command(shell.command, &shell))
 		{
 			pid = fork();
-				if (pid == 0)
-					execve(shell.command[0], shell.command, shell.envp);
-				else if (pid > 0)
-					waitpid(pid, &shell.exit_status, 0);
+			if (pid == 0)
+				execve(shell.command[0], shell.command, shell.envp);
+			else if (pid > 0)
+				waitpid(pid, &shell.exit_status, 0);
 		}
 		ft_freearray(shell.command, ft_arraylen(shell.command));
 	}
