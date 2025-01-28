@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:36:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:15:09 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,26 @@ typedef struct s_shell
 	char	*path;
 	int		exit_status;
 }	t_shell;
+
+//Esta struct guarda 1 solo comando con todos sus args y demases.
+typedef struct s_tokens
+{
+	char		*cmd;
+	char		**cmd_args;
+	int			*cmd_pipe;
+//	char		*cmd_env_var;	//$PWD
+	t_file		*redir_input;
+	t_file		*redir_output;
+	char		*heredoc_del;
+	t_file		*append_output;
+}	t_tokens;
+
+// Struct para los archivos que se usen
+typedef struct s_file
+{
+	char	*file;
+	int		fd;
+}	t_file;
 
 char	*my_getenv(char *name, char **envp);
 char	**array_cpy(char **array);

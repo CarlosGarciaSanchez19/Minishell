@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_free_shell.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:31:38 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:17:53 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_shell(t_shell *shell)
 
 void	init_shell(t_shell *shell, char **envp)
 {
+	//este pwd hay que reescribirlo en el built-in de CD a medida que te vas moviendo
 	shell->pwd = ft_strdup(my_getenv("PWD", envp));
 	shell->path = ft_strdup(my_getenv("PATH", envp));
 	shell->envp = array_cpy(envp);

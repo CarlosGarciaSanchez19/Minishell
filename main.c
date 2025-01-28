@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/28 11:19:14 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:42:48 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ char	*path_and_readline(t_shell *shell)
 	fst_part = ft_strjoin("\033[1;38;5;220m", shell->pwd);
 	final_str = ft_strjoin(fst_part, "\033[0m\033[38;5;51m $> \033[0m");
 	free(fst_part);
-	input = readline(final_str);
+	// Readline se queda escuchando. Pero antes printea la string que le pases como argumento.
+	// Nosotros le pasamos el Path/PWD actual con "$>".
+	input = readline(final_str); 
 	free(final_str);
 	return (input);
 }
@@ -123,11 +125,13 @@ int	main(int argc, char **argv, char **envp)
 		input = path_and_readline(&shell);
 		if (!input)
 			exit(1);
+		// Lo que añadimos al histórico es lo que escribe el usuario.
 		if (*input)
 			add_history(input);
 		// Parse the command
 		shell.command = ft_splitquot(input, ' ');
 		free(input);
+		/*AQUÍ METEMOS LA TOKENIZACIÓN*/
 		// if (built_in)
 		// 	custom exe 
 		if (is_built_in(shell.command, &shell))
