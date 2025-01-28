@@ -6,11 +6,11 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/09 16:09:05 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:24:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_cd(char **envp)
+int	ft_cd(char **envp)
 {
 	(void)envp;
 	return (1);

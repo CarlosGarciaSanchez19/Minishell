@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 12:19:25 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:25:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	ft_unset(char **command, t_shell *shell)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], name, ft_strlen(name)) == 0 && envp[i][ft_strlen(name)] == '=')
+		if (ft_strncmp(envp[i], name, ft_strlen(name)) == 0
+			&& envp[i][ft_strlen(name)] == '=')
 		{
 			free(envp[i]);
 			while (envp_len > i)

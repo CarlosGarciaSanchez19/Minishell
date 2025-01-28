@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:19:52 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:24:12 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int	ft_export(char **command, t_shell *shell)
 	char	**envp;
 	char	**new_envp;
 
-	if (ft_arraylen(command) > 2 
-		|| ft_arraylen(command) == 1)
+	if (ft_arraylen(command) > 2 || ft_arraylen(command) == 1)
 		return (1);
 	if (!find_equal(command[1]))
 		return (1);
