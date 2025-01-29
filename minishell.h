@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/29 12:31:00 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:12:23 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 typedef struct s_shell
 {
-	char	**command;
+	char	**user_input;
 	char	**envp;
 	char	*pwd;
 	char	*path;
@@ -41,14 +41,15 @@ typedef struct s_file
 //Esta struct guarda 1 solo comando con todos sus args y demases.
 typedef struct s_tokens
 {
-	char		*cmd;
-	char		**cmd_args;
-	int			*cmd_pipe;
-//	char		*cmd_env_var;	//$PWD
-	t_file		*redir_input;
-	t_file		*redir_output;
-	char		*heredoc_del;
-	t_file		*append_output;
+	char			*cmd;
+	char			**cmd_args;
+	int				*cmd_pipe;
+//	char			*cmd_env_var;	//$PWD
+	t_file			*redir_input;
+	t_file			*redir_output;
+	char			*heredoc_del;
+	t_file			*append_output;
+	struct s_tokens	*next;
 }	t_tokens;
 
 char	*my_getenv(char *name, char **envp);

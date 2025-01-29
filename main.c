@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/29 12:32:48 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:30:54 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ char	*my_getenv(char *name, char **envp)
 	return (NULL);
 }
 
-static	void	command_not_found(char **command)
-{
-	ft_printf("Command '%s' not found.\n", command[0]);
-}
-
 static	int	command_found(char *path_bar_cmd, char **command)
 {
 	if (access(path_bar_cmd, F_OK) == 0)
@@ -45,6 +40,20 @@ static	int	command_found(char *path_bar_cmd, char **command)
 	return (0);
 }
 
+static char	**path_split(char **envp)
+{
+	char	*path_var;
+	char	**null_array;
+
+	path_var = my_getenv("PATH", envp);
+	null_array = (char **)malloc(1);
+	*null_array = NULL;
+	if (path_var)
+		return (ft_split(path_var, ':'));
+	else
+		return (null_array);
+}
+
 int	find_command(char **command, t_shell *shell)
 {
 	char	**paths;
@@ -53,7 +62,7 @@ int	find_command(char **command, t_shell *shell)
 	int		path_len;
 	int		i;
 
-	paths = ft_split(shell->path, ':');
+	paths = path_split(shell->envp);
 	if (!paths)
 		return (0);
 	path_len = ft_arraylen(paths);
@@ -70,7 +79,7 @@ int	find_command(char **command, t_shell *shell)
 		free(path_bar_cmd);
 		i++;
 	}
-	command_not_found(command);
+	ft_printf("Command '%s' not found.\n", command[0]);
 	return(ft_freearray(paths, path_len), 0);
 }
 
@@ -132,42 +141,42 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 			add_history(input);
 		// Parse the command
-		shell.command = ft_splitquot(input, ' ');
+		shell.user_input = ft_splitquot(input, ' ');
 		free(input);
 		/*AQUÍ METEMOS LA TOKENIZACIÓN*/
 		// if (built_in)
-		// 	custom exe 
-		if (is_built_in(shell.command, &shell))
+		// 	custom exe
+		if (is_built_in(shell.user_input, &shell))
 		{
-			ft_freearray(shell.command, ft_arraylen(shell.command));
+			ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
 			continue ;
 		}
 		// else
 		//	Find and execute the command
-		if (shell.command[0][0] == '.' && shell.command[0][1] == '/')
+		if (shell.user_input[0][0] == '.' && shell.user_input[0][1] == '/')
 		{
-			if (access(shell.command[0], F_OK) == 0)
+			if (access(shell.user_input[0], F_OK) == 0)
 			{
 				pid = fork();
 				if (pid == 0)
-					execve(shell.command[0], shell.command, shell.envp);
+					execve(shell.user_input[0], shell.user_input, shell.envp);
 				else if (pid > 0)
 					waitpid(pid, &shell.exit_status, 0);
 			}
 			else
 			{
-				ft_printf("Command '%s' not found.\n", shell.command[0]);
+				ft_printf("Command '%s' not found.\n", shell.user_input[0] + 2);
 			}
 		}
-		else if (find_command(shell.command, &shell))
+		else if (find_command(shell.user_input, &shell))
 		{
 			pid = fork();
 			if (pid == 0)
-				execve(shell.command[0], shell.command, shell.envp);
+				execve(shell.user_input[0], shell.user_input, shell.envp);
 			else if (pid > 0)
 				waitpid(pid, &shell.exit_status, 0);
 		}
-		ft_freearray(shell.command, ft_arraylen(shell.command));
+		ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
 	}
 	free_shell(&shell);
 	return (0);
