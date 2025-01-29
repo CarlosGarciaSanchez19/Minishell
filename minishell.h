@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/28 14:15:09 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:31:00 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include "libft/libft.h"
 
 typedef struct s_shell
@@ -29,6 +30,13 @@ typedef struct s_shell
 	char	*path;
 	int		exit_status;
 }	t_shell;
+
+// Struct para los archivos que se usen
+typedef struct s_file
+{
+	char	*file;
+	int		fd;
+}	t_file;
 
 //Esta struct guarda 1 solo comando con todos sus args y demases.
 typedef struct s_tokens
@@ -43,13 +51,6 @@ typedef struct s_tokens
 	t_file		*append_output;
 }	t_tokens;
 
-// Struct para los archivos que se usen
-typedef struct s_file
-{
-	char	*file;
-	int		fd;
-}	t_file;
-
 char	*my_getenv(char *name, char **envp);
 char	**array_cpy(char **array);
 void	free_shell(t_shell *shell);
@@ -61,5 +62,7 @@ int		ft_echo(char **command, char **envp);
 int		ft_exit(char ***command, t_shell *shell);
 int		ft_export(char **command, t_shell *shell);
 int		ft_unset(char **command, t_shell *shell);
+void	sigint_handler(int signum);
+void	sigquit_handler(int signum);
 
 #endif

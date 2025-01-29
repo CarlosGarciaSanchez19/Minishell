@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/01/23 12:58:32 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/01/29 12:30:30 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ BUILTINS = built-ins/cd.c \
 		   built-ins/pwd.c \
 		   built-ins/unset.c
 
-SRCS = $(BUILTINS) init_and_free_shell.c
+SRCS = $(BUILTINS) init_and_free_shell.c signal_handlers.c
 
 OBJS = $(SRCS:.c=.o)
 
