@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/29 17:12:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:46:27 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include "libft/libft.h"
+
+# define bool int
+# define true 1
+# define false 0
 
 typedef struct s_shell
 {
@@ -43,12 +47,12 @@ typedef struct s_tokens
 {
 	char			*cmd;
 	char			**cmd_args;
-	int				*cmd_pipe;
+	bool			cmd_pipe;
 //	char			*cmd_env_var;	//$PWD
-	t_file			*redir_input;
-	t_file			*redir_output;
+	char			*redir_input_name;
+	char			*redir_output_name;
 	char			*heredoc_del;
-	t_file			*append_output;
+	char			*append_output_name;
 	struct s_tokens	*next;
 }	t_tokens;
 
