@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/29 17:30:54 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:29:04 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,10 @@ int	main(int argc, char **argv, char **envp)
 		// Read the command
 		input = path_and_readline(&shell);
 		if (!input)
+		{
+			ft_printf("exit\n");
 			exit(1);
+		}
 		// Lo que añadimos al histórico es lo que escribe el usuario.
 		if (*input)
 			add_history(input);
@@ -159,22 +162,36 @@ int	main(int argc, char **argv, char **envp)
 			{
 				pid = fork();
 				if (pid == 0)
+				{
+					signal(SIGINT, SIG_DFL);
 					execve(shell.user_input[0], shell.user_input, shell.envp);
+					exit(1);
+				}
 				else if (pid > 0)
+				{
+					signal(SIGINT, SIG_IGN);
 					waitpid(pid, &shell.exit_status, 0);
+					signal(SIGINT, sigint_handler);
+				}
 			}
 			else
-			{
 				ft_printf("Command '%s' not found.\n", shell.user_input[0] + 2);
-			}
 		}
 		else if (find_command(shell.user_input, &shell))
 		{
 			pid = fork();
 			if (pid == 0)
+			{
+				signal(SIGINT, SIG_DFL);
 				execve(shell.user_input[0], shell.user_input, shell.envp);
+				exit(1);
+			}
 			else if (pid > 0)
+			{
+				signal(SIGINT, SIG_IGN);
 				waitpid(pid, &shell.exit_status, 0);
+				signal(SIGINT, sigint_handler);
+			}
 		}
 		ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
 	}
