@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/30 12:29:04 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:04:41 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,12 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (1);
 	(void)argv;
+	read_history(NULL);
+	stifle_history(100);
+	init_shell(&shell, envp);
 	rl_catch_signals = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
-	init_shell(&shell, envp);
 	while (1)
 	{
 		// Read the command
@@ -142,7 +144,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 		// Lo que añadimos al histórico es lo que escribe el usuario.
 		if (*input)
+		{
 			add_history(input);
+			write_history(NULL);
+		}
 		// Parse the command
 		shell.user_input = ft_splitquot(input, ' ');
 		free(input);

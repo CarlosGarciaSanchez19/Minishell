@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_free_shell.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/28 13:17:53 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:51:43 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	free_shell(t_shell *shell)
 {
 	free(shell->pwd);
 	free(shell->path);
+	free(shell->history_file);
 	ft_freearray(shell->envp, ft_arraylen(shell->envp));
 }
 
@@ -46,6 +47,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->pwd = ft_strdup(my_getenv("PWD", envp));
 	shell->path = ft_strdup(my_getenv("PATH", envp));
 	shell->envp = array_cpy(envp);
+	shell->history_file = ft_strjoin(getenv("HOME"), "/.minishell_history");
 	shell->exit_status = 0;
 }
 

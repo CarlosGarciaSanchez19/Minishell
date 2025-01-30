@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/30 13:22:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:29:56 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	find_equal(char *str)
 	i = 0;
 	if (str[i] == '=')
 	{
-		ft_printf("bash: export: `%s\': not a valid identifier\n", str);
+		ft_printf("minishell: export: `%s\': not a valid identifier\n", str);
 		return (0);
 	}
 	while (str[i])
