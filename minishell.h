@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/30 13:50:33 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:10:37 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_tokens
 	char			*cmd;
 	char			**cmd_args;
 	bool			cmd_pipe;
-//	char			*cmd_env_var;	//$PWD
 	char			*redir_input_name;
 	char			*redir_output_name;
 	char			*heredoc_del;
