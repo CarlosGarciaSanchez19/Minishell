@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/01/29 12:30:30 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/02/05 13:46:34 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ BUILTINS = built-ins/cd.c \
 		   built-ins/exit.c \
 		   built-ins/export.c \
 		   built-ins/pwd.c \
-		   built-ins/unset.c
+		   built-ins/unset.c \
+		   built-ins/built-ins_utils.c
 
 SRCS = $(BUILTINS) init_and_free_shell.c signal_handlers.c
 
