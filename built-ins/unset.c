@@ -6,13 +6,13 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/28 11:25:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:24:33 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_unset(char **command, t_shell *shell)
+int	ft_unset(char **cmd_args, t_shell *shell)
 {
 	char	**envp;
 	char	*name;
@@ -20,7 +20,7 @@ int	ft_unset(char **command, t_shell *shell)
 	int		i;
 
 	envp = shell->envp;
-	name = command[1];
+	name = *cmd_args;
 	envp_len = ft_arraylen(envp);
 	i = 0;
 	while (envp[i])

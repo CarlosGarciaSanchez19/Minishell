@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/05 14:11:56 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:11:14 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_tokens	*new_cmd_token()
 {
 	t_tokens	*token;
 
-	token = malloc(sizeof(t_tokens));
+	token = ft_calloc(1, sizeof(t_tokens));
 	if (token == NULL)
 		return (NULL);
 	/*
@@ -94,7 +94,7 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 	t_tokens	*new_token;
 
 	new_kind = search_for_kind(elem, new_kind);
-	if (new_kind == "argument")
+	if (ft_strcmp(new_kind, "argument") == 0)
 	{
 		//En caso de argumento, hay que añadirlo al array de argumentos,
 		//en la posición siguiente. Duplicando la string que contiene el comando.
@@ -102,11 +102,11 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		former_token->cmd_args[*arg_n] = ft_strdup(elem);
 		if (former_token->cmd_args[*arg_n] == NULL)
 			exit (1);
-		*arg_n++;
+		(*arg_n)++;
 		return ;
 	}
-	*arg_n = 0;
-	if (new_kind == "pipe")
+	/* *arg_n = 0; */ // No sé porque con esto hay segfault
+	if (ft_strcmp(new_kind, "pipe") == 0)
 	{
 		//En caso de pipe, hay que añadirsela al token de cmd previo
 		//pero tambien hay que crear un nuevo struct (new)) conectado con el anterior,
@@ -121,35 +121,35 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 	}
 	if (ft_strncmp(new_kind, "special", 7) == 0)
 		return ;
-	if (new_kind == "command")
+	if (ft_strcmp(new_kind, "command") == 0)
 	{
 		former_token->cmd = ft_strdup(elem);
 		if (former_token->cmd == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "input")
+	if (ft_strcmp(new_kind, "input") == 0)
 	{
 		former_token->redir_input_name = ft_strdup(elem);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "output")
+	if (ft_strcmp(new_kind, "output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "heredoc")
+	if (ft_strcmp(new_kind, "heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "append")
+	if (ft_strcmp(new_kind, "append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem);
 		if (former_token->append_output_name == NULL)
@@ -161,28 +161,28 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		sino que van unidos al propio nombre del archivo.
 		En esos casos, hay que montar ya la string del archivo, pero saltándonos los 'specials'.
 	*/
-	if (new_kind == "inmediate_input")
+	if (ft_strcmp(new_kind, "inmediate_input") == 0)
 	{
 		former_token->redir_input_name = ft_strdup(elem + 1);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "inmediate_output")
+	if (ft_strcmp(new_kind, "inmediate_output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem + 1);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "inmediate_heredoc")
+	if (ft_strcmp(new_kind, "inmediate_heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem + 2);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
 		return ;
 	}
-	if (new_kind == "inmediate_append")
+	if (ft_strcmp(new_kind, "inmediate_append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem + 2);
 		if (former_token->append_output_name == NULL)
@@ -195,7 +195,7 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		printf("placeholder: error! ... invalid arg");
 		exit(1);
 	}
-	return (arg_n);
+	/* return (arg_n); */
 }
 
 /*
@@ -219,7 +219,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
-		tokenize_element(shell.user_input[i], &former_token, arg_n, new_kind);
+		tokenize_element(shell.user_input[i], former_token, arg_n, new_kind);
 		i++;
 	}
 	return (start_token);

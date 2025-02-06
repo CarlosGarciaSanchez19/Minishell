@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/05 13:10:54 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:19:45 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,22 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
-char	*my_getenv(char *name, char **envp);
-char	**array_cpy(char **array);
-void	free_shell(t_shell *shell);
-void	init_shell(t_shell *shell, char **envp);
-int		is_built_in(char **command, t_shell *shell);
-int		ft_pwd(t_shell *shell);
-int		ft_cd(char **envp);
-int		ft_env(t_shell *shell);
-int		ft_echo(char **command, char **envp);
-int		ft_exit(char ***command, t_shell *shell);
-int		ft_export(char **command, t_shell *shell);
-int		ft_unset(char **command, t_shell *shell);
-void	sigint_handler(int signum);
-void	sigquit_handler(int signum);
+char		*my_getenv(char *name, char **envp);
+char		**array_cpy(char **array);
+void		free_shell(t_shell *shell);
+void		init_shell(t_shell *shell, char **envp);
+int			is_built_in(t_tokens *tkn, t_shell *shell);
+int			ft_pwd(t_shell *shell);
+int			ft_cd(char **envp);
+int			ft_env(t_shell *shell);
+int			ft_echo(char **command, char **envp);
+int			ft_exit(char ***command, t_shell *shell);
+int			ft_export(char **cmd_args, t_shell *shell);
+int			ft_unset(char **cmd_args, t_shell *shell);
+void		sigint_handler(int signum);
+void		sigquit_handler(int signum);
+t_tokens	*tokenize_everything(t_shell shell);
+int			find_command(t_tokens *tkn, t_shell *shell);
+void		execute_tokens(t_tokens *tokens, t_shell *shell);
 
 #endif
