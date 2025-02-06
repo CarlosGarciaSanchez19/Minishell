@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/06 14:11:14 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:28:30 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,6 @@ t_tokens	*new_cmd_token()
 	token = ft_calloc(1, sizeof(t_tokens));
 	if (token == NULL)
 		return (NULL);
-	/*
-	token->cmd = malloc(sizeof(char *));
-	if (token->cmd == NULL)
-		return (NULL);
-	token->redir_input_name = malloc(sizeof(char *));
-	if (token->redir_input_name == NULL)
-		return (NULL);
-	token->redir_output_name = malloc(sizeof(char *));
-	if (token->redir_output_name == NULL)
-		return (NULL);
-	token->heredoc_del = malloc(sizeof(char *));
-	if (token->heredoc_del == NULL)
-		return (NULL);
-	token->append_output_name = malloc(sizeof(char *));
-	if (token->append_output_name == NULL)
-		return (NULL);
-	token->cmd_args = malloc(sizeof(char **));
-	if (token->cmd_args == NULL)
-		return (NULL);
-	*/
 	token->next = NULL;
 	return (token);
 }
@@ -89,7 +69,7 @@ t_tokens	*new_cmd_token()
 /*
 	En cada 'elem' sacamos su tipo como string y hacemos cosas distintas en función del tipo
 */
-void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_kind)
+int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_kind)
 {
 	t_tokens	*new_token;
 
@@ -103,9 +83,9 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		if (former_token->cmd_args[*arg_n] == NULL)
 			exit (1);
 		(*arg_n)++;
-		return ;
+		return (arg_n);
 	}
-	/* *arg_n = 0; */ // No sé porque con esto hay segfault
+	*arg_n = 0;
 	if (ft_strcmp(new_kind, "pipe") == 0)
 	{
 		//En caso de pipe, hay que añadirsela al token de cmd previo
@@ -117,44 +97,44 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 			exit (1);
 		former_token->next = new_token;
 		former_token = new_token;
-		return ;
+		return (arg_n);
 	}
 	if (ft_strncmp(new_kind, "special", 7) == 0)
-		return ;
+		return (arg_n);
 	if (ft_strcmp(new_kind, "command") == 0)
 	{
 		former_token->cmd = ft_strdup(elem);
 		if (former_token->cmd == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "input") == 0)
 	{
 		former_token->redir_input_name = ft_strdup(elem);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem);
 		if (former_token->append_output_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	/*
 		Los 'inmediate' se producen cuando los 'special' no dejan un espacio detrás,
@@ -166,28 +146,28 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		former_token->redir_input_name = ft_strdup(elem + 1);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "inmediate_output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem + 1);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "inmediate_heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem + 2);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	if (ft_strcmp(new_kind, "inmediate_append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem + 2);
 		if (former_token->append_output_name == NULL)
 			exit (1);
-		return ;
+		return (arg_n);
 	}
 	else
 	{
@@ -195,7 +175,7 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		printf("placeholder: error! ... invalid arg");
 		exit(1);
 	}
-	/* return (arg_n); */
+	return (arg_n);
 }
 
 /*
@@ -207,7 +187,7 @@ void	tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 t_tokens	*tokenize_everything(t_shell shell)
 {
 	int			i;
-	int			*arg_n;
+	int			arg_n;
 	char		*new_kind;
 	t_tokens	*former_token;
 	t_tokens	*start_token;
@@ -219,7 +199,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
-		tokenize_element(shell.user_input[i], former_token, arg_n, new_kind);
+		tokenize_element(shell.user_input[i], former_token, &arg_n, new_kind);
 		i++;
 	}
 	return (start_token);
