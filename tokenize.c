@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/11 18:10:19 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:52:17 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,6 @@ t_tokens	*tokenize_everything(t_shell shell)
 		tokenize_element(shell.user_input[i], former_token, &arg_n, &new_kind);
 		i++;
 	}
+	//comprobar parseo si el formato era valido porque por ejemplo < y > no pueden ir al final (tiene que dar un error concreto)
 	return (start_token);
 }

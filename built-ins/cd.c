@@ -6,13 +6,15 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/11 18:34:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:39:41 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_cd(t_tokens token, t_shell *shell)
 {
+	(void)token;
+	(void)shell;
 	return (1);
 }
