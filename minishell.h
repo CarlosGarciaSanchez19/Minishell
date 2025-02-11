@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/06 14:19:45 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:34:27 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ char		*my_getenv(char *name, char **envp);
 char		**array_cpy(char **array);
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
-int			is_built_in(t_tokens *tkn, t_shell *shell);
+int			built_in(t_tokens *tkn, t_shell *shell);
 int			ft_pwd(t_shell *shell);
-int			ft_cd(char **envp);
+int			ft_cd(t_tokens token, t_shell *shell);
 int			ft_env(t_shell *shell);
 int			ft_echo(char **command, char **envp);
 int			ft_exit(char ***command, t_shell *shell);

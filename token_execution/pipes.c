@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/11 18:09:44 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:30:14 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				redirect_output(tokens->redir_output_name); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			if (!is_built_in(tokens, shell) && find_command(tokens, shell))
+			if (!built_in(tokens, shell) && find_command(tokens, shell))
 			{
 				execve(tokens->cmd, tokens->cmd_args, shell->envp);	// Ejecutamos el comando si no es un built-in
 				exit(1);
