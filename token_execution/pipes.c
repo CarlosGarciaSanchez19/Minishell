@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/06 14:42:24 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:09:44 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,22 @@ void	print_tokens(t_tokens *tokens)
 	char **args;
 	while (tokens)
 	{
-		ft_printf("Command: %s\n", tokens->cmd);
-		ft_printf("Arguments:\n");
+		printf("Command: %s\n", tokens->cmd);
+		printf("Arguments:\n");
 		args = tokens->cmd_args;
-		while (args)
+		while (*args)
 		{
-			ft_printf("%s\n", *args);
+			printf("%s\n", *args);
 			args++;
 		}
 		if (tokens->cmd_pipe)
-			ft_printf("Pipe: yes\n");
+			printf("Pipe: yes\n");
 		else
-			ft_printf("Pipe: no\n");
-		ft_printf("Input redirection: %s\n", tokens->redir_input_name);
-		ft_printf("Output redirection: %s\n", tokens->redir_output_name);
-		ft_printf("Heredoc delimiter: %s\n", tokens->heredoc_del);
-		ft_printf("Append output: %s\n", tokens->append_output_name);
+			printf("Pipe: no\n");
+		printf("Input redirection: %s\n", tokens->redir_input_name);
+		printf("Output redirection: %s\n", tokens->redir_output_name);
+		printf("Heredoc delimiter: %s\n", tokens->heredoc_del);
+		printf("Append output: %s\n", tokens->append_output_name);
 		tokens = tokens->next;
 	}
 }

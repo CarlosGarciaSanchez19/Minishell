@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/06 19:28:30 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:10:19 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 */
 char	*search_for_kind(char *elem, char *former_kind)
 {
+	printf("former_kind: %s\n", former_kind);
 	if (elem[0] == '|' && elem[1] == '\0')
 		return ("pipe");
 	if (elem[0] == '<')
@@ -69,28 +70,29 @@ t_tokens	*new_cmd_token()
 /*
 	En cada 'elem' sacamos su tipo como string y hacemos cosas distintas en función del tipo
 */
-int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_kind)
+int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char **new_kind)
 {
 	t_tokens	*new_token;
 
-	new_kind = search_for_kind(elem, new_kind);
-	if (ft_strcmp(new_kind, "argument") == 0)
+	*new_kind = search_for_kind(elem, *new_kind);
+/* 	printf("elem: %s\n", elem);
+	printf("new_kind: %s\n", *new_kind); */
+	if (ft_strcmp(*new_kind, "argument") == 0)
 	{
-		//En caso de argumento, hay que añadirlo al array de argumentos,
-		//en la posición siguiente. Duplicando la string que contiene el comando.
-		//Y actualizar la posición.
+		if (*arg_n == 0)
+			former_token->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
+		else
+			former_token->cmd_args = realloc(former_token->cmd_args, sizeof(char *) * (*arg_n + 2));
 		former_token->cmd_args[*arg_n] = ft_strdup(elem);
 		if (former_token->cmd_args[*arg_n] == NULL)
 			exit (1);
+		former_token->cmd_args[*arg_n + 1] = NULL;
 		(*arg_n)++;
 		return (arg_n);
 	}
 	*arg_n = 0;
-	if (ft_strcmp(new_kind, "pipe") == 0)
+	if (ft_strcmp(*new_kind, "pipe") == 0)
 	{
-		//En caso de pipe, hay que añadirsela al token de cmd previo
-		//pero tambien hay que crear un nuevo struct (new)) conectado con el anterior,
-		//y luego el nuevo se convierte en former
 		former_token->cmd_pipe = 1;
 		new_token = new_cmd_token();
 		if (new_token == NULL)
@@ -99,37 +101,37 @@ int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		former_token = new_token;
 		return (arg_n);
 	}
-	if (ft_strncmp(new_kind, "special", 7) == 0)
+	if (ft_strncmp(*new_kind, "special", 7) == 0)
 		return (arg_n);
-	if (ft_strcmp(new_kind, "command") == 0)
+	if (ft_strcmp(*new_kind, "command") == 0)
 	{
 		former_token->cmd = ft_strdup(elem);
 		if (former_token->cmd == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "input") == 0)
+	if (ft_strcmp(*new_kind, "input") == 0)
 	{
 		former_token->redir_input_name = ft_strdup(elem);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "output") == 0)
+	if (ft_strcmp(*new_kind, "output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "heredoc") == 0)
+	if (ft_strcmp(*new_kind, "heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "append") == 0)
+	if (ft_strcmp(*new_kind, "append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem);
 		if (former_token->append_output_name == NULL)
@@ -141,28 +143,28 @@ int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char *new_
 		sino que van unidos al propio nombre del archivo.
 		En esos casos, hay que montar ya la string del archivo, pero saltándonos los 'specials'.
 	*/
-	if (ft_strcmp(new_kind, "inmediate_input") == 0)
+	if (ft_strcmp(*new_kind, "inmediate_input") == 0)
 	{
 		former_token->redir_input_name = ft_strdup(elem + 1);
 		if (former_token->redir_input_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "inmediate_output") == 0)
+	if (ft_strcmp(*new_kind, "inmediate_output") == 0)
 	{
 		former_token->redir_output_name = ft_strdup(elem + 1);
 		if (former_token->redir_output_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "inmediate_heredoc") == 0)
+	if (ft_strcmp(*new_kind, "inmediate_heredoc") == 0)
 	{
 		former_token->heredoc_del = ft_strdup(elem + 2);
 		if (former_token->heredoc_del == NULL)
 			exit (1);
 		return (arg_n);
 	}
-	if (ft_strcmp(new_kind, "inmediate_append") == 0)
+	if (ft_strcmp(*new_kind, "inmediate_append") == 0)
 	{
 		former_token->append_output_name = ft_strdup(elem + 2);
 		if (former_token->append_output_name == NULL)
@@ -199,7 +201,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
-		tokenize_element(shell.user_input[i], former_token, &arg_n, new_kind);
+		tokenize_element(shell.user_input[i], former_token, &arg_n, &new_kind);
 		i++;
 	}
 	return (start_token);
