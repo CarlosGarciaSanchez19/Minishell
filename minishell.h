@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/11 18:34:27 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:07:28 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char		*my_getenv(char *name, char **envp);
 char		**array_cpy(char **array);
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
+void		*ft_realloc(void *ptr, size_t size);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);

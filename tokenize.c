@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/11 18:52:17 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:04:44 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char **new
 		if (*arg_n == 0)
 			former_token->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
 		else
-			former_token->cmd_args = realloc(former_token->cmd_args, sizeof(char *) * (*arg_n + 2));
+			former_token->cmd_args = ft_realloc(former_token->cmd_args, sizeof(char *) * (*arg_n + 2));
 		former_token->cmd_args[*arg_n] = ft_strdup(elem);
 		if (former_token->cmd_args[*arg_n] == NULL)
 			exit (1);
