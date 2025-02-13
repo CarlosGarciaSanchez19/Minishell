@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/12 21:04:27 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:02:53 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,8 +185,12 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			/* ft_printf("Child status: %d\n", WEXITSTATUS(child_status)); */
 			close_used_pipe(num_pipes, pipes, i);
 			signal(SIGINT, sigint_handler);
+			built_in(tokens, shell);
 			if (WEXITSTATUS(child_status) == 2)
+			{
+				ft_printf("exit\n");
 				exit(0);
+			}
 		}
 		tokens = tokens->next;
 		i++;
