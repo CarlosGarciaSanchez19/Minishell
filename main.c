@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/06 13:39:08 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:03:41 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*path_and_readline(t_shell *shell)
 	char	*input;
 
 	fst_part = ft_strjoin("\033[1;38;5;220m", shell->pwd);
-	final_str = ft_strjoin(fst_part, "\033[0m\033[38;5;51m $> \033[0m");
+	final_str = ft_strjoin(fst_part, "\033[0m\033[1;38;5;51m $> \033[0m");
 	free(fst_part);
 	// Readline se queda escuchando. Pero antes printea la string que le pases como argumento.
 	// Nosotros le pasamos el Path/PWD actual con "$>".

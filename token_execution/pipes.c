@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/11 18:30:14 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:02:53 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	print_tokens(t_tokens *tokens)
 		printf("Command: %s\n", tokens->cmd);
 		printf("Arguments:\n");
 		args = tokens->cmd_args;
-		while (*args)
+		while (args && *args)
 		{
 			printf("%s\n", *args);
 			args++;
@@ -102,6 +102,31 @@ void	print_tokens(t_tokens *tokens)
 	}
 }
 
+char	**create_command_array(t_tokens *tokens)
+{
+	char	**command;
+	int		i;
+
+	if (!tokens->cmd_args)
+		return (NULL);
+	i = 0;
+	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args)+ 2));
+	if (!command)
+	{
+		ft_printf("Error: Command array could not be created\n");
+		exit(1);
+	}
+	command[i] = tokens->cmd;
+	i++;
+	while (tokens->cmd_args[i - 1])
+	{
+		command[i] = tokens->cmd_args[i - 1];
+		i++;
+	}
+	command[i] = NULL;
+	return (command);
+}
+
 void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una lista de structs t_tokens
 {
 	int		(*pipes)[2]; // Si hace falta se declara en el main. Esto es un array de arrays de 2 ints cada uno (pipes).
@@ -109,8 +134,9 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	int		child_status;
 	int		num_pipes;
 	pid_t	pid;
+	char	**command;
 
-	print_tokens(tokens); // Esta función es para debuggear, se puede borrar
+	 // Esta función es para debuggear, se puede borrar
 	num_pipes = tkn_lst_size(tokens) - 1;
 	pipes = malloc(sizeof(int [2]) * num_pipes);
 	if (!pipes)
@@ -123,6 +149,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	while (i <= num_pipes)
 	{
 		// Aquí se ejecutan los comandos
+		print_tokens(tokens);
 		pid = fork();
 		if (pid < 0)
 		{
@@ -142,7 +169,8 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
 			if (!built_in(tokens, shell) && find_command(tokens, shell))
 			{
-				execve(tokens->cmd, tokens->cmd_args, shell->envp);	// Ejecutamos el comando si no es un built-in
+				command = create_command_array(tokens);
+				execve(tokens->cmd, command, shell->envp);	// Ejecutamos el comando si no es un built-in
 				exit(1);
 			}
 			else if (ft_strcmp(tokens->cmd, "exit") == 0)
@@ -157,8 +185,12 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			/* ft_printf("Child status: %d\n", WEXITSTATUS(child_status)); */
 			close_used_pipe(num_pipes, pipes, i);
 			signal(SIGINT, sigint_handler);
+			built_in(tokens, shell);
 			if (WEXITSTATUS(child_status) == 2)
+			{
+				ft_printf("exit\n");
 				exit(0);
+			}
 		}
 		tokens = tokens->next;
 		i++;
