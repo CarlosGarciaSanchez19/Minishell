@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/13 15:04:44 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:12:25 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_tokens	*new_cmd_token()
 /*
 	En cada 'elem' sacamos su tipo como string y hacemos cosas distintas en función del tipo
 */
-int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char **new_kind)
+int	*tokenize_element(char *elem, t_tokens **former_token, int *arg_n, char **new_kind)
 {
 	t_tokens	*new_token;
 
@@ -80,61 +80,65 @@ int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char **new
 	if (ft_strcmp(*new_kind, "argument") == 0)
 	{
 		if (*arg_n == 0)
-			former_token->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
+			(*former_token)->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
 		else
-			former_token->cmd_args = ft_realloc(former_token->cmd_args, sizeof(char *) * (*arg_n + 2));
-		former_token->cmd_args[*arg_n] = ft_strdup(elem);
-		if (former_token->cmd_args[*arg_n] == NULL)
+			(*former_token)->cmd_args = ft_realloc((*former_token)->cmd_args, sizeof(char *) * (*arg_n + 2));
+		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
+		if ((*former_token)->cmd_args[*arg_n] == NULL)
 			exit (1);
-		former_token->cmd_args[*arg_n + 1] = NULL;
+		(*former_token)->cmd_args[*arg_n + 1] = NULL;
 		(*arg_n)++;
 		return (arg_n);
 	}
 	*arg_n = 0;
 	if (ft_strcmp(*new_kind, "pipe") == 0)
 	{
-		former_token->cmd_pipe = 1;
+		printf("TOKEN PREPIPE ES: %p\n", (*former_token));
+		(*former_token)->cmd_pipe = 1;
 		new_token = new_cmd_token();
 		if (new_token == NULL)
 			exit (1);
-		former_token->next = new_token;
-		former_token = new_token;
+		(*former_token)->next = new_token;
+		(*former_token) = new_token;
+		printf("TOKEN POSTPIPE ES: %p\n", (*former_token));
 		return (arg_n);
 	}
 	if (ft_strncmp(*new_kind, "special", 7) == 0)
 		return (arg_n);
 	if (ft_strcmp(*new_kind, "command") == 0)
 	{
-		former_token->cmd = ft_strdup(elem);
-		if (former_token->cmd == NULL)
+		(*former_token)->cmd = ft_strdup(elem);
+		if ((*former_token)->cmd == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "input") == 0)
 	{
-		former_token->redir_input_name = ft_strdup(elem);
-		if (former_token->redir_input_name == NULL)
+		(*former_token)->redir_input_name = ft_strdup(elem);
+		if ((*former_token)->redir_input_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "output") == 0)
 	{
-		former_token->redir_output_name = ft_strdup(elem);
-		if (former_token->redir_output_name == NULL)
+		printf("Estamos en Output!!\n");
+		(*former_token)->redir_output_name = ft_strdup(elem);
+		if ((*former_token)->redir_output_name == NULL)
 			exit (1);
+		printf("estamos en el token: %p\n", (*former_token));
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "heredoc") == 0)
 	{
-		former_token->heredoc_del = ft_strdup(elem);
-		if (former_token->heredoc_del == NULL)
+		(*former_token)->heredoc_del = ft_strdup(elem);
+		if ((*former_token)->heredoc_del == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "append") == 0)
 	{
-		former_token->append_output_name = ft_strdup(elem);
-		if (former_token->append_output_name == NULL)
+		(*former_token)->append_output_name = ft_strdup(elem);
+		if ((*former_token)->append_output_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
@@ -145,29 +149,29 @@ int	*tokenize_element(char *elem, t_tokens *former_token, int *arg_n, char **new
 	*/
 	if (ft_strcmp(*new_kind, "inmediate_input") == 0)
 	{
-		former_token->redir_input_name = ft_strdup(elem + 1);
-		if (former_token->redir_input_name == NULL)
+		(*former_token)->redir_input_name = ft_strdup(elem + 1);
+		if ((*former_token)->redir_input_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "inmediate_output") == 0)
 	{
-		former_token->redir_output_name = ft_strdup(elem + 1);
-		if (former_token->redir_output_name == NULL)
+		(*former_token)->redir_output_name = ft_strdup(elem + 1);
+		if ((*former_token)->redir_output_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "inmediate_heredoc") == 0)
 	{
-		former_token->heredoc_del = ft_strdup(elem + 2);
-		if (former_token->heredoc_del == NULL)
+		(*former_token)->heredoc_del = ft_strdup(elem + 2);
+		if ((*former_token)->heredoc_del == NULL)
 			exit (1);
 		return (arg_n);
 	}
 	if (ft_strcmp(*new_kind, "inmediate_append") == 0)
 	{
-		former_token->append_output_name = ft_strdup(elem + 2);
-		if (former_token->append_output_name == NULL)
+		(*former_token)->append_output_name = ft_strdup(elem + 2);
+		if ((*former_token)->append_output_name == NULL)
 			exit (1);
 		return (arg_n);
 	}
@@ -201,8 +205,9 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
-		tokenize_element(shell.user_input[i], former_token, &arg_n, &new_kind);
+		tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
 		i++;
+		printf("new_kind: %s\n", new_kind);
 	}
 	//comprobar parseo si el formato era valido porque por ejemplo < y > no pueden ir al final (tiene que dar un error concreto)
 	return (start_token);

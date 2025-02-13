@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 12:02:53 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:29:39 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,11 @@ void	redirect_output(char *file)
 void	print_tokens(t_tokens *tokens)
 {
 	char **args;
-	while (tokens)
+
+	while (tokens != NULL)
 	{
+		printf("\n-------------\n");
+		printf("ESTE TOKEN ES: %p\n", tokens);
 		printf("Command: %s\n", tokens->cmd);
 		printf("Arguments:\n");
 		args = tokens->cmd_args;
@@ -137,6 +140,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	char	**command;
 
 	 // Esta función es para debuggear, se puede borrar
+	print_tokens(tokens);
 	num_pipes = tkn_lst_size(tokens) - 1;
 	pipes = malloc(sizeof(int [2]) * num_pipes);
 	if (!pipes)
@@ -149,7 +153,6 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	while (i <= num_pipes)
 	{
 		// Aquí se ejecutan los comandos
-		print_tokens(tokens);
 		pid = fork();
 		if (pid < 0)
 		{
