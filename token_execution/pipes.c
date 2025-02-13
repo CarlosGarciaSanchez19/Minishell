@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 17:29:39 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:08:17 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	**create_command_array(t_tokens *tokens)
 	if (!tokens->cmd_args)
 		return (NULL);
 	i = 0;
-	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args)+ 2));
+	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args) + 2));
 	if (!command)
 	{
 		ft_printf("Error: Command array could not be created\n");
@@ -150,7 +150,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	}
 	create_pipes(num_pipes, pipes);
 	i = 0;
-	while (i <= num_pipes)
+	while (tokens)
 	{
 		// Aquí se ejecutan los comandos
 		pid = fork();
@@ -162,22 +162,20 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		else if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			if (i > 0)
-				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando, redirigimos la entrada al pipe anterior
 			if (tokens->redir_input_name)
 				redirect_input(tokens->redir_input_name);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
+			else if (i > 0)
+				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (tokens->redir_output_name)
 				redirect_output(tokens->redir_output_name); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			if (!built_in(tokens, shell) && find_command(tokens, shell))
+			if (tokens->cmd && !built_in(tokens, shell) && find_command(tokens, shell))
 			{
 				command = create_command_array(tokens);
 				execve(tokens->cmd, command, shell->envp);	// Ejecutamos el comando si no es un built-in
 				exit(1);
 			}
-			else if (ft_strcmp(tokens->cmd, "exit") == 0)
-				exit(2);
 			else
 				exit(0);											// Si es un built-in, salimos del proceso hijo
 		}
@@ -185,15 +183,16 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		{
 			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &child_status, 0);									// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
-			/* ft_printf("Child status: %d\n", WEXITSTATUS(child_status)); */
+			ft_printf("Child status: %d\n", WEXITSTATUS(child_status));
 			close_used_pipe(num_pipes, pipes, i);
 			signal(SIGINT, sigint_handler);
-			built_in(tokens, shell);
 			if (WEXITSTATUS(child_status) == 2)
 			{
 				ft_printf("exit\n");
 				exit(0);
 			}
+			if (tokens->cmd && ft_strcmp(tokens->cmd, "env") && ft_strcmp(tokens->cmd, "pwd"))
+				built_in(tokens, shell);
 		}
 		tokens = tokens->next;
 		i++;

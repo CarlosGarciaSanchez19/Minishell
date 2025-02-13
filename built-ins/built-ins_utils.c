@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:10:23 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/11 18:39:57 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:51:39 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	built_in(t_tokens *tkn, t_shell *shell)
 	if (ft_strcmp(tkn->cmd, "echo") == 0)
 		return (ft_echo(tkn->cmd_args, shell->envp));
 	if (ft_strcmp(tkn->cmd, "exit") == 0)
-		return (1);
+		return (ft_exit(shell));
 	if (ft_strcmp(tkn->cmd, "cd") == 0)
 		return (ft_cd(*tkn, shell));
 	if (ft_strcmp(tkn->cmd, "pwd") == 0)

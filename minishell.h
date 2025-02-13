@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 16:47:40 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:51:50 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
 int			ft_env(t_shell *shell);
 int			ft_echo(char **command, char **envp);
-int			ft_exit(char ***command, t_shell *shell);
+int			ft_exit(t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);
 void		sigint_handler(int signum);
