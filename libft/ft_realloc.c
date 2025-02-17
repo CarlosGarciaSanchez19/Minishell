@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:03:54 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/13 15:05:23 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:00:04 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	if (size <= ptrsize)
 		return (ptr);
 	newptr = malloc(size);
-	ft_memcpy(ptr, newptr, ptrsize);
+	ft_memcpy(newptr, ptr, ptrsize);
 	free(ptr);
 	return (newptr);
 }

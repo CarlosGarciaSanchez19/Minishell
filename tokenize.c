@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/13 19:20:57 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:57:59 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	*tokenize_element(char *elem, t_tokens **former_token, int *arg_n, char **ne
 	printf("new_kind: %s\n", *new_kind); */
 	if (ft_strcmp(*new_kind, "argument") == 0)
 	{
+		printf("TOKEN PREREALLOC ES: %p\n", (*former_token));
 		if (*arg_n == 0)
 			(*former_token)->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
 		else
@@ -86,6 +87,7 @@ int	*tokenize_element(char *elem, t_tokens **former_token, int *arg_n, char **ne
 		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
 		if ((*former_token)->cmd_args[*arg_n] == NULL)
 			exit(1);
+		printf("TOKEN POSTREALLOC ES: %p\n", (*former_token));
 		(*former_token)->cmd_args[*arg_n + 1] = NULL;
 		(*arg_n)++;
 		return (arg_n);

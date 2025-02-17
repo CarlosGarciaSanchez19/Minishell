@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:03:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 18:51:26 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:01:26 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 int	ft_exit(t_shell *shell)
 {
 	free_shell(shell);
-	exit(2);
+	exit(3);
 }

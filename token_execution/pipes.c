@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 19:08:17 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:00:35 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,20 @@ void	redirect_output(char *file)
 	int	fd;
 
 	fd = open(file, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		ft_printf("Error: File %s could not be opened\n", file);
+		exit(1);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+}
+
+void	append_output(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_APPEND | O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		ft_printf("Error: File %s could not be opened\n", file);
@@ -168,6 +182,8 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (tokens->redir_output_name)
 				redirect_output(tokens->redir_output_name); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
+			else if (tokens->append_output_name)
+				append_output(tokens->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
 			if (tokens->cmd && !built_in(tokens, shell) && find_command(tokens, shell))
@@ -183,10 +199,10 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		{
 			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &child_status, 0);									// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
-			ft_printf("Child status: %d\n", WEXITSTATUS(child_status));
+			/* ft_printf("Child status: %d\n", WEXITSTATUS(child_status)); */
 			close_used_pipe(num_pipes, pipes, i);
 			signal(SIGINT, sigint_handler);
-			if (WEXITSTATUS(child_status) == 2)
+			if (WEXITSTATUS(child_status) == 3)
 			{
 				ft_printf("exit\n");
 				exit(0);
