@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:01:33 by carlosg2          #+#    #+#             */
-/*   Updated: 2024/12/10 15:01:45 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:15:00 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_arraylen(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while (array && array[i])
 		i++;
 	return (i);
 }

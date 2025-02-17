@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 18:51:50 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:17:30 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char		**array_cpy(char **array);
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
 int			built_in(t_tokens *tkn, t_shell *shell);
+int			is_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
 int			ft_env(t_shell *shell);

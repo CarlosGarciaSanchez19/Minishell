@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 12:03:41 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:25:31 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ static char	**path_split(char **envp)
 	char	**null_array;
 
 	path_var = my_getenv("PATH", envp);
-	null_array = (char **)malloc(sizeof(char *));
-	*null_array = NULL;
 	if (path_var)
 		return (ft_split(path_var, ':'));
 	else
+	{
+		null_array = (char **)malloc(sizeof(char *));
+		*null_array = NULL;
 		return (null_array);
+	}
 }
 
 int	find_command(t_tokens *tkn, t_shell *shell)
@@ -66,6 +68,8 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 	if (!paths)
 		return (0);
 	path_len = ft_arraylen(paths);
+	if (tkn->cmd && access(tkn->cmd, X_OK) == 0)
+		return (ft_freearray(paths, path_len), 1);
 	i = 0;
 	while (paths[i])
 	{
