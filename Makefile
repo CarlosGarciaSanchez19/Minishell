@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/06 12:41:00 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/02/18 12:29:34 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,10 @@ BUILTINS = built-ins/cd.c \
 		   built-ins/unset.c \
 		   built-ins/built-ins_utils.c
 
-TOKENIZATION =	token_execution/pipes.c \
+TOKENIZATION =	tokens_execution/execution.c \
+				tokens_execution/execution_utils.c \
+				tokens_execution/pipes_management.c \
+				tokens_execution/specials_implemention.c \
 				tokenize.c
 				
 

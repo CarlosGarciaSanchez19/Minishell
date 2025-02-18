@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/17 19:56:08 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:48:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	main(int argc, char **argv, char **envp)
 		input = path_and_readline(&shell);
 		if (!input)
 		{
+			free_shell(&shell);
 			ft_printf("exit\n");
 			exit(1);
 		}

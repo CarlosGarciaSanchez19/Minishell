@@ -1,95 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/17 18:21:45 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:27:01 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	tkn_lst_size(t_tokens *tkn)
-{
-	int		i;
-
-	i = 0;
-	while (tkn)
-	{
-		i++;
-		tkn = tkn->next;
-	}
-	return (i);
-}
-
-void	create_pipes(int n_pipes,int pipes[n_pipes][2])
-{
-	int	i;
-
-	i = 0;
-	while (i < n_pipes)
-	{
-		if (pipe(pipes[i]) < 0)
-		{
-			ft_printf("Error: Pipe could not be created\n");
-			exit(1);
-		}
-		i++;
-	}
-}
-
-void	close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i)
-{
-	if (i > 0)
-		close(pipes[i - 1][0]);
-	if (i < n_pipes)
-		close(pipes[i][1]);
-}
-
-void	redirect_input(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_printf("Error: File %s could not be opened\n", file);
-		exit(1);
-	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-}
-
-void	redirect_output(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		ft_printf("Error: File %s could not be opened\n", file);
-		exit(1);
-	}
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
-
-void	append_output(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_APPEND | O_WRONLY | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		ft_printf("Error: File %s could not be opened\n", file);
-		exit(1);
-	}
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
 
 void	print_tokens(t_tokens *tokens)
 {
@@ -117,29 +38,6 @@ void	print_tokens(t_tokens *tokens)
 		printf("Append output: %s\n", tokens->append_output_name);
 		tokens = tokens->next;
 	}
-}
-
-char	**create_command_array(t_tokens *tokens)
-{
-	char	**command;
-	int		i;
-
-	i = 0;
-	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args) + 2));
-	if (!command)
-	{
-		ft_printf("Error: Command array could not be created\n");
-		exit(1);
-	}
-	command[i] = tokens->cmd;
-	i++;
-	while (tokens->cmd_args && tokens->cmd_args[i - 1])
-	{
-		command[i] = tokens->cmd_args[i - 1];
-		i++;
-	}
-	command[i] = NULL;
-	return (command);
 }
 
 void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una lista de structs t_tokens
@@ -190,7 +88,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			{
 				command = create_command_array(tokens);
 				execve(tokens->cmd, command, shell->envp);			// Ejecutamos el comando si no es un built-in
-				ft_freearray(command, ft_arraylen(command));
+				ft_freearray(command, ft_arraylen(command));		// Liberamos memoria si no se ha ejecutado el comando
 				exit(1);
 			}
 			else

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/17 17:17:30 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:28:04 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include "libft/libft.h"
 
-# define bool int
+# define BOOL int
 # define true 1
 # define false 0
 
@@ -49,7 +49,7 @@ typedef struct s_tokens
 {
 	char			*cmd;
 	char			**cmd_args;
-	bool			cmd_pipe;
+	BOOL			cmd_pipe;
 	char			*redir_input_name;
 	char			*redir_output_name;
 	char			*heredoc_del;
@@ -57,10 +57,17 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
-char		*my_getenv(char *name, char **envp);
-char		**array_cpy(char **array);
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
+void		create_pipes(int n_pipes, int pipes[n_pipes][2]);
+void		close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i);
+void		redirect_input(char *file);
+void		redirect_output(char *file);
+void		append_output(char *file);
+void		execute_tokens(t_tokens *tokens, t_shell *shell);
+void		sigint_handler(int signum);
+void		sigquit_handler(int signum);
+int			tkn_lst_size(t_tokens *tkn);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
@@ -70,10 +77,10 @@ int			ft_echo(char **command, char **envp);
 int			ft_exit(t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);
-void		sigint_handler(int signum);
-void		sigquit_handler(int signum);
-t_tokens	*tokenize_everything(t_shell shell);
 int			find_command(t_tokens *tkn, t_shell *shell);
-void		execute_tokens(t_tokens *tokens, t_shell *shell);
+char		*my_getenv(char *name, char **envp);
+char		**create_command_array(t_tokens *tokens);
+char		**array_cpy(char **array);
+t_tokens	*tokenize_everything(t_shell shell);
 
 #endif

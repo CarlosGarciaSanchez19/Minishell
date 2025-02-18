@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/06 13:24:47 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:47:00 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int	ft_export(char **cmd_args, t_shell *shell)
 	envp_idx = 0;
 	while (envp[envp_idx])
 	{
-		if (!ft_strncmp(envp[envp_idx], exported_var, find_equal(exported_var)))
+		if (!ft_strncmp(envp[envp_idx], exported_var,
+				find_equal(exported_var) + 1))
 		{
 			free(envp[envp_idx]);
 			envp[envp_idx] = exported_var;
@@ -75,7 +76,7 @@ int	ft_export(char **cmd_args, t_shell *shell)
 		}
 		envp_idx++;
 	}
-	return(add_exported_var(exported_var, shell));
+	return (add_exported_var(exported_var, shell));
 }
 
 /* int	find_equal(char *str)
