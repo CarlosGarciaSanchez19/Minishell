@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/18 12:28:04 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:26:37 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,12 @@ int			ft_exit(t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);
 int			find_command(t_tokens *tkn, t_shell *shell);
+int			*tokenize_element_aux0(char *elem, t_tokens **former_token, int *arg_n, char **new_kind);
+char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		**create_command_array(t_tokens *tokens);
 char		**array_cpy(char **array);
+t_tokens	*new_cmd_token();
 t_tokens	*tokenize_everything(t_shell shell);
 
 #endif
