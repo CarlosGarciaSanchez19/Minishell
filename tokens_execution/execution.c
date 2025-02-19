@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/18 12:27:01 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:32:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		else if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			if (!is_built_in(tokens))
+			if (tokens->cmd && !is_built_in(tokens))
 				find_command(tokens, shell);
 			if (tokens->redir_input_name)
 				redirect_input(tokens->redir_input_name);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
+			else if (tokens->heredoc_del)
+				heredoc(tokens->heredoc_del);
 			else if (i > 0)
 				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (tokens->redir_output_name)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
+#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/18 17:37:09 by dsoriano         ###   ########.fr        #
+#    Updated: 2025/02/19 17:10:49 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ TOKENIZATION =	tokens_execution/execution.c \
 				tokens_execution/execution_utils.c \
 				tokens_execution/pipes_management.c \
 				tokens_execution/specials_implemention.c \
+				tokens_execution/heredoc.c \
 				tokenize.c tokenize_aux.c tokenize_elem_aux.c
 				
 
