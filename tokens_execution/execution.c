@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/19 17:32:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:51:12 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,15 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		{
 			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &child_status, 0);									// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
-			/* printf("Child status: %d\n", WEXITSTATUS(child_status)); */
+			printf("Child status: %d\n", WEXITSTATUS(child_status));
 			close_used_pipe(num_pipes, pipes, i);
-			signal(SIGINT, sigint_handler);
 			if (WEXITSTATUS(child_status) == 3)
 			{
 				ft_printf("exit\n");
 				exit(0);
 			}
+			else if (WEXITSTATUS(child_status) == 4)
+				break ;
 			if (tokens->cmd && ft_strcmp(tokens->cmd, "env") && ft_strcmp(tokens->cmd, "pwd"))
 				built_in(tokens, shell);
 		}
