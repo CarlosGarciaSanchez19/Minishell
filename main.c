@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/19 18:50:03 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:28:28 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ int	main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	while (1)
 	{
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, sigquit_handler);
+		signal(SIGINT, &sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		// Read the command
 		input = path_and_readline(&shell);
 		if (!input)

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 12:22:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/30 11:49:35 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:28:14 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,5 @@ void	sigint_handler(int signum)
 	(void)signum;
 	ft_printf("^C\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
 	rl_redisplay();
-}
-
-void	sigquit_handler(int signum)
-{
-	(void)signum;
 }
