@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 20:42:10 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:10:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@
 */
 int	change_pwd(t_shell *shell, char *new_pwd)
 {
-	char	*TEMP_PWD;
+	char	**TEMP_PWD;
 
-	TEMP_PWD = (my_getenv("OLDPWD", shell->envp) - 6);
-	ft_export(&TEMP_PWD, shell);
-	TEMP_PWD = (my_getenv("PWD", shell->envp) - 3);
-	ft_export(&TEMP_PWD, shell);
+	TEMP_PWD = ft_calloc(2, sizeof(char *));
+	*TEMP_PWD = ft_strjoin("OLDPWD=", shell->pwd);
+	printf("OLD_PWD: %s\n", *TEMP_PWD);
+	ft_export(TEMP_PWD, shell);
+	*TEMP_PWD = ft_strjoin("PWD=", new_pwd);
+	printf("PWD: %s\n", *TEMP_PWD);
+	ft_export(TEMP_PWD, shell);
+	ft_freearray(TEMP_PWD, 1);
 	free(shell->pwd);
 	shell->pwd = ft_strdup(new_pwd);
 	return (1);

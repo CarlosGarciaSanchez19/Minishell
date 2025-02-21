@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 13:29:12 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:43:56 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,11 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			else if (WEXITSTATUS(child_status) == 4)
 				break ;
 			if (tokens->cmd && ft_strcmp(tokens->cmd, "env") && ft_strcmp(tokens->cmd, "pwd"))
+			{
+				printf("Estoy ejecutando built in en el padre\n");
 				built_in(tokens, shell);
+			}
+				
 		}
 		tokens = tokens->next;
 		i++;

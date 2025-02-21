@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 18:33:59 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:05:03 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	ft_export(char **cmd_args, t_shell *shell)
 	int		envp_idx;
 
 	envp = shell->envp;
+	printf("%d\n", ft_arraylen(cmd_args));
 	if (ft_arraylen(cmd_args) > 1 || ft_arraylen(cmd_args) == 0)
 		return (0);
 	if (find_equal(*cmd_args) <= 0)
