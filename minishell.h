@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 17:30:13 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:48:21 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 # include <signal.h>
 # include "libft/libft.h"
 
-# define BOOL int
-# define true 1
-# define false 0
 
 typedef struct s_shell
 {
@@ -37,6 +34,7 @@ typedef struct s_shell
 	char	*home;
 	char	*history_file;
 	int		exit_status;
+	int 	is_child;
 }	t_shell;
 
 // Struct para los archivos que se usen
@@ -51,7 +49,7 @@ typedef struct s_tokens
 {
 	char			*cmd;
 	char			**cmd_args;
-	BOOL			cmd_pipe;
+	int				cmd_pipe;
 	char			*redir_input_name;
 	char			*redir_output_name;
 	char			*heredoc_del;
@@ -69,6 +67,7 @@ void		append_output(char *file);
 void		heredoc(char *delimiter);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
+int			check_string(char **string, t_shell *shell);
 int			tkn_lst_size(t_tokens *tkn);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);

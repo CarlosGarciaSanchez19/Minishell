@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:01:04 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/18 17:04:35 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:54:03 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*search_for_kind_aux(char *elem, char *former_kind)
 */
 char	*search_for_kind(char *elem, char *former_kind)
 {
-	printf("former_kind: %s\n", former_kind);
+	//printf("former_kind: %s\n", former_kind);
 	if (elem[0] == '|' && elem[1] == '\0')
 		return ("pipe");
 	if (elem[0] == '<')

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/19 17:10:49 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/02/21 17:35:43 by dsoriano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ TOKENIZATION =	tokens_execution/execution.c \
 				tokens_execution/pipes_management.c \
 				tokens_execution/specials_implemention.c \
 				tokens_execution/heredoc.c \
-				tokenize.c tokenize_aux.c tokenize_elem_aux.c
+				tokenize.c tokenize_aux.c tokenize_elem_aux.c \
+				error_handling.c
 				
 
 SRCS = $(BUILTINS) $(TOKENIZATION) init_and_free_shell.c signal_handlers.c

@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 13:05:03 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:51:38 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	find_equal(char *str)
+int	find_equal(char *str, t_shell *shell)
 {
 	int	i;
 
 	i = 0;
 	if (str[i] == '=')
 	{
-		ft_printf("minishell: export: `%s\': not a valid identifier\n", str);
+		if (!shell->is_child)
+			ft_printf("minishell: export: `%s\': not a valid identifier\n", str);
 		return (0);
 	}
 	while (str[i])
@@ -54,28 +55,27 @@ int	ft_export(char **cmd_args, t_shell *shell)
 {
 	char	**envp;
 	char	*exported_var;
-	int		envp_idx;
+	int		i;
 
 	envp = shell->envp;
-	printf("%d\n", ft_arraylen(cmd_args));
 	if (ft_arraylen(cmd_args) > 1 || ft_arraylen(cmd_args) == 0)
 		return (0);
-	if (find_equal(*cmd_args) <= 0)
+	if (find_equal(*cmd_args, shell) <= 0)
 		return (1);
 	exported_var = ft_strdup(*cmd_args);
 	if (!exported_var)
 		return (0);
-	envp_idx = 0;
-	while (envp[envp_idx])
+	i = 0;
+	while (envp[i])
 	{
-		if (!ft_strncmp(envp[envp_idx], exported_var,
-				find_equal(exported_var) + 1))
+		if (!ft_strncmp(envp[i], exported_var,
+				find_equal(exported_var, shell) + 1))
 		{
-			free(envp[envp_idx]);
-			envp[envp_idx] = exported_var;
+			free(envp[i]);
+			envp[i] = exported_var;
 			return (1);
 		}
-		envp_idx++;
+		i++;
 	}
 	return (add_exported_var(exported_var, shell));
 }

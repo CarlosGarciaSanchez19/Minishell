@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 12:35:03 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:19:51 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*path_and_readline(t_shell *shell)
 	free(fst_part);
 	// Readline se queda escuchando. Pero antes printea la string que le pases como argumento.
 	// Nosotros le pasamos el Path/PWD actual con "$>".
-	input = readline(final_str); 
+	input = readline(final_str);
 	free(final_str);
 	return (input);
 }

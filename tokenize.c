@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/18 17:34:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:04:30 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,8 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 	int *arg_n, char **new_kind)
 {
 	*new_kind = search_for_kind(elem, *new_kind);
-/* 	printf("elem: %s\n", elem);
-	printf("new_kind: %s\n", *new_kind); */
 	if (ft_strcmp(*new_kind, "argument") == 0)
 	{
-//		printf("TOKEN PREREALLOC ES: %p\n", (*former_token));
 		if (*arg_n == 0)
 			(*former_token)->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
 		else
@@ -33,7 +30,6 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
 		if ((*former_token)->cmd_args[*arg_n] == NULL)
 			exit(1);
-//		printf("TOKEN POSTREALLOC ES: %p\n", (*former_token));
 		(*former_token)->cmd_args[*arg_n + 1] = NULL;
 		(*arg_n)++;
 		return (arg_n);
@@ -63,6 +59,10 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
+		/*Aquí metemos la función que expande las Variables de Entorno ($)
+		Pasamos todo los $ a su parametro, salvo en el caso de $$
+		que se tiene que hacer durante la ejecución porque es sacar el PID*/
+		//extract_env_vars(shell.user_input[i]);
 		tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
 		i++;
 		printf("new_kind: %s\n", new_kind);

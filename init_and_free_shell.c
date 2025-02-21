@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 17:48:19 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:44:41 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->home = getenv("HOME");
 	shell->history_file = ft_strjoin(getenv("HOME"), "/.minishell_history");
 	shell->exit_status = 0;
+	shell->is_child = 0;
 }
 

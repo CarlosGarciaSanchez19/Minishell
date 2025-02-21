@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 12:43:56 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:00:13 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				append_output(tokens->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
+			if (is_built_in(tokens))
+				shell->is_child = 1;
 			if (tokens->cmd && !built_in(tokens, shell))
 			{
 				command = create_command_array(tokens);
@@ -100,7 +102,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		{
 			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &child_status, 0);									// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
-			printf("Child status: %d\n", WEXITSTATUS(child_status));
+			/* printf("Child status: %d\n", WEXITSTATUS(child_status)); */
 			close_used_pipe(num_pipes, pipes, i);
 			if (WEXITSTATUS(child_status) == 3)
 			{
@@ -109,12 +111,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			}
 			else if (WEXITSTATUS(child_status) == 4)
 				break ;
-			if (tokens->cmd && ft_strcmp(tokens->cmd, "env") && ft_strcmp(tokens->cmd, "pwd"))
-			{
-				printf("Estoy ejecutando built in en el padre\n");
-				built_in(tokens, shell);
-			}
-				
+			built_in(tokens, shell);
 		}
 		tokens = tokens->next;
 		i++;

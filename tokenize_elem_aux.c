@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/18 17:30:50 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:49:13 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,12 @@ int	*tokenize_element_aux0(char *elem, t_tokens **former_token,
 
 	if (ft_strcmp(*new_kind, "pipe") == 0)
 	{
-//		printf("TOKEN PREPIPE ES: %p\n", (*former_token));
 		(*former_token)->cmd_pipe = 1;
 		new_token = new_cmd_token();
 		if (new_token == NULL)
 			exit (1);
 		(*former_token)->next = new_token;
 		(*former_token) = new_token;
-//		printf("TOKEN POSTPIPE ES: %p\n", (*former_token));
 		return (arg_n);
 	}
 	if (ft_strncmp(*new_kind, "special", 7) == 0)
