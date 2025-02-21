@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/20 13:28:28 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:35:03 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 	read_history(NULL);
 	stifle_history(100);
 	init_shell(&shell, envp);
-	rl_catch_signals = 0;
+	rl_catch_signals = 1;
 	while (1)
 	{
 		signal(SIGINT, &sigint_handler);
