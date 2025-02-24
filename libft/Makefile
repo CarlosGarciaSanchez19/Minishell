@@ -6,7 +6,7 @@
 #    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/21 13:49:12 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/20 19:27:00 by dsoriano         ###   ########.fr        #
+#    Updated: 2025/02/24 18:45:22 by dsoriano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = \
 	ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
 	ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c \
 	ft_putendl_fd.c ft_putnbr_fd.c ft_printf.c ft_printf_utils.c ft_strcmp.c \
-	ft_strisnumber.c ft_atod.c ft_arraylen.c ft_freearray.c \
+	ft_strisnumber.c ft_atod.c ft_arraylen.c ft_freearray.c ft_free_multiarray.c \
 	get_next_line.c ft_strndup.c ft_strcpy.c ft_splitquot.c ft_realloc.c
 
 BSRCS = \

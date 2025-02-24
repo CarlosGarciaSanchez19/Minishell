@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:41:47 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/13 16:47:51 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:44:55 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	*ft_strndup(const char *str, size_t n);
 void	ft_strcpy(char *dest, const char *src);
 int		ft_modstrlen(char const *str, char c);
 void	ft_freearray(char **array, int arr_len);
+void	ft_free_multiarray(void **multiarray);
 int		ft_arraylen(char **array);
 int		ft_atoi(const char *str);
 double	ft_atod(const char *str);

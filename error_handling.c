@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/24 17:36:46 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:40:33 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	error_file(char *string, char *arg, t_shell *shell)
 {
 	if (!shell->is_child)
 		ft_printf("cd: %s: No such file or directory\n",(arg));
-	free(string);
+	if (string)
+		free(string);
 	return (0);
 }
 
