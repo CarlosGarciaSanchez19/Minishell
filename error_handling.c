@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/24 17:16:49 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:36:46 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	error_file(char *string, char *arg, t_shell *shell)
 	return (0);
 }
 
-int	error_option(char *arg, t_shell *shell)
+int	error_option(char arg, t_shell *shell)
 {
 	if (!shell->is_child)
 		ft_printf("cd: -%c: invalid option\n", arg);
