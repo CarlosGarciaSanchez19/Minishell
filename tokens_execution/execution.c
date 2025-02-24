@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 18:00:13 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:22:57 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ void	print_tokens(t_tokens *tokens)
 
 void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una lista de structs t_tokens
 {
-	int		(*pipes)[2]; // Si hace falta se declara en el main. Esto es un array de arrays de 2 ints cada uno (pipes).
-	int		i;
-	int		child_status;
-	int		num_pipes;
-	pid_t	pid;
-	char	**command;
+	int			(*pipes)[2]; // Si hace falta se declara en el main. Esto es un array de arrays de 2 ints cada uno (pipes).
+	int			i;
+	int			child_status;
+	int			num_pipes;
+	pid_t		pid;
+	t_tokens	*fst_tkn;
+	char		**command;
 
 	 // Esta función es para debuggear, se puede borrar
 	print_tokens(tokens);
@@ -59,6 +60,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		exit(1);
 	}
 	create_pipes(num_pipes, pipes);
+	fst_tkn = tokens;
 	i = 0;
 	while (tokens)
 	{
@@ -86,7 +88,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				append_output(tokens->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			if (is_built_in(tokens))
+			if (tokens->cmd && is_built_in(tokens))
 				shell->is_child = 1;
 			if (tokens->cmd && !built_in(tokens, shell))
 			{
@@ -106,15 +108,19 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			close_used_pipe(num_pipes, pipes, i);
 			if (WEXITSTATUS(child_status) == 3)
 			{
+				free_tokens(fst_tkn);
+				free(pipes);
 				ft_printf("exit\n");
 				exit(0);
 			}
 			else if (WEXITSTATUS(child_status) == 4)
 				break ;
-			built_in(tokens, shell);
+			if (tokens->cmd)
+				built_in(tokens, shell);
 		}
 		tokens = tokens->next;
 		i++;
 	}
+	free_tokens(fst_tkn);
 	free(pipes);
 }

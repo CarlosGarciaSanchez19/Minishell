@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 18:19:51 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:43:35 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 	read_history(NULL);
 	stifle_history(100);
 	init_shell(&shell, envp);
-	rl_catch_signals = 1;
+	rl_catch_signals = 0;
 	while (1)
 	{
 		signal(SIGINT, &sigint_handler);

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 17:36:51 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:46:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void		append_output(char *file);
 void		heredoc(char *delimiter);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
+void		free_tokens(t_tokens *tokens);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);

@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
+#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/21 17:35:43 by dsoriano         ###   ########.fr        #
+#    Updated: 2025/02/24 19:47:45 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 BUILTINS = built-ins/cd.c \
 		   built-ins/echo.c \
@@ -29,10 +29,10 @@ TOKENIZATION =	tokens_execution/execution.c \
 				tokens_execution/specials_implemention.c \
 				tokens_execution/heredoc.c \
 				tokenize.c tokenize_aux.c tokenize_elem_aux.c \
-				error_handling.c
-				
 
-SRCS = $(BUILTINS) $(TOKENIZATION) init_and_free_shell.c signal_handlers.c
+OTHERS = error_handling.c free_tokens.c
+
+SRCS = $(BUILTINS) $(TOKENIZATION) $(OTHERS) init_and_free_shell.c signal_handlers.c
 
 OBJS = $(SRCS:.c=.o)
 

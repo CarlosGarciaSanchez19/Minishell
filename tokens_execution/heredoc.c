@@ -6,18 +6,21 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:52 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 18:00:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:20:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	sigint_handler_heredoc(int signum)
+/* void	sigint_handler_heredoc(int signum)
 {
 	(void)signum;
+	rl_replace_line("", 0);
+	rl_on_new_line();
 	ft_printf("^C\n");
-	rl_event_hook = NULL;
-}
+	rl_done = 1;
+} */
+
 
 void	heredoc(char *delimiter)
 {
@@ -29,6 +32,7 @@ void	heredoc(char *delimiter)
     sa_new.sa_flags = 0;
     sigemptyset(&sa_new.sa_mask);
     sigaction(SIGINT, &sa_new, &sa_old); */
+	rl_catch_signals = 1;
 	if (pipe(fd) < 0)
 	{
 		ft_printf("Error: Pipe could not be created\n");
