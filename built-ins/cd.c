@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 19:07:30 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:52:38 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int	ft_cd(t_tokens token, t_shell *shell)
 		return (0);
 	}
 	//CD sin nada manda a la home
-	if (!token.cmd_args || !token.cmd_args[0]
-		|| !ft_strcmp(token.cmd_args[0], "--"))
+	if (!token.cmd_args || !token.cmd_args[0])
 		return (change_pwd(shell, my_getenv("HOME", shell->envp)));
 	//CD . mueve el pwd a la posición en la que ya está
 	//(es redundante pero hay que hacerlo)
@@ -76,9 +75,14 @@ int	ft_cd(t_tokens token, t_shell *shell)
 		free(tempstr0);
 		return (1);
 	}
-	//CD - va al pwd anterior
-	if (!ft_strcmp(token.cmd_args[0], "-"))
-		return (change_pwd(shell, my_getenv("OLDPWD", shell->envp)));
+	//CD - y -- va al pwd anterior
+	if (!ft_strcmp(token.cmd_args[0], "-") || !ft_strcmp(token.cmd_args[0], "--"))
+		{
+			if (!change_pwd(shell, my_getenv("OLDPWD", shell->envp)))
+				return (0);
+			ft_printf("%s\n", shell->pwd);
+			return (1);
+		}
 	//CD ~ equivale al path del home
 	if (!ft_strncmp(token.cmd_args[0], "~", 1))
 	{
@@ -90,6 +94,7 @@ int	ft_cd(t_tokens token, t_shell *shell)
 			if (!change_pwd(shell, tempstr0))
 			{
 				free(tempstr0);
+				ft_printf("cd: %s: No such file or directory\n", (token.cmd_args[0]));
 				return (0);
 			}
 			free(tempstr0);
