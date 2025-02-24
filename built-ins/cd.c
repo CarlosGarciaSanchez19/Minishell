@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 17:18:53 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:08:33 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,20 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 	return (1);
 }
 
+int	all_is_barpoint(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '/' && str[i] != '.')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_cd(t_tokens token, t_shell *shell)
 {
 	char	*tempstr;
@@ -143,15 +157,42 @@ int	ft_cd(t_tokens token, t_shell *shell)
 		{
 			tempstr = ft_strjoin(shell->home, (token.cmd_args[0] + 1));
 			if (!change_pwd(shell, tempstr))
-			{
-				free(tempstr);
-				if (!shell->is_child)
-					ft_printf("cd: %s: No such file or directory\n", (token.cmd_args[0]));
-				return (0);
-			}
+				return (error_file(tempstr, token.cmd_args[0], shell));
 			free(tempstr);
 			return (1);
 		}
+	}
+	if (all_is_barpoint(token.cmd_args[0]))
+	{
+		char	**tempsplit;
+		int		i;
+
+		tempsplit = ft_split(token.cmd_args[0], '/');
+		i = 0;
+		while (tempsplit[i])
+		{
+			if (!ft_strcmp(tempsplit[i], "."))
+				change_pwd(shell, shell->pwd);
+			else if (!ft_strcmp(tempsplit[i], ".."))
+			{
+				tempstr = ft_substr(shell->pwd, 0,
+						ft_strlen(shell->pwd) - ft_strlen(ft_strrchr(shell->pwd, '/')));
+				if (!change_pwd(shell, tempstr))
+				{
+					free(tempstr);
+					return (0);
+				}
+				free(tempstr);
+			}
+			else
+			{
+				ft_free_multiarray((void **)tempsplit);
+				return(error_file(NULL, token.cmd_args[0], shell));
+			}
+			i++;
+		}
+		ft_free_multiarray((void **)tempsplit);
+		return (1);
 	}
 	//CD con argumento de dirección se va a esa dirección
 	else
