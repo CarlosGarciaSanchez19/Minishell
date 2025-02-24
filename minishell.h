@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 17:48:21 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:18:21 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void		heredoc(char *delimiter);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
 int			check_string(char **string, t_shell *shell);
+int			error_file(char *string, char *arg, t_shell *shell);
+int			error_option(char *arg, t_shell *shell);
 int			tkn_lst_size(t_tokens *tkn);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);
