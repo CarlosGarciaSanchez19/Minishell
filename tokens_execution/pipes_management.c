@@ -6,13 +6,18 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/18 12:17:27 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:39:46 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	create_pipes(int n_pipes,int pipes[n_pipes][2])
+void	create_pipes(
+	int n_pipes,
+	int pipes[n_pipes][2],
+	t_tokens *tokens,
+	t_shell *shell
+)
 {
 	int	i;
 
@@ -20,10 +25,7 @@ void	create_pipes(int n_pipes,int pipes[n_pipes][2])
 	while (i < n_pipes)
 	{
 		if (pipe(pipes[i]) < 0)
-		{
-			ft_printf("Error: Pipe could not be created\n");
-			exit(1);
-		}
+			error_pipe(tokens, shell);
 		i++;
 	}
 }

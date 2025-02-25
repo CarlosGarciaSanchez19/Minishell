@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 19:46:42 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:46:30 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <signal.h>
 # include "libft/libft.h"
 
-
 typedef struct s_shell
 {
 	char	**user_input;
@@ -34,7 +33,7 @@ typedef struct s_shell
 	char	*home;
 	char	*history_file;
 	int		exit_status;
-	int 	is_child;
+	int		is_child;
 }	t_shell;
 
 // Struct para los archivos que se usen
@@ -59,15 +58,21 @@ typedef struct s_tokens
 
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
-void		create_pipes(int n_pipes, int pipes[n_pipes][2]);
+void		create_pipes(
+				int n_pipes,
+				int pipes[n_pipes][2],
+				t_tokens *tokens,
+				t_shell *shell
+				);
 void		close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i);
 void		redirect_input(char *file);
 void		redirect_output(char *file);
 void		append_output(char *file);
-void		heredoc(char *delimiter);
+void		heredoc(t_tokens *tokens, t_shell *shell);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
 void		free_tokens(t_tokens *tokens);
+void		error_pipe(t_tokens *tokens, t_shell *shell);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);
@@ -87,7 +92,7 @@ char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		**create_command_array(t_tokens *tokens);
 char		**array_cpy(char **array);
-t_tokens	*new_cmd_token();
+t_tokens	*new_cmd_token(void);
 t_tokens	*tokenize_everything(t_shell shell);
 
 #endif

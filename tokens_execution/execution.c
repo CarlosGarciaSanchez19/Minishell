@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 20:22:57 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:41:32 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,15 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	int			num_pipes;
 	pid_t		pid;
 	t_tokens	*fst_tkn;
-	char		**command;
+	char		**command_arr;
 
 	 // Esta función es para debuggear, se puede borrar
 	print_tokens(tokens);
 	num_pipes = tkn_lst_size(tokens) - 1;
 	pipes = malloc(sizeof(int [2]) * num_pipes);
 	if (!pipes)
-	{
-		ft_printf("Error: Pipes could not be created\n");
-		exit(1);
-	}
-	create_pipes(num_pipes, pipes);
+		error_pipe(tokens, shell);
+	create_pipes(num_pipes, pipes, tokens, shell);
 	fst_tkn = tokens;
 	i = 0;
 	while (tokens)
@@ -79,7 +76,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			if (tokens->redir_input_name)
 				redirect_input(tokens->redir_input_name);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
 			else if (tokens->heredoc_del)
-				heredoc(tokens->heredoc_del);
+				heredoc(tokens, shell);
 			else if (i > 0)
 				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (tokens->redir_output_name)
@@ -92,9 +89,9 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				shell->is_child = 1;
 			if (tokens->cmd && !built_in(tokens, shell))
 			{
-				command = create_command_array(tokens);
-				execve(tokens->cmd, command, shell->envp);			// Ejecutamos el comando si no es un built-in
-				ft_freearray(command, ft_arraylen(command));		// Liberamos memoria si no se ha ejecutado el comando
+				command_arr = create_command_array(tokens);
+				execve(tokens->cmd, command_arr, shell->envp);			// Ejecutamos el comando si no es un built-in
+				ft_freearray(command_arr, ft_arraylen(command_arr));		// Liberamos memoria si no se ha ejecutado el comando
 				exit(1);
 			}
 			else
@@ -114,7 +111,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				exit(0);
 			}
 			else if (WEXITSTATUS(child_status) == 4)
-				break ;
+				exit(1);
 			if (tokens->cmd)
 				built_in(tokens, shell);
 		}
