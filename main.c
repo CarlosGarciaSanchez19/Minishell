@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 18:43:35 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/26 19:31:18 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	main(int argc, char **argv, char **envp)
 	stifle_history(100);
 	init_shell(&shell, envp);
 	rl_catch_signals = 0;
+	rl_attempted_completion_function = minishell_completion;
 	while (1)
 	{
 		signal(SIGINT, &sigint_handler);

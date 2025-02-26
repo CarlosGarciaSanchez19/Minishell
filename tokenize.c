@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/21 17:04:30 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:21:35 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 			(*former_token)->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
 		else
 			(*former_token)->cmd_args = ft_realloc((*former_token)->cmd_args,
+					sizeof(char *) * (*arg_n + 1),
 					sizeof(char *) * (*arg_n + 2));
 		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
 		if ((*former_token)->cmd_args[*arg_n] == NULL)

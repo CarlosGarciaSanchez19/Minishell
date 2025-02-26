@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/24 19:47:45 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/02/26 17:59:39 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ TOKENIZATION =	tokens_execution/execution.c \
 				tokens_execution/heredoc.c \
 				tokenize.c tokenize_aux.c tokenize_elem_aux.c \
 
-OTHERS = error_handling.c free_tokens.c
+OTHERS = error_handling.c free_tokens.c tab_completion.c
 
 SRCS = $(BUILTINS) $(TOKENIZATION) $(OTHERS) init_and_free_shell.c signal_handlers.c
 

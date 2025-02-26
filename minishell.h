@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/25 18:46:30 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:32:21 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,19 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <dirent.h>
 # include "libft/libft.h"
+
+enum built_in
+{
+	PWD,
+	CD,
+	ENV,
+	ECHO,
+	EXIT,
+	EXPORT,
+	UNSET
+};
 
 typedef struct s_shell
 {
@@ -92,6 +104,7 @@ char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		**create_command_array(t_tokens *tokens);
 char		**array_cpy(char **array);
+char		**minishell_completion(const char *text, int start, int end);
 t_tokens	*new_cmd_token(void);
 t_tokens	*tokenize_everything(t_shell shell);
 
