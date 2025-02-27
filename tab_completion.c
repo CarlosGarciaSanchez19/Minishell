@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:46:59 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/27 12:45:51 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:00:56 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ char	**minishell_completion(const char *text, int start, int end)
 	(void)end;
 	if (start == 0)
 		return (rl_completion_matches(text, command_generator));
+	rl_completion_append_character = '\0';
 	return (rl_completion_matches(text, filename_generator));
 }
