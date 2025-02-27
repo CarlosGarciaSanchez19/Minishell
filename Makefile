@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/26 17:59:39 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/02/27 12:47:51 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,14 @@ TOKENIZATION =	tokens_execution/execution.c \
 				tokens_execution/pipes_management.c \
 				tokens_execution/specials_implemention.c \
 				tokens_execution/heredoc.c \
-				tokenize.c tokenize_aux.c tokenize_elem_aux.c \
+				tokenize.c \
+				tokenize_aux.c \
+				tokenize_elem_aux.c
 
-OTHERS = error_handling.c free_tokens.c tab_completion.c
+OTHERS =	error_handling.c \
+			free_tokens.c \
+			tab_completion.c \
+			tab_complet_command.c
 
 SRCS = $(BUILTINS) $(TOKENIZATION) $(OTHERS) init_and_free_shell.c signal_handlers.c
 

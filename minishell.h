@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/26 18:32:21 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:46:34 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <dirent.h>
+# include <sys/stat.h>
 # include "libft/libft.h"
 
 enum built_in
@@ -102,6 +103,7 @@ int			find_command(t_tokens *tkn, t_shell *shell);
 int			*tokenize_element_aux0(char *elem, t_tokens **former_token, int *arg_n, char **new_kind);
 char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
+char		*command_generator(const char *text, int state);
 char		**create_command_array(t_tokens *tokens);
 char		**array_cpy(char **array);
 char		**minishell_completion(const char *text, int start, int end);
