@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 19:08:33 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:20:22 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,8 +202,3 @@ int	ft_cd(t_tokens token, t_shell *shell)
 	return (1);
 }
 
-// cd
-// cd ..
-// cd .
-// cd -
-// cd ~

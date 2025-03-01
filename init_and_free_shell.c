@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_free_shell.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/25 18:48:08 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:56:25 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	free_shell(t_shell *shell)
 {
 	free(shell->pwd);
 	free(shell->path);
-	free(shell->history_file);
 	ft_freearray(shell->envp, ft_arraylen(shell->envp));
 }
 

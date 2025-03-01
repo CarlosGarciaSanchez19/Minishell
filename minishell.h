@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/27 12:46:34 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:56:52 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_shell
 	char	*old_pwd;
 	char	*path;
 	char	*home;
-	char	*history_file;
 	int		exit_status;
 	int		is_child;
 }	t_shell;
@@ -81,7 +80,7 @@ void		close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i);
 void		redirect_input(char *file);
 void		redirect_output(char *file);
 void		append_output(char *file);
-void		heredoc(t_tokens *tokens, t_shell *shell);
+void		heredoc(t_tokens *tokens, t_shell *shell, char *str);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
 void		free_tokens(t_tokens *tokens);
@@ -95,7 +94,7 @@ int			is_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
 int			ft_env(t_shell *shell);
-int			ft_echo(char **command, char **envp);
+int			ft_echo(char **args, t_shell shell);
 int			ft_exit(t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);

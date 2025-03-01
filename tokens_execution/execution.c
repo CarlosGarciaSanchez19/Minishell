@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/26 19:37:47 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:53:20 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			if (tokens->redir_input_name)
 				redirect_input(tokens->redir_input_name);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
 			else if (tokens->heredoc_del)
-				heredoc(tokens, shell);
+				heredoc(tokens, shell, NULL);
 			else if (i > 0)
 				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (tokens->redir_output_name)
@@ -85,8 +85,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				append_output(tokens->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (tokens->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			if (tokens->cmd && is_built_in(tokens))
-				shell->is_child = 1;
+			shell->is_child = 1;
 			if (tokens->cmd && !built_in(tokens, shell))
 			{
 				command_arr = create_command_array(tokens);
@@ -100,8 +99,9 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		else
 		{
 			signal(SIGINT, SIG_IGN);
-			waitpid(pid, &child_status, 0);									// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
-			/* printf("Child status: %d\n", WEXITSTATUS(child_status)); */
+			waitpid(pid, &child_status, 0);							// En el padre esperamos a todos los procesos hijos y cerramos los pipes que se han usado
+			//printf("Child status: %d\n", WEXITSTATUS(child_status));
+			shell->exit_status = WEXITSTATUS(child_status);
 			close_used_pipe(num_pipes, pipes, i);
 			if (WEXITSTATUS(child_status) == 3)
 			{

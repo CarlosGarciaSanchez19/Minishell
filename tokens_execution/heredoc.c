@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:52 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/25 18:50:26 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:53:00 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,14 @@ static void	sigint_handler_heredoc(int signum)
 	rl_done = 1;
 }
 
-void	heredoc(t_tokens *tokens, t_shell *shell)
+static void	close_redirect_pipe(int *fd)
+{
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+}
+
+void	heredoc(t_tokens *tokens, t_shell *shell, char *str)
 {
 	char	*line;
 	int		fd[2];
@@ -33,13 +40,14 @@ void	heredoc(t_tokens *tokens, t_shell *shell)
 	signal(SIGINT, sigint_handler_heredoc);
 	if (pipe(fd) < 0)
 		error_pipe(tokens, shell);
+	if (str)
+		write(fd[1], str, ft_strlen(str));
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (!ft_strcmp(line, "")
-			|| !ft_strcmp(line, tokens->heredoc_del))
+		if (!ft_strcmp(line, "") || !ft_strcmp(line, tokens->heredoc_del))
 		{
 			free(line);
 			break ;
@@ -48,7 +56,5 @@ void	heredoc(t_tokens *tokens, t_shell *shell)
 		write(fd[1], "\n", 1);
 		free(line);
 	}
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
+	close_redirect_pipe(fd);
 }
