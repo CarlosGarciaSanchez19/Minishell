@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_splitquot.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 12:03:33 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/01/23 16:54:45 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:53:43 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static void	in_quot(char c, int *quote1, int *quote2)
-{
-	if (c == '\"' && *quote2 == 0)
-	{
-		if (*quote1 == 0)
-			*quote1 = 1;
-		else
-			*quote1 = 0;
-	}
-	if (c == '\'' && *quote1 == 0)
-	{
-		if (*quote2 == 0)
-			*quote2 = 1;
-		else
-			*quote2 = 0;
-	}
-}
 
 static int	countquot_words(char const *str, char c)
 {
@@ -69,7 +51,7 @@ int	ft_modquotstrlen(char const *str, char c)
 	{
 		in_quot(str[i], &quote1, &quote2);
 		i++;
-		if (str[i] == c && (quote1 == 1 || quote2 == 1))
+		while (str[i] == c && (quote1 == 1 || quote2 == 1))
 			i++;
 	}
 	return (i);
@@ -93,7 +75,7 @@ static char	*create_string(char const *str, char c)
 		in_quot(*str, &quote1, &quote2);
 		string[i++] = *str;
 		str++;
-		if (*str == c && (quote1 == 1 || quote2 == 1))
+		while (*str == c && (quote1 == 1 || quote2 == 1))
 		{
 			string[i++] = *str;
 			str++;

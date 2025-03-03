@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/01 18:17:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/03 20:09:48 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell 	shell;
 	char		*input;
-	/* int			pid; */
 	t_tokens	*tokens;
 
 	if (argc != 1)
@@ -122,7 +121,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
-		// Read the command
 		input = path_and_readline(&shell);
 		if (!input)
 		{
@@ -130,61 +128,15 @@ int	main(int argc, char **argv, char **envp)
 			ft_printf("exit\n");
 			exit(1);
 		}
-		// Lo que añadimos al histórico es lo que escribe el usuario.
 		if (*input)
 		{
 			add_history(input);
 			write_history(NULL);
 		}
-		// Parse the command
 		shell.user_input = ft_splitquot(input, ' ');
 		free(input);
-		/*AQUÍ METEMOS LA TOKENIZACIÓN*/
 		tokens = tokenize_everything(shell);
-		/* if (is_built_in(shell.user_input, &shell))
-		{
-			ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
-			continue ;
-		} */
-		/*AQUÍ METEMOS LA EJECUCIÓN DE TOKENS*/
 		execute_tokens(tokens, &shell);
-		/* if (shell.user_input[0][0] == '.' && shell.user_input[0][1] == '/')
-		{
-			if (access(shell.user_input[0], F_OK) == 0)
-			{
-				pid = fork();
-				if (pid == 0)
-				{
-					signal(SIGINT, SIG_DFL);
-					execve(shell.user_input[0], shell.user_input, shell.envp);
-					exit(1);
-				}
-				else if (pid > 0)
-				{
-					signal(SIGINT, SIG_IGN);
-					waitpid(pid, &shell.exit_status, 0);
-					signal(SIGINT, sigint_handler);
-				}
-			}
-			else
-				ft_printf("Command '%s' not found.\n", shell.user_input[0] + 2);
-		}
-		else if (find_command(shell.user_input, &shell))
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				signal(SIGINT, SIG_DFL);
-				execve(shell.user_input[0], shell.user_input, shell.envp);
-				exit(1);
-			}
-			else if (pid > 0)
-			{
-				signal(SIGINT, SIG_IGN);
-				waitpid(pid, &shell.exit_status, 0);
-				signal(SIGINT, sigint_handler);
-			}
-		} */
 		ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
 	}
 	free_shell(&shell);

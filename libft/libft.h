@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:41:47 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/26 20:21:55 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/03 20:58:30 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_strcpy(char *dest, const char *src);
 int		ft_modstrlen(char const *str, char c);
 void	ft_freearray(char **array, int arr_len);
 void	ft_free_multiarray(void **multiarray);
+int		in_quot(char c, int *quote1, int *quote2);
 int		ft_arraylen(char **array);
 int		ft_atoi(const char *str);
 double	ft_atod(const char *str);

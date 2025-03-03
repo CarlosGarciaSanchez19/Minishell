@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/01 20:53:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:19:53 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	char		**command_arr;
 
 	 // Esta función es para debuggear, se puede borrar
-	print_tokens(tokens);
+	/* print_tokens(tokens); */
 	num_pipes = tkn_lst_size(tokens) - 1;
+	if (num_pipes < 0)
+		return ;
 	pipes = malloc(sizeof(int [2]) * num_pipes);
 	if (!pipes)
 		error_pipe(tokens, shell);

@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/01 20:48:00 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:18:43 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	expand_env_vars(char *input, t_shell shell)
 	char	*env_var;
 
 	len_input = ft_strlen(input);
-	printf("User Input: %s\n", input);
 	i = 0;
 	while (input[i])
 	{
@@ -87,6 +86,58 @@ void	expand_env_vars(char *input, t_shell shell)
 	}
 }
 
+static int	count_quotes(char *str)
+{
+	int	i;
+	int	count;
+	int	quote1;
+	int	quote2;
+
+	i = 0;
+	count = 0;
+	quote1 = 0;
+	quote2 = 0;
+	while (str && str[i])
+	{
+		if (in_quot(str[i], &quote1, &quote2) == 1)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	clean_quotes(char **str)
+{
+	int		i;
+	int		j;
+	int 	quote1;
+	int		quote2;
+	char	*new_str;
+
+	i = 0;
+	j = 0;
+	quote1 = 0;
+	quote2 = 0;
+	if (!count_quotes(*str))
+		return (1);
+	new_str = malloc(ft_strlen(*str) - count_quotes(*str) + 1);	
+	while (*str && (*str)[i])
+	{
+		if (in_quot((*str)[i], &quote1, &quote2) == 0)
+		{
+			new_str[j] = (*str)[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[j] = '\0';
+	if ((quote1 == 1 || quote2 == 1))
+		return (free(new_str), 0);
+	free(*str);
+	*str = new_str;
+	return (1);
+}
+
 /*
 	Recorremos el array del input y vamos tokenizando en lista enlazada.
 	Si es el primer elemento lo guardamos como el "start" de la lista.
@@ -108,6 +159,11 @@ t_tokens	*tokenize_everything(t_shell shell)
 	start_token = former_token;
 	while (shell.user_input[i])
 	{
+		if (clean_quotes(&(shell.user_input[i])) == 0)
+		{
+			ft_printf("Error: Quotes need to be closed\n");
+			return (free_tokens(start_token), NULL);
+		}
 		expand_env_vars(shell.user_input[i], shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
