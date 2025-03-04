@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/02/27 12:47:51 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/03/04 19:26:16 by dsoriano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
-BUILTINS = built-ins/cd.c \
+BUILTINS = built-ins/cd.c built-ins/cd_aux_symbols.c built-ins/cd_aux_routes.c \
 		   built-ins/echo.c \
 		   built-ins/env.c \
 		   built-ins/exit.c \

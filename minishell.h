@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 16:50:03 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 19:23:03 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
 void		free_tokens(t_tokens *tokens);
 void		error_pipe(t_tokens *tokens, t_shell *shell);
+void		clean_bars(char *str);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);
@@ -87,6 +88,13 @@ int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
+int			change_pwd(t_shell *shell, char *new_pwd);
+int			cd_route(t_tokens token, t_shell *shell, int arg_pos);
+int			cd_barpoints(t_tokens token, t_shell *shell);
+int			cd_prime(t_tokens token, t_shell *shell);
+int			cd_minus(t_shell *shell);
+int			cd_doubleminus(t_tokens token, t_shell *shell);
+int			cd_doublepoints(t_shell *shell);
 int			ft_env(t_shell *shell);
 int			ft_echo(char **args, t_shell shell);
 int			ft_exit(t_shell *shell);
