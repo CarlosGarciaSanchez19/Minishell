@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:55:37 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 17:52:05 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 19:33:32 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,3 @@ int	ft_pwd(t_shell *shell)
 		ft_printf("%s\n", shell->pwd);
 	return (1);
 }
-
