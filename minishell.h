@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 14:50:38 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:50:03 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,9 @@
 # include <sys/stat.h>
 # include "libft/libft.h"
 
-enum built_in
-{
-	PWD,
-	CD,
-	ENV,
-	ECHO,
-	EXIT,
-	EXPORT,
-	UNSET
-};
+# define YELLOW "\001\033[1;38;5;220m\002" 
+# define BLUE "\001\033[1;38;5;51m\002"
+# define RESET "\001\033[0m\002"
 
 typedef struct s_shell
 {

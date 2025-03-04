@@ -6,12 +6,11 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 16:12:14 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:50:59 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char	*my_getenv(char *name, char **envp)
 {
@@ -93,8 +92,8 @@ char	*path_and_readline(t_shell *shell)
 	char	*final_str;
 	char	*input;
 
-	fst_part = ft_strjoin("\033[1;38;5;220m", shell->pwd);
-	final_str = ft_strjoin(fst_part, "\033[0m\033[1;38;5;51m $> \033[0m");
+	fst_part = ft_strjoin(YELLOW, shell->pwd);
+	final_str = ft_strjoin(fst_part, BLUE" $> "RESET);
 	free(fst_part);
 	// Readline se queda escuchando. Pero antes printea la string que le pases como argumento.
 	// Nosotros le pasamos el Path/PWD actual con "$>".
