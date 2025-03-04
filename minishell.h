@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/01 17:56:52 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 14:50:38 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_shell
 	char	*old_pwd;
 	char	*path;
 	char	*home;
+	int		pid;
 	int		exit_status;
 	int		is_child;
 }	t_shell;

@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/03 20:09:48 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:12:14 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,9 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (1);
 	(void)argv;
+	init_shell(&shell, envp);
 	read_history(NULL);
 	stifle_history(100);
-	init_shell(&shell, envp);
 	rl_catch_signals = 0;
 	rl_attempted_completion_function = minishell_completion;
 	while (1)

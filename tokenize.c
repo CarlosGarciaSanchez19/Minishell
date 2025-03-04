@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/03 21:18:43 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:40:18 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,46 +38,47 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 	*arg_n = 0;
 	return (tokenize_element_aux0(elem, former_token, arg_n, new_kind));
 }
-	/*Aquí metemos la función que expande las Variables de Entorno ($)
-	Pasamos todo los $ a su parametro, salvo en el caso de $$
-	que se tiene que hacer durante la ejecución porque es sacar el PID*/
-void	expand_env_vars(char *input, t_shell shell)
+
+static void	expand_env_vars(char **input, int pos, t_shell shell)
 {
 	int		i;
 	int		len_input;
 	int		len_env;
 	char	*env_var;
 
-	len_input = ft_strlen(input);
+	len_input = ft_strlen(input[pos]);
 	i = 0;
-	while (input[i])
+	while (input[pos][i])
 	{
-		if (input[i] == '$')
+		if (input[pos][i] == '$')
 		{
-			/* if (input[i + 1] == '$')
+			if (ft_strcmp(input[pos] + i, "$$") == 0)
 			{
-				
-			} */
-			/* else  */if (ft_strcmp(input + i, "$?") == 0)
+				env_var = ft_itoa(shell.pid);
+				len_env = ft_strlen(env_var);
+				input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+				ft_memcpy(input[pos] + i, env_var, len_env + 1);
+			}
+			else if (ft_strcmp(input[pos] + i, "$?") == 0)
 			{
 				env_var = ft_itoa(shell.exit_status);
 				len_env = ft_strlen(env_var);
-				input = ft_realloc(input, len_input, (i + len_env));
-				ft_memcpy(input + i, env_var, len_env + 1);
+				input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+				ft_memcpy(input[pos] + i, env_var, len_env + 1);
 			}
 			else
 			{
-				env_var = my_getenv(input + i + 1, shell.envp);
+				env_var = my_getenv(input[pos] + i + 1, shell.envp);
 				if (env_var)
 				{
 					len_env = ft_strlen(env_var);
-					input = ft_realloc(input, len_input, (i + len_env));
-					ft_memcpy(input + i, env_var, len_env + 1);
+					input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+					ft_memcpy(input[pos] + i, env_var, len_env + 1);
 				}
 				else
 				{
-					ft_realloc(input, len_input, 1);
-					input[0] = '\0';
+					ft_realloc(input[pos], len_input, 1);
+					input[pos][0] = '\0';
 				}
 			}
 			free(env_var);
@@ -164,7 +165,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 			ft_printf("Error: Quotes need to be closed\n");
 			return (free_tokens(start_token), NULL);
 		}
-		expand_env_vars(shell.user_input[i], shell);
+		expand_env_vars(shell.user_input, i, shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
 		i++;

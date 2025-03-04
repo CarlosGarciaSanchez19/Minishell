@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/01 17:56:25 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:27:00 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,26 @@ void	free_shell(t_shell *shell)
 	ft_freearray(shell->envp, ft_arraylen(shell->envp));
 }
 
+int	my_getpid(void)
+{
+	int		fd;
+	int		pid;
+	char	*str;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (!fd)
+	{
+		ft_printf("/proc/self/stat could not be opened\n");
+		ft_printf("$$ only works for Linux systems");
+		return (-1);
+	}
+	str = ft_calloc(11, 1);
+	read(fd, str, 11);
+	pid = ft_atoi(str);
+	free (str);
+	return (pid);
+}
+
 void	init_shell(t_shell *shell, char **envp)
 {
 	//este pwd hay que reescribirlo en el built-in de CD a medida que te vas moviendo
@@ -47,6 +67,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->path = ft_strdup(my_getenv("PATH", envp));
 	shell->envp = array_cpy(envp);
 	shell->home = getenv("HOME");
+	shell->pid = my_getpid();
 	shell->exit_status = 0;
 	shell->is_child = 0;
 }

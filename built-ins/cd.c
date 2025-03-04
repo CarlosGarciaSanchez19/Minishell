@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/25 14:20:22 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:37:50 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ int	is_absolute_route(t_tokens token)
 		return (0);
 	return (1);
 }
+/*
+	Esta función se encarga de limpiar las barras que se hayan añadido al final,
+	para que no salgan en el prompt.
+*/
+static void clean_bars(char *str)
+{
+	int	i;
+	i = ft_strlen(str) - 1;
+	while (str[i] == '/')
+		i--;
+	str[i + 1] = '\0';
+}
 
 /*
 	Primero comprobamos que no sea un "option",
@@ -75,6 +87,7 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 		free(tempstr1);
 		tempstr1 = ft_strdup(token.cmd_args[arg_pos]);
 	}
+	clean_bars(tempstr1);
 	if (!change_pwd(shell, tempstr1))
 	{
 		free(tempstr1);
