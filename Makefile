@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
+#    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/03/04 19:26:16 by dsoriano         ###   ########.fr        #
+#    Updated: 2025/03/05 19:44:07 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ TOKENIZATION =	tokens_execution/execution.c \
 OTHERS =	error_handling.c \
 			free_tokens.c \
 			tab_completion.c \
-			tab_complet_command.c
+			tab_complet_command.c \
+			bubble_sort.c \
 
 SRCS = $(BUILTINS) $(TOKENIZATION) $(OTHERS) init_and_free_shell.c signal_handlers.c
 

@@ -3,25 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 18:51:38 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:30:40 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	print_exported_vars(char **envp, t_shell *shell)
+{
+	int		i;
+	char	**envp_cpy;
+
+	envp_cpy = array_cpy(envp);
+	bubble_sort(envp_cpy);
+	i = 0;
+	while (envp_cpy[i])
+	{
+		if (shell->is_child)
+			ft_printf("declare -x %s\n", envp_cpy[i]);
+		i++;
+	}
+	ft_free_multiarray((void **)envp_cpy);
+}
 
 int	find_equal(char *str, t_shell *shell)
 {
 	int	i;
 
 	i = 0;
-	if (str[i] == '=')
+	if (str[i] == '=' || ft_strisnumber(str))
 	{
 		if (!shell->is_child)
-			ft_printf("minishell: export: `%s\': not a valid identifier\n", str);
-		return (0);
+		{
+			ft_printf("minishell: export: ");
+			ft_printf("`%s\': not a valid identifier\n", str);
+		}
 	}
 	while (str[i])
 	{
@@ -51,22 +70,20 @@ int	add_exported_var(char *exported_var, t_shell *shell)
 	return (1);
 }
 
-int	ft_export(char **cmd_args, t_shell *shell)
+int	export_var(char *arg, t_shell *shell)
 {
+	int		i;
 	char	**envp;
 	char	*exported_var;
-	int		i;
 
 	envp = shell->envp;
-	if (ft_arraylen(cmd_args) > 1 || ft_arraylen(cmd_args) == 0)
-		return (0);
-	if (find_equal(*cmd_args, shell) <= 0)
+	if (find_equal(arg, shell) <= 0)
 		return (1);
-	exported_var = ft_strdup(*cmd_args);
+	exported_var = ft_strdup(arg);
 	if (!exported_var)
 		return (0);
 	i = 0;
-	while (envp[i])
+	while (envp && envp[i])
 	{
 		if (!ft_strncmp(envp[i], exported_var,
 				find_equal(exported_var, shell) + 1))
@@ -78,6 +95,24 @@ int	ft_export(char **cmd_args, t_shell *shell)
 		i++;
 	}
 	return (add_exported_var(exported_var, shell));
+}
+
+int	ft_export(char **cmd_args, t_shell *shell)
+{
+	int		i;
+	char	**envp;
+
+	envp = shell->envp;
+	if (ft_arraylen(cmd_args) == 0)
+		return (print_exported_vars(envp, shell), 1);
+	i = 0;
+	while (cmd_args && cmd_args[i])
+	{
+		if (!export_var(cmd_args[i], shell))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /* int	find_equal(char *str)

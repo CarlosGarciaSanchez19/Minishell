@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/04 16:40:18 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:13:26 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	expand_env_vars(char **input, int pos, t_shell shell)
 			}
 			else
 			{
-				env_var = my_getenv(input[pos] + i + 1, shell.envp);
+				env_var = ft_strdup(my_getenv(input[pos] + i + 1, shell.envp));
 				if (env_var)
 				{
 					len_env = ft_strlen(env_var);
