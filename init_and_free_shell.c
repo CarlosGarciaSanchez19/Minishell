@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_free_shell.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 16:27:00 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:41:36 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_shell(t_shell *shell)
 {
 	free(shell->pwd);
 	free(shell->path);
-	ft_freearray(shell->envp, ft_arraylen(shell->envp));
+	ft_free_multiarray((void **)shell->envp);
 }
 
 int	my_getpid(void)

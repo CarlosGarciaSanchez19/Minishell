@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/05 20:13:26 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:42:06 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ static void	expand_env_vars(char **input, int pos, t_shell shell)
 			}
 			else
 			{
-				env_var = ft_strdup(my_getenv(input[pos] + i + 1, shell.envp));
+				env_var = my_getenv(input[pos] + i + 1, shell.envp);
 				if (env_var)
 				{
+					env_var = ft_strdup(env_var);
 					len_env = ft_strlen(env_var);
 					input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
 					ft_memcpy(input[pos] + i, env_var, len_env + 1);
@@ -81,7 +82,8 @@ static void	expand_env_vars(char **input, int pos, t_shell shell)
 					input[pos][0] = '\0';
 				}
 			}
-			free(env_var);
+			if (env_var)
+				free(env_var);
 		}
 		i++;
 	}

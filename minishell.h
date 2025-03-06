@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/05 19:45:04 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:21:02 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ int			ft_exit(t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);
 int			find_command(t_tokens *tkn, t_shell *shell);
+int			add_exported_var(char *exported_var, t_shell *shell);
+int			export_var(char *arg, t_shell *shell);
+int			find_equal(char *str, t_shell *shell);
 int			*tokenize_element_aux0(char *elem, t_tokens **former_token, int *arg_n, char **new_kind);
 char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);

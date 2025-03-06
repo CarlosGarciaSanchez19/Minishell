@@ -6,7 +6,7 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/03/05 19:44:07 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/03/06 19:24:07 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ BUILTINS = built-ins/cd.c built-ins/cd_aux_symbols.c built-ins/cd_aux_routes.c \
 		   built-ins/echo.c \
 		   built-ins/env.c \
 		   built-ins/exit.c \
-		   built-ins/export.c \
+		   built-ins/export.c built-ins/export_aux_var_manag.c \
 		   built-ins/pwd.c \
 		   built-ins/unset.c \
 		   built-ins/built-ins_utils.c

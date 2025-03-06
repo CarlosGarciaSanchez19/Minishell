@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 16:50:59 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:37:50 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			free_shell(&shell);
 			ft_printf("exit\n");
-			exit(1);
+			return (1);
 		}
 		if (*input)
 		{
@@ -136,7 +136,7 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		tokens = tokenize_everything(shell);
 		execute_tokens(tokens, &shell);
-		ft_freearray(shell.user_input, ft_arraylen(shell.user_input));
+		ft_free_multiarray((void **)shell.user_input);
 	}
 	free_shell(&shell);
 	return (0);
