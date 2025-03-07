@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/06 20:42:06 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:05:33 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 	return (tokenize_element_aux0(elem, former_token, arg_n, new_kind));
 }
 
-static void	expand_env_vars(char **input, int pos, t_shell shell)
+void	expand_env_vars(char **input, int pos, t_shell shell)
 {
 	int		i;
 	int		len_input;
@@ -171,8 +171,8 @@ t_tokens	*tokenize_everything(t_shell shell)
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
 		i++;
+		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
+			former_token->del_pos = i;
 	}
-	//comprobar parseo si el formato era valido porque por ejemplo < y >
-	//no pueden ir al final (tiene que dar un error concreto)
 	return (start_token);
 }

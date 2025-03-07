@@ -6,25 +6,18 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:01:04 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/21 16:54:03 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:16:34 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*search_for_kind_aux(char *elem, char *former_kind)
+/* void	special_postchecker()
 {
-	if (elem[0] == '>')
-	{
-		if (elem[1] == '\0')
-			return ("special_output");
-		if (elem[1] == '>' && elem[2] == '\0')
-			return ("special_append");
-		if (elem[1] == '>')
-			return ("inmediate_append");
-		else
-			return ("inmediate_output");
-	}
+} */
+
+static char	*search_for_kind_aux1(char *former_kind)
+{
 	if (former_kind == NULL || ft_strcmp(former_kind, "pipe") == 0)
 		return ("command");
 	if (ft_strcmp(former_kind, "special_input") == 0)
@@ -39,6 +32,29 @@ static char	*search_for_kind_aux(char *elem, char *former_kind)
 		return ("argument");
 }
 
+static char	*search_for_kind_aux0(char *elem, char *former_kind)
+{
+	if (elem[0] == '>')
+	{
+		if (elem[1] == '\0')
+		{
+//			special_postchecker();
+			return ("special_output");
+		}
+		if (elem[1] == '>' && elem[2] == '\0')
+		{
+//			special_postchecker();
+			return ("special_append");
+		}
+		if (elem[1] == '>')
+			return ("inmediate_append");
+		else
+			return ("inmediate_output");
+	}
+	else
+		return (search_for_kind_aux1(former_kind));
+}
+
 /*
 	Recorremos el elemento para determinar que tipo de input es.
 */
@@ -50,16 +66,22 @@ char	*search_for_kind(char *elem, char *former_kind)
 	if (elem[0] == '<')
 	{
 		if (elem[1] == '\0')
+		{
+//			special_postchecker();
 			return ("special_input");
+		}
 		if (elem[1] == '<' && elem[2] == '\0')
+		{
+//			special_postchecker();
 			return ("special_heredoc");
+		}
 		if (elem[1] == '<')
 			return ("inmediate_heredoc");
 		else
 			return ("inmediate_input");
 	}
 	else
-		return (search_for_kind_aux(elem, former_kind));
+		return (search_for_kind_aux0(elem, former_kind));
 }
 
 t_tokens	*new_cmd_token(void)

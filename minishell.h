@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/06 19:21:02 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/07 13:55:20 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef struct s_shell
 {
 	char	**user_input;
+	char	**orig_input;
 	char	**envp;
 	char	*pwd;
 	char	*old_pwd;
@@ -43,7 +44,7 @@ typedef struct s_shell
 }	t_shell;
 
 // Struct para los archivos que se usen
-typedef struct s_file
+typedef struct s_heredoc
 {
 	char	*file;
 	int		fd;
@@ -58,6 +59,7 @@ typedef struct s_tokens
 	char			*redir_input_name;
 	char			*redir_output_name;
 	char			*heredoc_del;
+	int				del_pos;
 	char			*append_output_name;
 	struct s_tokens	*next;
 }	t_tokens;
@@ -81,6 +83,7 @@ void		free_tokens(t_tokens *tokens);
 void		error_pipe(t_tokens *tokens, t_shell *shell);
 void		clean_bars(char *str);
 void		bubble_sort(char **arr);
+void		expand_env_vars(char **input, int pos, t_shell shell);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/06 19:37:50 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/07 13:45:48 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,12 @@ int	main(int argc, char **argv, char **envp)
 			write_history(NULL);
 		}
 		shell.user_input = ft_splitquot(input, ' ');
+		shell.orig_input = array_cpy(shell.user_input);
 		free(input);
 		tokens = tokenize_everything(shell);
 		execute_tokens(tokens, &shell);
 		ft_free_multiarray((void **)shell.user_input);
+		ft_free_multiarray((void **)shell.orig_input);
 	}
 	free_shell(&shell);
 	return (0);

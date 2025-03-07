@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/21 16:49:13 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:52:30 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,9 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 	}
 	if (ft_strcmp(*new_kind, "output") == 0)
 	{
-//		printf("Estamos en Output!!\n");
 		(*former_token)->redir_output_name = ft_strdup(elem);
 		if ((*former_token)->redir_output_name == NULL)
 			exit (1);
-//		printf("estamos en el token: %p\n", (*former_token));
 		return (arg_n);
 	}
 	return (tokenize_element_aux2(elem, former_token, arg_n, new_kind));
