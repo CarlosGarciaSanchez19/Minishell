@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/07 13:55:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:15:51 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_tokens
 	char			*heredoc_del;
 	int				del_pos;
 	char			*append_output_name;
+	int				special;
 	struct s_tokens	*next;
 }	t_tokens;
 

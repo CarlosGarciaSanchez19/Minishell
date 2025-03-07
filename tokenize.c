@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/07 15:05:33 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:27:31 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,24 @@ int	clean_quotes(char **str)
 	*str = new_str;
 	return (1);
 }
+static int	check_special_valid(t_tokens *start_token)
+{
+	t_tokens *current_token;
+
+	current_token = start_token;
+	while (current_token)
+	{
+		if (current_token->special && !current_token->redir_input_name
+			&& !current_token->redir_output_name && !current_token->heredoc_del
+				&& !current_token->append_output_name)
+		{
+			ft_printf("syntax error near unexpected token `newline'\n");
+			return (0);
+		}
+		current_token = current_token->next;
+	}
+	return (1);
+}
 
 /*
 	Recorremos el array del input y vamos tokenizando en lista enlazada.
@@ -174,5 +192,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
 			former_token->del_pos = i;
 	}
+	if (!check_special_valid(start_token))
+		return (free_tokens(start_token), NULL);
 	return (start_token);
 }

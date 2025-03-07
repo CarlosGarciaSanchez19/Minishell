@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/07 14:52:30 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:21:56 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,10 @@ int	*tokenize_element_aux0(char *elem, t_tokens **former_token,
 		return (arg_n);
 	}
 	if (ft_strncmp(*new_kind, "special", 7) == 0)
+	{
+		(*former_token)->special = 1;
 		return (arg_n);
+	}
 	if (ft_strcmp(*new_kind, "command") == 0)
 	{
 		(*former_token)->cmd = ft_strdup(elem);

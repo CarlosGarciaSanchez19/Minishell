@@ -6,15 +6,11 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:01:04 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/07 15:16:34 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:23:00 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* void	special_postchecker()
-{
-} */
 
 static char	*search_for_kind_aux1(char *former_kind)
 {
@@ -37,15 +33,9 @@ static char	*search_for_kind_aux0(char *elem, char *former_kind)
 	if (elem[0] == '>')
 	{
 		if (elem[1] == '\0')
-		{
-//			special_postchecker();
 			return ("special_output");
-		}
 		if (elem[1] == '>' && elem[2] == '\0')
-		{
-//			special_postchecker();
 			return ("special_append");
-		}
 		if (elem[1] == '>')
 			return ("inmediate_append");
 		else
@@ -66,15 +56,9 @@ char	*search_for_kind(char *elem, char *former_kind)
 	if (elem[0] == '<')
 	{
 		if (elem[1] == '\0')
-		{
-//			special_postchecker();
 			return ("special_input");
-		}
 		if (elem[1] == '<' && elem[2] == '\0')
-		{
-//			special_postchecker();
 			return ("special_heredoc");
-		}
 		if (elem[1] == '<')
 			return ("inmediate_heredoc");
 		else
