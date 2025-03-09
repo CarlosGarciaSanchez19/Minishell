@@ -6,13 +6,13 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/06 19:19:40 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:39:02 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_exported_vars(char **envp, t_shell *shell)
+void	print_exported_vars(char **envp)
 {
 	int		i;
 	char	**envp_cpy;
@@ -22,33 +22,10 @@ void	print_exported_vars(char **envp, t_shell *shell)
 	i = 0;
 	while (envp_cpy[i])
 	{
-		if (shell->is_child)
-			ft_printf("declare -x %s\n", envp_cpy[i]);
+		ft_printf("declare -x %s\n", envp_cpy[i]);
 		i++;
 	}
 	ft_free_multiarray((void **)envp_cpy);
-}
-
-int	find_equal(char *str, t_shell *shell)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] == '=' || ft_strisnumber(str))
-	{
-		if (!shell->is_child)
-		{
-			ft_printf("minishell: export: ");
-			ft_printf("`%s\': not a valid identifier\n", str);
-		}
-	}
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 int	ft_export(char **cmd_args, t_shell *shell)
@@ -58,7 +35,7 @@ int	ft_export(char **cmd_args, t_shell *shell)
 
 	envp = shell->envp;
 	if (ft_arraylen(cmd_args) == 0)
-		return (print_exported_vars(envp, shell), 1);
+		return (print_exported_vars(envp), 1);
 	i = 0;
 	while (cmd_args && cmd_args[i])
 	{

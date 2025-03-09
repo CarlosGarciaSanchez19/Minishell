@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 19:31:12 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:37:46 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ static int	all_is_barpoint(char *str)
 
 static int	cd_error_args(t_shell *shell)
 {
-	if (!shell->is_child)
-		ft_printf("cd: too many arguments\n");
-	return (0);
+	(void)shell;
+	write(2, "cd: too many arguments\n", 23);
+	return (1);
 }
 
 int	ft_cd(t_tokens token, t_shell *shell)
@@ -100,7 +100,7 @@ int	ft_cd(t_tokens token, t_shell *shell)
 	if (all_is_barpoint(token.cmd_args[0]))
 		return (cd_barpoints(token, shell));
 	else
-		cd_route(token, shell, 0);
+		return(cd_route(token, shell, 0));
 	if (!shell->pwd)
 		return (0);
 	return (1);

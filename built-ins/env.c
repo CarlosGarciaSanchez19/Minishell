@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:03:38 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/21 17:50:36 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 22:59:17 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	ft_env(t_shell *shell)
 	envp = shell->envp;
 	while (*envp)
 	{
-		if (!shell->is_child)
-			ft_printf("%s\n", *envp);
+		ft_printf("%s\n", *envp);
 		envp++;
 	}
 	return (1);

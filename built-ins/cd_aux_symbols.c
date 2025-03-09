@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_aux_symbols.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:13:37 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/04 19:32:07 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:41:59 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	cd_minus(t_shell *shell)
 {
 	if (!change_pwd(shell, my_getenv("OLDPWD", shell->envp)))
 		return (0);
-	if (!shell->is_child)
-		ft_printf("%s\n", shell->pwd);
+	ft_printf("%s\n", shell->pwd);
 	return (1);
 }
 

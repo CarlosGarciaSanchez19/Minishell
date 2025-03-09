@@ -6,11 +6,32 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:19:12 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/06 19:23:06 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:39:19 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	find_equal(char *str, t_shell *shell)
+{
+	int	i;
+
+	(void)shell;
+	i = 0;
+	if (str[i] == '=' || ft_strisnumber(str))
+	{
+		write(2, "minishell: export: `", 20);
+		write(2, str, ft_strlen(str));
+		write(2, "\': not a valid identifier\n", 26);
+	}
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 int	add_exported_var(char *exported_var, t_shell *shell)
 {

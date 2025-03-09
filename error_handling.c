@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/02/25 18:42:37 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:29:13 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	check_string(char **string, t_shell *shell)
 {
+	(void)shell;
 	if (!(*string))
 	{
 		free(string);
-		if (!shell->is_child)
-			ft_printf("Allocation error\n");
+		write(2, "Allocation error\n", 17);
 		return (0);
 	}
 	return (1);
@@ -26,23 +26,27 @@ int	check_string(char **string, t_shell *shell)
 
 int	error_file(char *string, char *arg, t_shell *shell)
 {
-	if (!shell->is_child)
-		ft_printf("cd: %s: No such file or directory\n",(arg));
+	(void)shell;
+	write(2, "cd: ", 4);
+	write(2, arg, ft_strlen(arg));
+	write(2, ": No such file or directory\n", 28);
 	if (string)
 		free(string);
-	return (0);
+	return (1);
 }
 
 int	error_option(char arg, t_shell *shell)
 {
-	if (!shell->is_child)
-		ft_printf("cd: -%c: invalid option\n", arg);
-	return (0);
+	(void)shell;
+	write(2, "cd: ", 4);
+	write(2, &arg, 1);
+	write(2, ": invalid option\n", 17);
+	return (2);
 }
 
 void	error_pipe(t_tokens *tokens, t_shell *shell)
 {
-	ft_printf("Error: Pipe could not be created\n");
+	write(2, "Error: Pipe could not be created\n", 33);
 	free_tokens(tokens);
 	free_shell(shell);
 	if (shell->is_child)

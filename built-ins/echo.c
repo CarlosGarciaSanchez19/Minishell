@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:43 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/04 19:48:53 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:00:24 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	echo_aux_n(char **args, t_shell shell, int len)
 {
 	int	i;
 
+	(void)shell;
 	if (ft_arraylen(args) > 1)
 	{
 		i = 1;
 		while (args[i])
 		{
-			if (!shell.is_child)
-				ft_printf("%s", args[i]);
-			if (!shell.is_child && i < (len - 1))
+			ft_printf("%s", args[i]);
+			if (i < (len - 1))
 				write (1, " ", 1);
 			i++;
 		}
@@ -45,15 +45,13 @@ int	ft_echo(char **args, t_shell shell)
 			i = 0;
 			while (args[i])
 			{
-				if (!shell.is_child)
-					ft_printf("%s", args[i]);
-				if (!shell.is_child && i < (len - 1))
+				ft_printf("%s", args[i]);
+				if (i < (len - 1))
 					write (1, " ", 1);
 				i++;
 			}
 		}
-		if (!shell.is_child)
-			ft_printf("\n");
+		ft_printf("\n");
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/09 21:42:02 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:59:59 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,36 +99,33 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			else if (current_tkn->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
 			close_used_pipe(num_pipes, pipes, i);
-			if (current_tkn->cmd && !built_in(current_tkn, shell))
+			if (current_tkn->cmd && !is_built_in(current_tkn))
 			{
 				command_arr = create_command_array(current_tkn);
 				execve(current_tkn->cmd, command_arr, shell->envp);			// Ejecutamos el comando si no es un built-in
 				ft_freearray(command_arr, ft_arraylen(command_arr));		// Liberamos memoria si no se ha ejecutado el comando
 				exit(1);
 			}
+			else if (current_tkn->cmd && is_built_in(current_tkn) && num_pipes)
+				exit(built_in(current_tkn, shell));
 			else
-				exit(0);											// Si es un built-in, salimos del proceso hijo
+				exit(0);
 		}
 		else
 		{
 			signal(SIGINT, SIG_IGN);
 			close_used_pipe(num_pipes, pipes, i);
-			if ((current_tkn->cmd && num_pipes == 0) || i == num_pipes)
-				built_in(current_tkn, shell);
+			if (current_tkn->cmd && !num_pipes)
+				shell->exit_status = built_in(current_tkn, shell);
 		}
 		current_tkn = current_tkn->next;
 		i++;
 	}
 	while (wait(&child_status) > 0)
 		;
-	shell->exit_status = WEXITSTATUS(child_status);
+	if (num_pipes)
+		shell->exit_status = WEXITSTATUS(child_status);
 	free_exec_vars(tokens, pipes);
-	if (WEXITSTATUS(child_status) == 3)
-	{
-		free_shell(shell);
-		ft_printf("exit\n");
-		exit(0);
-	}
-	else if (WEXITSTATUS(child_status) == 4)
+	if (WEXITSTATUS(child_status) == 4)
 		exit(1);
 }
