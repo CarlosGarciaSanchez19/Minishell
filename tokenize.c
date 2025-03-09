@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/07 17:27:31 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:57:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,16 @@ void	expand_env_vars(char **input, int pos, t_shell shell)
 	int		len_env;
 	char	*env_var;
 
+	env_var = NULL;
 	len_input = ft_strlen(input[pos]);
 	i = 0;
 	while (input[pos][i])
 	{
 		if (input[pos][i] == '$')
 		{
-			if (ft_strcmp(input[pos] + i, "$$") == 0)
+			if (ft_strcmp(input[pos] + i, "$") == 0)
+				;
+			else if (ft_strcmp(input[pos] + i, "$$") == 0)
 			{
 				env_var = ft_itoa(shell.pid);
 				len_env = ft_strlen(env_var);
@@ -185,12 +188,13 @@ t_tokens	*tokenize_everything(t_shell shell)
 			ft_printf("Error: Quotes need to be closed\n");
 			return (free_tokens(start_token), NULL);
 		}
-		expand_env_vars(shell.user_input, i, shell);
+		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
+			former_token->del_pos = i;
+		else
+			expand_env_vars(shell.user_input, i, shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
 		i++;
-		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
-			former_token->del_pos = i;
 	}
 	if (!check_special_valid(start_token))
 		return (free_tokens(start_token), NULL);

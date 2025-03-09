@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/07 17:15:51 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:42:22 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int			error_option(char arg, t_shell *shell);
 int			tkn_lst_size(t_tokens *tkn);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);
+int			is_info_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
 int			change_pwd(t_shell *shell, char *new_pwd);

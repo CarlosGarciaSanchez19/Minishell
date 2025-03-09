@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/07 14:55:46 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:42:02 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,17 @@ void	print_tokens(t_tokens *tokens)
 	}
 }
 
-void	free_exec_vars(t_tokens *tokens, int (*pipes)[2], int *pids)
+void	free_exec_vars(t_tokens *tokens, int (*pipes)[2])
 {
 	if (tokens)
 		free_tokens(tokens);
 	if (pipes)
 		free(pipes);
-	if (pids)
-		free(pids);
 }
 
 void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una lista de structs t_tokens
 {
 	int			(*pipes)[2];
-	int			*pids;
 	int			i;
 	int			child_status;
 	int			num_pipes;
@@ -62,7 +59,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	char		**command_arr;
 
 	 // Esta función es para debuggear, se puede borrar
-	print_tokens(tokens);
+	/* print_tokens(tokens); */
 	child_status = 0;
 	num_pipes = tkn_lst_size(tokens) - 1;
 	if (num_pipes < 0)
@@ -70,12 +67,6 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	pipes = malloc(sizeof(int [2]) * num_pipes);
 	if (!pipes)
 		error_pipe(tokens, shell);
-	pids = malloc(sizeof(int) * (num_pipes + 1));
-	if (!pids)
-	{
-		free_exec_vars(tokens, pipes, NULL);
-		exit(1);
-	}
 	create_pipes(num_pipes, pipes, tokens, shell);
 	current_tkn = tokens;
 	i = 0;
@@ -86,7 +77,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		if (pid < 0)
 		{
 			ft_printf("Error: Fork failed\n");
-			free_exec_vars(tokens, pipes, pids);
+			free_exec_vars(tokens, pipes);
 			exit(1);
 		}
 		else if (pid == 0)
@@ -107,6 +98,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				append_output(current_tkn->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (current_tkn->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
+			close_used_pipe(num_pipes, pipes, i);
 			if (current_tkn->cmd && !built_in(current_tkn, shell))
 			{
 				command_arr = create_command_array(current_tkn);
@@ -120,8 +112,6 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		else
 		{
 			signal(SIGINT, SIG_IGN);
-			pids[i] = pid;
-			//printf("Child status: %d\n", WEXITSTATUS(child_status));
 			close_used_pipe(num_pipes, pipes, i);
 			if ((current_tkn->cmd && num_pipes == 0) || i == num_pipes)
 				built_in(current_tkn, shell);
@@ -129,14 +119,10 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		current_tkn = current_tkn->next;
 		i++;
 	}
-	i = 0;
-	while (i < num_pipes + 1)
-	{
-		waitpid(pids[i], &child_status, 0);	// En el padre esperamos a todos los procesos hijos
-		i++;
-	}
+	while (wait(&child_status) > 0)
+		;
 	shell->exit_status = WEXITSTATUS(child_status);
-	free_exec_vars(tokens, pipes, pids);
+	free_exec_vars(tokens, pipes);
 	if (WEXITSTATUS(child_status) == 3)
 	{
 		free_shell(shell);

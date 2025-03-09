@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:10:23 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/25 15:06:03 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:42:47 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_info_built_in(t_tokens *tkn)
+{
+	if (ft_strcmp(tkn->cmd, "echo") == 0)
+		return (1);
+	if (ft_strcmp(tkn->cmd, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(tkn->cmd, "env") == 0)
+		return (1);
+	else if (ft_strcmp(tkn->cmd, "export") == 0)
+		return (0);
+	else if (ft_strcmp(tkn->cmd, "unset") == 0)
+		return (0);
+	else if (ft_strcmp(tkn->cmd, "cd") == 0)
+		return (0);
+	else if (ft_strcmp(tkn->cmd, "exit") == 0)
+		return (0);
+	return (-1);
+}
 
 int	is_built_in(t_tokens *tkn)
 {
