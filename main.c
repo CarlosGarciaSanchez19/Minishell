@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/10 19:27:17 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:11:27 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,10 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 		free(path_bar_cmd);
 		i++;
 	}
-	ft_printf("Command '%s' not found.\n", tkn->cmd);
+	write(2, "Command '", 9);
+	write(2, tkn->cmd, ft_strlen(tkn->cmd));
+	write(2, "' not found.\n", 13);
 	ft_freearray(paths, path_len);
-	exit(127);
 	return (127);
 }
 
