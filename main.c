@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/07 13:45:48 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:27:17 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 	int		i;
 
 	if (tkn->cmd && access(tkn->cmd, X_OK) == 0)
-		return (1);
+		return (0);
 	paths = path_split(shell->envp);
 	if (!paths)
-		return (0);
+		return (100);
 	path_len = ft_arraylen(paths);
 	i = 0;
 	while (paths[i])
@@ -83,7 +83,9 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 		i++;
 	}
 	ft_printf("Command '%s' not found.\n", tkn->cmd);
-	return(ft_freearray(paths, path_len), 0);
+	ft_freearray(paths, path_len);
+	exit(127);
+	return (127);
 }
 
 char	*path_and_readline(t_shell *shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:43 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/09 23:00:24 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:21:17 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int	ft_echo(char **args, t_shell shell)
 		}
 		ft_printf("\n");
 	}
-	return (1);
+	return (0);
 }

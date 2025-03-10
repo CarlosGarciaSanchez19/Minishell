@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/09 23:59:59 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:53:10 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,19 +113,25 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		}
 		else
 		{
+			shell->exit_status = 0;
 			signal(SIGINT, SIG_IGN);
 			close_used_pipe(num_pipes, pipes, i);
 			if (current_tkn->cmd && !num_pipes)
-				shell->exit_status = built_in(current_tkn, shell);
+			{
+				if (!shell->exit_status)
+					shell->exit_status = built_in(current_tkn, shell);
+				else
+					built_in(current_tkn, shell);
+			}
 		}
 		current_tkn = current_tkn->next;
 		i++;
 	}
 	while (wait(&child_status) > 0)
 		;
-	if (num_pipes)
+	if (!shell->exit_status)
 		shell->exit_status = WEXITSTATUS(child_status);
 	free_exec_vars(tokens, pipes);
 	if (WEXITSTATUS(child_status) == 4)
-		exit(1);
+		exit(101);
 }

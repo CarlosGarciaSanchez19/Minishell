@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/09 23:29:13 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:03:08 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_string(char **string, t_shell *shell)
 	{
 		free(string);
 		write(2, "Allocation error\n", 17);
-		return (0);
+		return (100);
 	}
 	return (1);
 }
@@ -51,5 +51,5 @@ void	error_pipe(t_tokens *tokens, t_shell *shell)
 	free_shell(shell);
 	if (shell->is_child)
 		exit(4);
-	exit(1);
+	exit(101);
 }

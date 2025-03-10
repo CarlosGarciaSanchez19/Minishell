@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:09:00 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/04 19:31:44 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:07:19 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 	char	*tempstr0;
 	char	*tempstr1;
 
-	if (token.cmd_args[arg_pos][0] == '-' && arg_pos == 0)
-		return (error_option(token.cmd_args[arg_pos][1], shell));
 	tempstr0 = ft_strjoin(shell->pwd, "/");
 	tempstr1 = ft_strjoin(tempstr0, (token.cmd_args[arg_pos]));
 	free(tempstr0);
@@ -44,13 +42,13 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 		tempstr1 = ft_strdup(token.cmd_args[arg_pos]);
 	}
 	clean_bars(tempstr1);
-	if (!change_pwd(shell, tempstr1))
+	if (change_pwd(shell, tempstr1))
 	{
 		free(tempstr1);
-		return (0);
+		return (100);
 	}
 	free(tempstr1);
-	return (1);
+	return (0);
 }
 
 static int	cd_barpoints_aux(t_shell *shell)
@@ -59,13 +57,13 @@ static int	cd_barpoints_aux(t_shell *shell)
 
 	tempstr = ft_substr(shell->pwd, 0,
 			ft_strlen(shell->pwd) - ft_strlen(ft_strrchr(shell->pwd, '/')));
-	if (!change_pwd(shell, tempstr))
+	if (change_pwd(shell, tempstr))
 	{
 		free(tempstr);
-		return (0);
+		return (100);
 	}
 	free(tempstr);
-	return (1);
+	return (0);
 }
 
 int	cd_barpoints(t_tokens token, t_shell *shell)
@@ -81,8 +79,8 @@ int	cd_barpoints(t_tokens token, t_shell *shell)
 			change_pwd(shell, shell->pwd);
 		else if (!ft_strcmp(tempsplit[i], ".."))
 		{
-			if (!cd_barpoints_aux(shell))
-				return (ft_free_multiarray((void **)tempsplit), 0);
+			if (cd_barpoints_aux(shell))
+				return (ft_free_multiarray((void **)tempsplit), 100);
 		}
 		else
 		{
@@ -91,5 +89,5 @@ int	cd_barpoints(t_tokens token, t_shell *shell)
 		}
 		i++;
 	}
-	return (ft_free_multiarray((void **)tempsplit), 1);
+	return (ft_free_multiarray((void **)tempsplit), 0);
 }
