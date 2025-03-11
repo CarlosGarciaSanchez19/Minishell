@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:08 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/09 23:39:02 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:34:11 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,23 @@ void	print_exported_vars(char **envp)
 int	ft_export(char **cmd_args, t_shell *shell)
 {
 	int		i;
+	int		exit_code;
+	int		final_exit;
 	char	**envp;
 
 	envp = shell->envp;
 	if (ft_arraylen(cmd_args) == 0)
-		return (print_exported_vars(envp), 1);
+		return (print_exported_vars(envp), 0);
+	final_exit = 0;
 	i = 0;
 	while (cmd_args && cmd_args[i])
 	{
-		if (!export_var(cmd_args[i], shell))
-			return (0);
+		exit_code = export_var(cmd_args[i], shell);
+		if (exit_code)
+			final_exit = exit_code;
 		i++;
 	}
-	return (1);
+	return (final_exit);
 }
 
 /* int	find_equal(char *str)

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:19:12 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/09 23:39:19 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:31:09 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	add_exported_var(char *exported_var, t_shell *shell)
 	len = ft_arraylen(envp);
 	new_envp = ft_calloc(len + 2, sizeof(char *));
 	if (!new_envp)
-		return (0);
+		return (100);
 	ft_memcpy(new_envp, envp, len * sizeof(char *));
 	new_envp[len] = exported_var;
 	new_envp[len + 1] = NULL;
 	free(envp);
 	shell->envp = new_envp;
-	return (1);
+	return (0);
 }
 
 static int	initial_comprobations(char *arg, t_shell *shell)
@@ -75,7 +75,7 @@ int	export_var(char *arg, t_shell *shell)
 		return (1);
 	exported_var = ft_strdup(arg);
 	if (!exported_var)
-		return (0);
+		return (100);
 	i = 0;
 	while (envp && envp[i])
 	{
@@ -84,7 +84,7 @@ int	export_var(char *arg, t_shell *shell)
 		{
 			free(envp[i]);
 			envp[i] = exported_var;
-			return (1);
+			return (0);
 		}
 		i++;
 	}

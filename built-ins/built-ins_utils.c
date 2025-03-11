@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:10:23 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/10 00:03:18 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:39:24 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ int	built_in(t_tokens *tkn, t_shell *shell)
 	if (ft_strcmp(tkn->cmd, "unset") == 0)
 		return (ft_unset(tkn->cmd_args, shell));
 	if (ft_strcmp(tkn->cmd, "env") == 0)
-		return (ft_env(shell));
+		return (ft_env(tkn->cmd_args, shell));
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/11 17:26:45 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:13:18 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	unset_arg(char *name, char **envp, int envp_len)
 				envp[i] = envp[i + 1];
 				i++;
 			}
+			return ;
 		}
 		i++;
 	}
