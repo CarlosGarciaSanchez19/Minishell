@@ -3,25 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/06 13:24:33 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:26:45 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_unset(char **cmd_args, t_shell *shell)
+void	unset_arg(char *name, char **envp, int envp_len)
 {
-	char	**envp;
-	char	*name;
-	int		envp_len;
-	int		i;
+	int	i;
 
-	envp = shell->envp;
-	name = *cmd_args;
-	envp_len = ft_arraylen(envp);
 	i = 0;
 	while (envp[i])
 	{
@@ -34,9 +28,24 @@ int	ft_unset(char **cmd_args, t_shell *shell)
 				envp[i] = envp[i + 1];
 				i++;
 			}
-			return (1);
 		}
 		i++;
 	}
-	return (1);
+}
+
+int	ft_unset(char **cmd_args, t_shell *shell)
+{
+	char	**envp;
+	int		envp_len;
+	int		i;
+
+	envp = shell->envp;
+	envp_len = ft_arraylen(envp);
+	i = 0;
+	while (cmd_args[i])
+	{
+		unset_arg(cmd_args[i], envp, envp_len);
+		i++;
+	}
+	return (0);
 }

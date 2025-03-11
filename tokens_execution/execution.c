@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/10 21:12:32 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:53:23 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,21 +134,22 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		current_tkn = current_tkn->next;
 		i++;
 	}
-	/* i = num_pipes - 1;
-	while (i > 0)
+	i = num_pipes - 1;
+	while (i >= 0)
 	{
-		close_used_pipe(pipes, i);
+		printf("Escritura pipe %d: %d\n", i, close(pipes[i][0]));
+		printf("Lectura pipe %d: %d\n", i, close(pipes[i][1]));
 		i--;
-	} */
+	}
 	i = 0;
 	while (i < num_pipes + 1)
 	{
 		/* close_used_pipe(num_pipes, pipes, i); */
-		if (i < num_pipes)
+		/* if (i < num_pipes)
 		{
 			close(pipes[i][0]);
 			close(pipes[i][1]);
-		}
+		} */
 		if (i == num_pipes)
 			waitpid(pids[i], &child_status, 0);
 		else
