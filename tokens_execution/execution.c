@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/13 12:58:14 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:24:17 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,13 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 				append_output(current_tkn->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (current_tkn->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
+			/* close_used_pipe(num_pipes, pipes, i); */
 			if (current_tkn->cmd && !is_built_in(current_tkn))
 			{
 				command_arr = create_command_array(current_tkn);
 				execve(current_tkn->cmd, command_arr, shell->envp);			// Ejecutamos el comando si no es un built-in
 				ft_freearray(command_arr, ft_arraylen(command_arr));		// Liberamos memoria si no se ha ejecutado el comando
-				exit(1);
+				exit(127);
 			}
 			else if (current_tkn->cmd && is_built_in(current_tkn) && num_pipes)
 				exit(built_in(current_tkn, shell));
@@ -134,31 +135,23 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 		current_tkn = current_tkn->next;
 		i++;
 	}
-	i = num_pipes - 1;
-	while (i >= 0)
+	i = 0;
+	while (i < num_pipes)
 	{
-		/* printf("Escritura pipe %d: %d\n", i, close(pipes[i][0]));
-		printf("Lectura pipe %d: %d\n", i, close(pipes[i][1])); */
 		close(pipes[i][0]);
 		close(pipes[i][1]);
-		i--;
+		i++;
 	}
 	i = 0;
 	while (i < num_pipes + 1)
 	{
-		/* close_used_pipe(num_pipes, pipes, i); */
-		/* if (i < num_pipes)
-		{
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-		} */
 		if (i == num_pipes)
 			waitpid(pids[i], &child_status, 0);
 		else
 			waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	if (num_pipes)
+	if ((tokens->cmd && !is_built_in(tokens)) || num_pipes)
 		shell->exit_status = WEXITSTATUS(child_status);
 	free_exec_vars(tokens, pipes, pids);
 	if (WEXITSTATUS(child_status) == 4)
