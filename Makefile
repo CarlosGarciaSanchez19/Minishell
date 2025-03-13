@@ -6,13 +6,13 @@
 #    By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/03/06 19:24:07 by carlosg2         ###   ########.fr        #
+#    Updated: 2025/03/13 12:57:21 by carlosg2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 
 BUILTINS = built-ins/cd.c built-ins/cd_aux_symbols.c built-ins/cd_aux_routes.c \
 		   built-ins/echo.c \

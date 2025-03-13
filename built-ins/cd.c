@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/10 18:50:25 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:54:03 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ int	segment_route(t_tokens token, t_shell *shell)
 	int			i;
 	int			exitcode;
 
-	tempsplit = ft_split(token.cmd_args[0], '/');
+	if (token.cmd_args[0][0] == '/')
+		return (cd_route(token, shell, 0));
+	else
+		tempsplit = ft_split(token.cmd_args[0], '/');
 	i = 0;
 	temproute = ft_strdup(shell->pwd);
 	while (tempsplit[i])

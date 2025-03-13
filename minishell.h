@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/11 18:39:58 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:36:16 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int			cd_doubleminus(t_tokens token, t_shell *shell);
 int			cd_doublepoints(t_shell *shell);
 int			ft_env(char **cmd_args, t_shell *shell);
 int			ft_echo(char **args, t_shell shell);
-int			ft_exit(t_shell *shell);
+int			ft_exit(char **cmd_args, t_shell *shell);
 int			ft_export(char **cmd_args, t_shell *shell);
 int			ft_unset(char **cmd_args, t_shell *shell);
 int			find_command(t_tokens *tkn, t_shell *shell);

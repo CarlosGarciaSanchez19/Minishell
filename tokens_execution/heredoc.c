@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:52 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/07 14:12:23 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:38:26 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	heredoc(t_tokens *tokens, t_shell *shell, char *str)
 			free(line);
 			break ;
 		}
-		if (!str_isquote(shell->orig_input[tokens->del_pos]))
+		if (!ft_strisquote(shell->orig_input[tokens->del_pos]))
 			expand_env_vars(&line, 0, *shell);
 		write(fd[1], line, ft_strlen(line));
 		write(fd[1], "\n", 1);

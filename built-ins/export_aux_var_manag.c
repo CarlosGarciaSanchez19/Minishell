@@ -6,24 +6,17 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:19:12 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/11 18:31:09 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:40:39 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	find_equal(char *str, t_shell *shell)
+int	find_equal(char *str)
 {
 	int	i;
 
-	(void)shell;
 	i = 0;
-	if (str[i] == '=' || ft_strisnumber(str))
-	{
-		write(2, "minishell: export: `", 20);
-		write(2, str, ft_strlen(str));
-		write(2, "\': not a valid identifier\n", 26);
-	}
 	while (str[i])
 	{
 		if (str[i] == '=')
@@ -54,13 +47,23 @@ int	add_exported_var(char *exported_var, t_shell *shell)
 
 static int	initial_comprobations(char *arg, t_shell *shell)
 {
-	if (find_equal(arg, shell) <= 0)
+	int		equal_pos;
+	char	*variable;
+
+	equal_pos = find_equal(arg);
+	variable = ft_substr(arg, 0, equal_pos);
+	if (equal_pos == 0 || ft_strisnumber(variable) || !ft_strisalnum(variable))
 	{
+		free(variable);
+		write(2, "minishell: export: `", 20);
+		write(2, arg, ft_strlen(arg));
+		write(2, "\': not a valid identifier\n", 26);
 		if (shell->is_child)
 			exit(1);
 		else
 			return (1);
 	}
+	free(variable);
 	return (0);
 }
 
@@ -80,7 +83,7 @@ int	export_var(char *arg, t_shell *shell)
 	while (envp && envp[i])
 	{
 		if (!ft_strncmp(envp[i], exported_var,
-				find_equal(exported_var, shell) + 1))
+				find_equal(exported_var) + 1))
 		{
 			free(envp[i]);
 			envp[i] = exported_var;

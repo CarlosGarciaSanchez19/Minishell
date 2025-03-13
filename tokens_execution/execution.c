@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/11 16:53:23 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:58:14 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,10 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 	i = num_pipes - 1;
 	while (i >= 0)
 	{
-		printf("Escritura pipe %d: %d\n", i, close(pipes[i][0]));
-		printf("Lectura pipe %d: %d\n", i, close(pipes[i][1]));
+		/* printf("Escritura pipe %d: %d\n", i, close(pipes[i][0]));
+		printf("Lectura pipe %d: %d\n", i, close(pipes[i][1])); */
+		close(pipes[i][0]);
+		close(pipes[i][1]);
 		i--;
 	}
 	i = 0;

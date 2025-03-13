@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:09:17 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/11 18:13:18 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:35:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_unset(char **cmd_args, t_shell *shell)
 	envp = shell->envp;
 	envp_len = ft_arraylen(envp);
 	i = 0;
-	while (cmd_args[i])
+	while (cmd_args && cmd_args[i])
 	{
 		unset_arg(cmd_args[i], envp, envp_len);
 		i++;

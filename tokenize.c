@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/09 20:57:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:38:52 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int	clean_quotes(char **str)
 	*str = new_str;
 	return (1);
 }
+
 static int	check_special_valid(t_tokens *start_token)
 {
 	t_tokens *current_token;
@@ -185,12 +186,13 @@ t_tokens	*tokenize_everything(t_shell shell)
 	{
 		if (clean_quotes(&(shell.user_input[i])) == 0)
 		{
-			ft_printf("Error: Quotes need to be closed\n");
+			write(2, "Error: Quotes need to be closed\n", 32);
 			return (free_tokens(start_token), NULL);
 		}
 		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
 			former_token->del_pos = i;
-		else
+		else if (new_kind && ft_strcmp(new_kind, "command") == 0 
+				&& !ft_strissimplequote(shell.orig_input[i]))
 			expand_env_vars(shell.user_input, i, shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
