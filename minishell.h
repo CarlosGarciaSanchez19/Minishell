@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/13 13:36:16 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:21:52 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void		free_tokens(t_tokens *tokens);
 void		error_pipe(t_tokens *tokens, t_shell *shell);
 void		clean_bars(char *str);
 void		bubble_sort(char **arr);
-void		expand_env_vars(char **input, int pos, t_shell shell);
+void		expand_env_vars(char **input, t_shell shell);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);
