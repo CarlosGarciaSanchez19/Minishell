@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/17 19:21:52 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:29:54 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void		create_pipes(
 				t_shell *shell
 				);
 void		close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i);
-void		redirect_input(char *file);
-void		redirect_output(char *file);
-void		append_output(char *file);
+void		redirect_input(char *file, t_tokens *current_tkn);
+void		redirect_output(char *file, t_tokens *current_tkn);
+void		append_output(char *file, t_tokens *current_tkn);
 void		heredoc(t_tokens *tokens, t_shell *shell, char *str);
 void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);

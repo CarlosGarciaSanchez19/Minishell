@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_elem_aux.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/07 17:21:56 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:30:11 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
 {
 	if (ft_strcmp(*new_kind, "inmediate_heredoc") == 0)
 	{
+		if ((*former_token)->heredoc_del)
+			free((*former_token)->heredoc_del);
 		(*former_token)->heredoc_del = ft_strdup(elem + 2);
 		if ((*former_token)->heredoc_del == NULL)
 			exit (1);
@@ -24,6 +26,8 @@ static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
 	}
 	if (ft_strcmp(*new_kind, "inmediate_append") == 0)
 	{
+		if ((*former_token)->append_output_name)
+			free((*former_token)->append_output_name);
 		(*former_token)->append_output_name = ft_strdup(elem + 2);
 		if ((*former_token)->append_output_name == NULL)
 			exit (1);
@@ -49,6 +53,8 @@ static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
 {
 	if (ft_strcmp(*new_kind, "inmediate_input") == 0)
 	{
+		if ((*former_token)->redir_input_name)
+			free((*former_token)->redir_input_name);
 		(*former_token)->redir_input_name = ft_strdup(elem + 1);
 		if ((*former_token)->redir_input_name == NULL)
 			exit (1);
@@ -56,6 +62,8 @@ static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
 	}
 	if (ft_strcmp(*new_kind, "inmediate_output") == 0)
 	{
+		if ((*former_token)->redir_output_name)
+			free((*former_token)->redir_output_name);
 		(*former_token)->redir_output_name = ft_strdup(elem + 1);
 		if ((*former_token)->redir_output_name == NULL)
 			exit (1);
@@ -69,6 +77,8 @@ static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
 {
 	if (ft_strcmp(*new_kind, "heredoc") == 0)
 	{
+		if ((*former_token)->heredoc_del)
+			free((*former_token)->heredoc_del);
 		(*former_token)->heredoc_del = ft_strdup(elem);
 		if ((*former_token)->heredoc_del == NULL)
 			exit (1);
@@ -76,6 +86,8 @@ static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
 	}
 	if (ft_strcmp(*new_kind, "append") == 0)
 	{
+		if ((*former_token)->append_output_name)
+			free((*former_token)->append_output_name);
 		(*former_token)->append_output_name = ft_strdup(elem);
 		if ((*former_token)->append_output_name == NULL)
 			exit (1);
@@ -89,6 +101,8 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 {
 	if (ft_strcmp(*new_kind, "input") == 0)
 	{
+		if ((*former_token)->redir_input_name)
+			free((*former_token)->redir_input_name);
 		(*former_token)->redir_input_name = ft_strdup(elem);
 		if ((*former_token)->redir_input_name == NULL)
 			exit (1);
@@ -96,6 +110,8 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 	}
 	if (ft_strcmp(*new_kind, "output") == 0)
 	{
+		if ((*former_token)->redir_output_name)
+			free((*former_token)->redir_output_name);
 		(*former_token)->redir_output_name = ft_strdup(elem);
 		if ((*former_token)->redir_output_name == NULL)
 			exit (1);

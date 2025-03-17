@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/13 15:24:17 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:29:39 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,24 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			shell->is_child = 1;
 			signal(SIGINT, SIG_DFL);
 			if (current_tkn->redir_input_name)
-				redirect_input(current_tkn->redir_input_name);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
+				redirect_input(current_tkn->redir_input_name, current_tkn);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
 			else if (current_tkn->heredoc_del)
 				heredoc(current_tkn, shell, NULL);
 			else if (i > 0)
 				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
 			if (current_tkn->redir_output_name)
-				redirect_output(current_tkn->redir_output_name); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
+				redirect_output(current_tkn->redir_output_name, current_tkn); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
 			else if (current_tkn->append_output_name)
-				append_output(current_tkn->append_output_name);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
+				append_output(current_tkn->append_output_name, current_tkn);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
 			else if (current_tkn->cmd_pipe && i < num_pipes)
 				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			/* close_used_pipe(num_pipes, pipes, i); */
+			i = 0;
+			while (i < num_pipes)
+			{
+				close(pipes[i][0]);
+				close(pipes[i][1]);
+				i++;
+			}
 			if (current_tkn->cmd && !is_built_in(current_tkn))
 			{
 				command_arr = create_command_array(current_tkn);
@@ -131,17 +137,18 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una l
 			signal(SIGINT, SIG_IGN);
 			if (current_tkn->cmd && is_built_in(current_tkn) && !num_pipes)
 				shell->exit_status = built_in(current_tkn, shell);
+			close_used_pipe(num_pipes, pipes, i);
 		}
 		current_tkn = current_tkn->next;
 		i++;
 	}
-	i = 0;
+	/* i = 0;
 	while (i < num_pipes)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
 		i++;
-	}
+	} */
 	i = 0;
 	while (i < num_pipes + 1)
 	{
