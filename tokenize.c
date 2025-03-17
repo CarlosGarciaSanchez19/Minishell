@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/13 14:38:52 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:16:29 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,56 +39,121 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 	return (tokenize_element_aux0(elem, former_token, arg_n, new_kind));
 }
 
+void	str_expansion(char **str, int prev_len, t_shell shell)
+{
+	char	*env_var;
+	int		len_env;
+
+	env_var = NULL;
+	if (ft_strcmp(*str, "$") == 0)
+		;
+	else if (ft_strncmp(*str, "$$", 2) == 0)
+	{
+		env_var = ft_itoa(shell.pid);
+		len_env = ft_strlen(env_var);
+		free(*str);
+		*str = ft_strdup(env_var);
+	}
+	else if (ft_strncmp(*str, "$?", 2) == 0)
+	{
+		env_var = ft_itoa(shell.exit_status);
+		len_env = ft_strlen(env_var);
+		free(*str);
+		*str = ft_strdup(env_var);
+	}
+	else
+	{
+		env_var = my_getenv(*str + 1, shell.envp);
+		if (env_var)
+		{
+			env_var = ft_strdup(env_var);
+			len_env = ft_strlen(env_var);
+			free(*str);
+			*str = ft_strdup(env_var);
+		}
+		else
+		{
+			*str = ft_realloc(*str, prev_len, 1);
+			(*str)[0] = '\0';
+		}
+	}
+	if (env_var)
+		free(env_var);
+}
+
+/*
+	Esta función recorre desde donde se encuenra el $ hasta donde se encuentra un no ALNUM.
+	Luego actualiza la i de fuera a esa nueva posición, y devuelve la string intermedia.
+*/
+char	*find_expand(char *str, int *n)
+{
+	int	i;
+
+	i = 1;
+	if (str[1] == '$' || str[1] == '?')
+		i++;
+	else
+	{
+		while (str[i] && (isalnum(str[i])))
+			i++;
+	}
+	*n = *n + i;
+	return (ft_strndup(str, i));
+}
+
 void	expand_env_vars(char **input, int pos, t_shell shell)
 {
 	int		i;
 	int		len_input;
-	int		len_env;
-	char	*env_var;
 
-	env_var = NULL;
+	char	*temp_str;
+	char	*big_str;
+	char	*temp_big_str;
+	int		prev_len;
+	int		post_len;
+	int		var_len;
+	
+	var_len = 0;
+	big_str = NULL;
+
 	len_input = ft_strlen(input[pos]);
 	i = 0;
-	while (input[pos][i])
+	while (input[pos] && input[pos][i])
 	{
 		if (input[pos][i] == '$')
 		{
-			if (ft_strcmp(input[pos] + i, "$") == 0)
-				;
-			else if (ft_strcmp(input[pos] + i, "$$") == 0)
-			{
-				env_var = ft_itoa(shell.pid);
-				len_env = ft_strlen(env_var);
-				input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
-				ft_memcpy(input[pos] + i, env_var, len_env + 1);
-			}
-			else if (ft_strcmp(input[pos] + i, "$?") == 0)
-			{
-				env_var = ft_itoa(shell.exit_status);
-				len_env = ft_strlen(env_var);
-				input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
-				ft_memcpy(input[pos] + i, env_var, len_env + 1);
-			}
-			else
-			{
-				env_var = my_getenv(input[pos] + i + 1, shell.envp);
-				if (env_var)
-				{
-					env_var = ft_strdup(env_var);
-					len_env = ft_strlen(env_var);
-					input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
-					ft_memcpy(input[pos] + i, env_var, len_env + 1);
-				}
-				else
-				{
-					ft_realloc(input[pos], len_input, 1);
-					input[pos][0] = '\0';
-				}
-			}
-			if (env_var)
-				free(env_var);
+			//LA PRIMERA VEZ SETEAMOS BIG_STR COMO LA STRING HASTA EL $
+			if (!big_str)
+				big_str = ft_substr(input[pos], 0, i);
+			//RECORRE HASTA ENCONTRAR NULL O NO ALFANUM
+			//LO METE EN UNA TEMP_STRING
+			temp_str = find_expand(input[pos] + i , &i);
+			//len_prev_temp
+			prev_len = ft_strlen(temp_str);
+			//ESA TEMP_STRING LA MANDAMOS A LA STR_EXPANSION
+			str_expansion(&temp_str, prev_len, shell);
+			//EL RESULTADO DE LA EXPANSION ACTUALIZA LA TEMP_STRING QUE LE HEMOS MANDADO
+			//len_post_temp
+			post_len = ft_strlen(temp_str);
+			//BIG_STR ES LO QUE YA HUBIERA EN ELLA + TEMP_STRING + INPUTPOS DESDE I
+			temp_big_str = ft_substr(big_str, 0, (i + var_len - prev_len));
+			var_len = var_len + (post_len - prev_len);
+			free(big_str);
+			big_str = ft_strjoin(temp_big_str, temp_str);
+			free(temp_str);
+			free(temp_big_str);
+			temp_big_str = ft_strjoin(big_str, input[pos] + i);
+			free(big_str);
+			big_str = temp_big_str;
 		}
-		i++;
+		else
+			i++;
+	}
+	//AL FINAL DEL BUCLE HAREMOS QUE FINAL_STRING SUSTITUYA INPUT[POS]
+	if (big_str)
+	{
+		free(input[pos]);
+		input[pos] = big_str;
 	}
 }
 
@@ -191,8 +256,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 		}
 		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
 			former_token->del_pos = i;
-		else if (new_kind && ft_strcmp(new_kind, "command") == 0 
-				&& !ft_strissimplequote(shell.orig_input[i]))
+		else if (!ft_strissimplequote(shell.orig_input[i]))
 			expand_env_vars(shell.user_input, i, shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
@@ -202,3 +266,39 @@ t_tokens	*tokenize_everything(t_shell shell)
 		return (free_tokens(start_token), NULL);
 	return (start_token);
 }
+
+
+/* 	if (ft_strcmp(input[pos] + i, "$") == 0)
+		;
+	else if (ft_strcmp(input[pos] + i, "$$") == 0)
+	{
+		env_var = ft_itoa(shell.pid);
+		len_env = ft_strlen(env_var);
+		input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+		ft_memcpy(input[pos] + i, env_var, len_env + 1);
+	}
+	else if (ft_strcmp(input[pos] + i, "$?") == 0)
+	{
+		env_var = ft_itoa(shell.exit_status);
+		len_env = ft_strlen(env_var);
+		input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+		ft_memcpy(input[pos] + i, env_var, len_env + 1);
+	}
+	else
+	{
+		env_var = my_getenv(input[pos] + i + 1, shell.envp);
+		if (env_var)
+		{
+			env_var = ft_strdup(env_var);
+			len_env = ft_strlen(env_var);
+			input[pos] = ft_realloc(input[pos], len_input, (i + len_env + 1));
+			ft_memcpy(input[pos] + i, env_var, len_env + 1);
+		}
+		else
+		{
+			ft_realloc(input[pos], len_input, 1);
+			input[pos][0] = '\0';
+		}
+	}
+	if (env_var)
+		free(env_var); */
