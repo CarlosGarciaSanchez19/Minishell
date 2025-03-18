@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:09:00 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/10 17:07:19 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:45:16 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@ int	is_absolute_route(t_tokens token)
 	if (access((token.cmd_args[0]), F_OK) != 0)
 		return (0);
 	return (1);
+}
+
+/*
+	Esta función se encarga de limpiar las barras que se hayan añadido al final,
+	para que no salgan en el prompt.
+*/
+void	clean_bars(char *str)
+{
+	int	i;
+
+	i = ft_strlen(str) - 1;
+	while (str[i] == '/')
+		i--;
+	str[i + 1] = '\0';
 }
 
 /*

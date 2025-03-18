@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/13 13:54:03 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:44:47 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-	Esta función cambia el pwd y el old_pwd.
+	Esta función actualiza el pwd y el old_pwd.
 */
 int	change_pwd(t_shell *shell, char *new_pwd)
 {
@@ -45,19 +45,9 @@ int	change_pwd(t_shell *shell, char *new_pwd)
 }
 
 /*
-	Esta función se encarga de limpiar las barras que se hayan añadido al final,
-	para que no salgan en el prompt.
+	Comprueba si es una dirección compuesta unicamente por '/' y '.'.
+	Si es así, vamos por una función específica para ese caso.
 */
-void	clean_bars(char *str)
-{
-	int	i;
-
-	i = ft_strlen(str) - 1;
-	while (str[i] == '/')
-		i--;
-	str[i + 1] = '\0';
-}
-
 static int	all_is_barpoint(char *str)
 {
 	int	i;
@@ -70,79 +60,6 @@ static int	all_is_barpoint(char *str)
 		i++;
 	}
 	return (1);
-}
-
-static int	cd_error_args(t_shell *shell)
-{
-	(void)shell;
-	write(2, "cd: too many arguments\n", 23);
-	return (1);
-}
-
-static char	*ft_cd_splitted(t_tokens token, char *temproute)
-{
-	char	*tempstr;
-
-	if (!ft_strcmp(token.cmd_args[0], "."))
-		return (0);
-	if (!ft_strcmp(token.cmd_args[0], ".."))
-	{
-		tempstr = ft_substr(temproute, 0,
-			ft_strlen(temproute) - ft_strlen(ft_strrchr(temproute, '/')));
-		if (!tempstr)
-			return (NULL);
-		free(temproute);
-		temproute = tempstr;
-		return (temproute);
-	}
-	else
-	{
-		tempstr = ft_strjoin(temproute, "/");
-		if (!tempstr)
-			return (NULL);
-		free(temproute);
-		temproute = ft_strjoin(tempstr, (token.cmd_args[0]));
-		if (!(temproute))
-			return (free(tempstr), NULL);
-		return (free(tempstr), temproute);
-	}
-}
-
-int	segment_route(t_tokens token, t_shell *shell)
-{
-	char		**tempsplit;
-	char		*temproute;
-	t_tokens	*temptoken;
-	int			i;
-	int			exitcode;
-
-	if (token.cmd_args[0][0] == '/')
-		return (cd_route(token, shell, 0));
-	else
-		tempsplit = ft_split(token.cmd_args[0], '/');
-	i = 0;
-	temproute = ft_strdup(shell->pwd);
-	while (tempsplit[i])
-	{
-		temptoken = new_cmd_token();
-		temptoken->cmd_args = malloc(sizeof(char *));
-		temptoken->cmd_args[0] = ft_strdup(tempsplit[i]);
-		temproute = ft_cd_splitted(*temptoken, temproute);
-		free_tokens(temptoken);
-		if (!temproute)
-			return (ft_free_multiarray((void **)tempsplit), 100);
-		if (access(temproute, F_OK) != 0)
-			return (ft_free_multiarray((void **)tempsplit), error_file(temproute, token.cmd_args[0], shell));
-		i++;
-	}
-	temptoken = new_cmd_token();
-	temptoken->cmd_args = malloc(sizeof(char *));
-	temptoken->cmd_args[0] = ft_strdup(temproute);
-	exitcode = cd_route(*temptoken, shell, 0);
-	free_tokens(temptoken);
-	free(temproute);
-	ft_free_multiarray((void **)tempsplit);
-	return (exitcode);
 }
 
 int	ft_cd(t_tokens token, t_shell *shell)
@@ -171,7 +88,5 @@ int	ft_cd(t_tokens token, t_shell *shell)
 			return (error_option(token.cmd_args[0][1], shell));
 		return (segment_route(token, shell));
 	}
-	if (!shell->pwd)
-		return (100);
 	return (0);
 }

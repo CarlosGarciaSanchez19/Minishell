@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 12:41:10 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:47:48 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void		expand_env_vars(char **input, t_shell shell);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);
+int			cd_error_args(t_shell *shell);
 int			tkn_lst_size(t_tokens *tkn);
 int			built_in(t_tokens *tkn, t_shell *shell);
 int			is_built_in(t_tokens *tkn);
@@ -102,6 +103,7 @@ int			cd_prime(t_tokens token, t_shell *shell);
 int			cd_minus(t_shell *shell);
 int			cd_doubleminus(t_tokens token, t_shell *shell);
 int			cd_doublepoints(t_shell *shell);
+int			segment_route(t_tokens token, t_shell *shell);
 int			ft_env(char **cmd_args, t_shell *shell);
 int			ft_echo(char **args, t_shell shell);
 int			ft_exit(char **cmd_args, t_shell *shell);
@@ -110,7 +112,8 @@ int			ft_unset(char **cmd_args, t_shell *shell);
 int			find_command(t_tokens *tkn, t_shell *shell);
 int			add_exported_var(char *exported_var, t_shell *shell);
 int			export_var(char *arg, t_shell *shell);
-int			*tokenize_element_aux0(char *elem, t_tokens **former_token, int *arg_n, char **new_kind);
+int			*tokenize_element_aux0(char *elem, t_tokens **former_token,
+				int *arg_n, char **new_kind);
 char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		*command_generator(const char *text, int state);

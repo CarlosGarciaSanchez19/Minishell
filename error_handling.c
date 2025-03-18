@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/10 17:03:08 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:41:12 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,14 @@ void	error_pipe(t_tokens *tokens, t_shell *shell)
 	if (shell->is_child)
 		exit(4);
 	exit(101);
+}
+
+/*
+	Para ahorrar líneas en CD, simplemente devuelve el error adecuado.
+*/
+int	cd_error_args(t_shell *shell)
+{
+	(void)shell;
+	write(2, "cd: too many arguments\n", 23);
+	return (1);
 }
