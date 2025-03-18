@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   in_quot.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:54:57 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/03 20:57:48 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:37:25 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	in_quot(char c, int *quote1, int *quote2)
+int	in_quot(char c, int *double_quot, int *simple_quot)
 {
-	if (c == '\"' && *quote2 == 0)
+	if (c == '\"' && *simple_quot == 0)
 	{
-		if (*quote1 == 0)
-			*quote1 = 1;
+		if (*double_quot == 0)
+			*double_quot = 1;
 		else
-			*quote1 = 0;
+			*double_quot = 0;
 		return (1);
 	}
-	if (c == '\'' && *quote1 == 0)
+	if (c == '\'' && *double_quot == 0)
 	{
-		if (*quote2 == 0)
-			*quote2 = 1;
+		if (*simple_quot == 0)
+			*simple_quot = 1;
 		else
-			*quote2 = 0;
+			*simple_quot = 0;
 		return (1);
 	}
 	return (0);

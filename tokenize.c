@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/17 20:09:30 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:48:54 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ t_tokens	*tokenize_everything(t_shell shell)
 		}
 		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
 			former_token->del_pos = i;
-		else if (!ft_strissimplequote(shell.orig_input[i]))
+		else if (!ft_strhassimplequote(shell.orig_input[i]))
 			expand_env_vars(&(shell.user_input[i]), shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
 			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
