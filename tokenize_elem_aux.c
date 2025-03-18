@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_elem_aux.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 19:54:03 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:19:54 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+static int	tokenize_element_aux4(char *elem, t_tokens **former_token,
+	char **new_kind)
 {
 	if (ft_strcmp(*new_kind, "inmediate_heredoc") == 0)
 	{
@@ -44,8 +44,8 @@ static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
 	En esos casos, hay que montar ya la string del archivo,
 	pero saltándonos los 'specials'.
 */
-static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+static int	tokenize_element_aux3(char *elem, t_tokens **former_token,
+	char **new_kind)
 {
 	if (ft_strcmp(*new_kind, "inmediate_input") == 0)
 	{
@@ -65,11 +65,11 @@ static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
 			return (100);
 		return (0);
 	}
-	return (tokenize_element_aux4(elem, former_token, arg_n, new_kind));
+	return (tokenize_element_aux4(elem, former_token, new_kind));
 }
 
-static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+static int	tokenize_element_aux2(char *elem, t_tokens **former_token,
+	char **new_kind)
 {
 	if (ft_strcmp(*new_kind, "heredoc") == 0)
 	{
@@ -89,11 +89,11 @@ static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
 			return (100);
 		return (0);
 	}
-	return (tokenize_element_aux3(elem, former_token, arg_n, new_kind));
+	return (tokenize_element_aux3(elem, former_token, new_kind));
 }
 
-static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+static int	tokenize_element_aux1(char *elem, t_tokens **former_token,
+	char **new_kind)
 {
 	if (ft_strcmp(*new_kind, "input") == 0)
 	{
@@ -113,11 +113,10 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 			return (100);
 		return (0);
 	}
-	return (tokenize_element_aux2(elem, former_token, arg_n, new_kind));
+	return (tokenize_element_aux2(elem, former_token, new_kind));
 }
 
-int	*tokenize_element_aux0(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+int	tokenize_element_aux0(char *elem, t_tokens **former_token, char **new_kind)
 {
 	t_tokens	*new_token;
 
@@ -143,5 +142,5 @@ int	*tokenize_element_aux0(char *elem, t_tokens **former_token,
 			return (100);
 		return (0);
 	}
-	return (tokenize_element_aux1(elem, former_token, arg_n, new_kind));
+	return (tokenize_element_aux1(elem, former_token, new_kind));
 }

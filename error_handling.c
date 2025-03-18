@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:33:38 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 16:41:12 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:37:02 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,6 @@ int	error_option(char arg, t_shell *shell)
 	write(2, &arg, 1);
 	write(2, ": invalid option\n", 17);
 	return (2);
-}
-
-void	error_pipe(t_tokens *tokens, t_shell *shell)
-{
-	write(2, "Error: Pipe could not be created\n", 33);
-	free_tokens(tokens);
-	free_shell(shell);
-	if (shell->is_child)
-		exit(4);
-	exit(101);
 }
 
 /*

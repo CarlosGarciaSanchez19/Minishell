@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_aux.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:01:04 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 19:26:33 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:43:20 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*search_for_kind(char *elem, char *former_kind)
 {
 	if (elem[0] == '|' && elem[1] == '\0')
 		return ("pipe");
-	if (elem[0] == '<')
+	if (elem[0] == '<' && !ft_strisquote(elem))
 	{
 		if (elem[1] == '\0')
 			return ("special_input");

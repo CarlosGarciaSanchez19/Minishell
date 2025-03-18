@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 20:16:20 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 23:05:09 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	En cada 'elem' sacamos su tipo como string,
 	y hacemos cosas distintas en función del tipo.
 */
-static int	*tokenize_element(char *elem, t_tokens **former_token,
+static int	tokenize_element(char *elem, t_tokens **former_token,
 	int *arg_n, char **new_kind)
 {
 	*new_kind = search_for_kind(elem, *new_kind);
@@ -36,7 +36,7 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 		return (0);
 	}
 	*arg_n = 0;
-	return (tokenize_element_aux0(elem, former_token, arg_n, new_kind));
+	return (tokenize_element_aux0(elem, former_token, new_kind));
 }
 
 void	aux_str_expansion_regular(char **env_var, char **str,
@@ -280,23 +280,24 @@ int	aux_initvars_tokenize_everything(char **new_kind, int *arg_n,
 	return (0);
 }
 
-int check_quotes(t_tokens *start_token, int i, t_shell shell)
+int check_quotes(t_tokens *start_token, int i, t_shell *shell)
 {
-	if (clean_quotes(&(shell.user_input[i])) == 0)
+	if (clean_quotes(&(shell->user_input[i])) == 0)
 	{
 		write(2, "Error: Quotes need to be closed\n", 32);
-		shell.exit_status = 102;
+		shell->exit_status = 102;
 		return (free_tokens(start_token), 102);
 	}
 	return (0);
 }
 
-void	check_exit_status(t_tokens *start_token, t_shell shell)
+void	check_exit_status(t_tokens *start_token, t_shell *shell)
 {
-	if (shell.exit_status)
+	if (shell->exit_status == 100)
 	{
 		free_tokens(start_token);
-		exit (shell.exit_status);
+		free_shell(shell);
+		exit(100);
 	}
 }
 
@@ -306,7 +307,7 @@ void	check_exit_status(t_tokens *start_token, t_shell shell)
 	El "former" token lo vamos actualizando cuando hay un nuevo comando,
 	y reenviando en cada iteración para que rellenar su contenido.
 */
-t_tokens	*tokenize_everything(t_shell shell)
+t_tokens	*tokenize_everything(t_shell *shell)
 {
 	int			i;
 	int			arg_n;
@@ -315,16 +316,18 @@ t_tokens	*tokenize_everything(t_shell shell)
 	t_tokens	*start_token;
 
 	i = aux_initvars_tokenize_everything(&new_kind, &arg_n, &former_token, &start_token);
-	while (shell.user_input[i])
+	while (shell->user_input[i])
 	{
 		if (check_quotes(start_token, i, shell))
 			return (NULL);
-		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
+		if (new_kind && (!ft_strcmp(new_kind, "special_heredoc")
+			|| !ft_strncmp(shell->user_input[i], "<<", 2)))
 			former_token->del_pos = i;
-		else if (!ft_strhassimplequote(shell.orig_input[i]))
-			expand_env_vars(&(shell.user_input[i]), shell);
-		if (shell.user_input[i] && shell.user_input[i][0])
-			shell.exit_status = tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
+		else if (!ft_strhassimplequote(shell->orig_input[i]))
+			expand_env_vars(&(shell->user_input[i]), *shell);
+		if (shell->user_input[i] && shell->user_input[i][0])
+				if (tokenize_element(shell->user_input[i], &former_token, &arg_n, &new_kind))
+					shell->exit_status = 100;
 		check_exit_status(start_token, shell);
 		i++;
 	}

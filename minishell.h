@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 19:36:42 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:28:36 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void		execute_tokens(t_tokens *tokens, t_shell *shell);
 void		sigint_handler(int signum);
 void		free_tokens(t_tokens *tokens);
 void		error_pipe(t_tokens *tokens, t_shell *shell);
+void		error_fork(t_tokens *tokens, t_shell *shell);
 void		clean_bars(char *str);
 void		bubble_sort(char **arr);
 void		expand_env_vars(char **input, t_shell shell);
@@ -115,8 +116,8 @@ int			ft_unset(char **cmd_args, t_shell *shell);
 int			find_command(t_tokens *tkn, t_shell *shell);
 int			add_exported_var(char *exported_var, t_shell *shell);
 int			export_var(char *arg, t_shell *shell);
-int			*tokenize_element_aux0(char *elem, t_tokens **former_token,
-				int *arg_n, char **new_kind);
+int			tokenize_element_aux0(char *elem, t_tokens **former_token,
+				char **new_kind);
 char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		*command_generator(const char *text, int state);
@@ -124,6 +125,6 @@ char		**create_command_array(t_tokens *tokens);
 char		**array_cpy(char **array);
 char		**minishell_completion(const char *text, int start, int end);
 t_tokens	*new_cmd_token(void);
-t_tokens	*tokenize_everything(t_shell shell);
+t_tokens	*tokenize_everything(t_shell *shell);
 
 #endif

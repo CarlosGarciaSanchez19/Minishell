@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 19:34:44 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:36:07 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,7 @@ void	execute_tokens(t_tokens *tokens, t_shell *shell)
 			shell->exit_status = find_command(current_tkn, shell);
 		pid = fork_redir_and_exec(current_tkn, shell, &p, i);
 		if (pid < 0)
-		{
-			free_exec_vars(tokens, p.pipes);
-			free_shell(shell);
-			exit(103);
-		}
+			error_fork(tokens, shell);
 		current_tkn = current_tkn->next;
 		i++;
 	}

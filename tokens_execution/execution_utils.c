@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:21:55 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 19:34:49 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:26:16 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_exec_vars(t_tokens *tokens, int (*pipes)[2])
 
 int	init_exec_vars_and_pipe_creat(t_tokens *tkns, t_pipes *p, t_shell *shell)
 {
-	p->num_pipes = tkn_lst_size(tkns) - 1;
-	if (p->num_pipes < 0)
+	if (!tkns)
 		return (102);
+	p->num_pipes = tkn_lst_size(tkns) - 1;
 	p->pipes = malloc(sizeof(int [2]) * p->num_pipes);
 	if (!p->pipes)
 	{
@@ -58,8 +58,8 @@ char	**create_command_array(t_tokens *tokens)
 	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args) + 2));
 	if (!command)
 	{
-		ft_printf("Error: Command array could not be created\n");
-		exit(1);
+		free_tokens(tokens);
+		exit(100);
 	}
 	command[i] = tokens->cmd;
 	i++;
