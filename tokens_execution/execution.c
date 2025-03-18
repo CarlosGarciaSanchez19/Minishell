@@ -6,13 +6,130 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/17 20:29:39 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:21:27 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_tokens(t_tokens *tokens)
+
+void	free_exec_vars(t_tokens *tokens, int (*pipes)[2])
+{
+	if (tokens)
+		free_tokens(tokens);
+	if (pipes)
+		free(pipes);
+}
+
+void	redirections(t_tokens *curr_tkn, t_shell *shell, t_pipes *p, int i)
+{
+	if (curr_tkn->redir_input_name)
+		redirect_input(curr_tkn->redir_input_name, curr_tkn);
+	else if (curr_tkn->heredoc_del)
+		heredoc(curr_tkn, shell, NULL);
+	else if (i > 0)
+		dup2((p->pipes)[i - 1][0], STDIN_FILENO);
+	if (curr_tkn->redir_output_name)
+		redirect_output(curr_tkn->redir_output_name, curr_tkn);
+	else if (curr_tkn->append_output_name)
+		append_output(curr_tkn->append_output_name, curr_tkn);
+	else if (curr_tkn->cmd_pipe && i < p->num_pipes)
+		dup2((p->pipes)[i][1], STDOUT_FILENO);
+}
+
+void	command_child_exec(t_tokens *curr_tkn, t_pipes *p, t_shell *shell)
+{
+	char	**command_array;
+
+	if (curr_tkn->cmd && !is_built_in(curr_tkn))
+	{
+		command_array = create_command_array(curr_tkn);
+		execve(curr_tkn->cmd, command_array, shell->envp);
+		ft_free_multiarray((void **)command_array);
+		exit(127);
+	}
+	else if (curr_tkn->cmd && is_built_in(curr_tkn) && p->num_pipes)
+		exit(built_in(curr_tkn, shell));
+	else
+		exit(0);
+}
+
+pid_t	fork_redir_and_execute(t_tokens *curr_tkn, t_shell *shell, t_pipes *p, int i)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		shell->is_child = 1;
+		signal(SIGINT, SIG_DFL);
+		redirections(curr_tkn, shell, p, i);
+		close_all_pipes(p);
+		command_child_exec(curr_tkn, p, shell);
+	}
+	else if (pid > 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		if (curr_tkn->cmd && is_built_in(curr_tkn) && !p->num_pipes)
+			shell->exit_status = built_in(curr_tkn, shell);
+		close_used_pipe(p, i);
+	}
+	return (pid);
+}
+
+void	init_exec_vars_and_pipe_creat(int *chld_st, t_tokens *tkns, t_pipes *p, t_shell *shell)
+{
+	*chld_st = 0;
+	p->num_pipes = tkn_lst_size(tkns) - 1;
+	if (p->num_pipes < 0)
+		return ;
+	p->pipes = malloc(sizeof(int [2]) * p->num_pipes);
+	if (!p->pipes)
+	{
+		free_tokens(tkns);
+		free_shell(shell);
+		exit(100);
+	}
+	create_pipes(p, tkns, shell);
+}
+
+void	execute_tokens(t_tokens *tokens, t_shell *shell)
+{
+	t_pipes		p;
+	int			i;
+	int			child_status;
+	pid_t		pid;
+	t_tokens	*current_tkn;
+
+	/* print_tokens(tokens); */
+	init_exec_vars_and_pipe_creat(&child_status, tokens, &p, shell);
+	current_tkn = tokens;
+	i = 0;
+	while (current_tkn)
+	{
+		if (current_tkn->cmd && !is_built_in(current_tkn))
+			shell->exit_status = find_command(current_tkn, shell);
+		pid = fork_redir_and_execute(current_tkn, shell, &p, i);
+		if (pid < 0)
+		{
+			free_exec_vars(tokens, p.pipes);
+			free_shell(shell);
+			exit(1);
+		}
+		current_tkn = current_tkn->next;
+		i++;
+	}
+	waitpid(pid, &child_status, 0);
+	while (wait(NULL) > 0)
+		;
+	if ((tokens->cmd && !is_built_in(tokens)) || p.num_pipes)
+		shell->exit_status = WEXITSTATUS(child_status);
+	free_exec_vars(tokens, p.pipes);
+	if (WEXITSTATUS(child_status) == 4)
+		exit(101);
+}
+
+/* void	print_tokens(t_tokens *tokens)
 {
 	char **args;
 
@@ -38,129 +155,4 @@ void	print_tokens(t_tokens *tokens)
 		printf("Append output: %s\n", tokens->append_output_name);
 		tokens = tokens->next;
 	}
-}
-
-void	free_exec_vars(t_tokens *tokens, int (*pipes)[2], int *pids)
-{
-	if (tokens)
-		free_tokens(tokens);
-	if (pipes)
-		free(pipes);
-	if (pids)
-		free(pids);
-}
-
-void	execute_tokens(t_tokens *tokens, t_shell *shell) // Necesitamos crear una lista de structs t_tokens
-{
-	int			(*pipes)[2];
-	int			i;
-	int			*pids;
-	int			child_status;
-	int			num_pipes;
-	pid_t		pid;
-	t_tokens	*current_tkn;
-	char		**command_arr;
-
-	 // Esta función es para debuggear, se puede borrar
-	/* print_tokens(tokens); */
-	child_status = 0;
-	num_pipes = tkn_lst_size(tokens) - 1;
-	if (num_pipes < 0)
-		return ;
-	pipes = malloc(sizeof(int [2]) * num_pipes);
-	if (!pipes)
-	{
-		free_tokens(tokens);
-		free_shell(shell);
-		exit(100);
-	}
-	pids = malloc(sizeof(int) * (num_pipes + 1));
-	if (!pids)
-	{
-		free_exec_vars(tokens, pipes, NULL);
-		free_shell(shell);
-		exit(100);
-	}
-	create_pipes(num_pipes, pipes, tokens, shell);
-	current_tkn = tokens;
-	i = 0;
-	while (current_tkn)
-	{
-		if (current_tkn->cmd && !is_built_in(current_tkn))
-			shell->exit_status = find_command(current_tkn, shell);
-		// Aquí se ejecutan los comandos
-		pid = fork();
-		if (pid < 0)
-		{
-			ft_printf("Error: Fork failed\n");
-			free_exec_vars(tokens, pipes, pids);
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			shell->is_child = 1;
-			signal(SIGINT, SIG_DFL);
-			if (current_tkn->redir_input_name)
-				redirect_input(current_tkn->redir_input_name, current_tkn);			// Si hay redirección de entrada, la hacemos antes de ejecutar el comando
-			else if (current_tkn->heredoc_del)
-				heredoc(current_tkn, shell, NULL);
-			else if (i > 0)
-				dup2(pipes[i - 1][0], STDIN_FILENO);				// Si no es el primer comando y no hay redireccion de entrada, redirigimos la entrada al pipe anterior
-			if (current_tkn->redir_output_name)
-				redirect_output(current_tkn->redir_output_name, current_tkn); 		// Si hay redirección de salida, la hacemos antes de ejecutar el comando
-			else if (current_tkn->append_output_name)
-				append_output(current_tkn->append_output_name, current_tkn);			// Si hay redirección de salida en modo append, la hacemos antes de ejecutar el comando
-			else if (current_tkn->cmd_pipe && i < num_pipes)
-				dup2(pipes[i][1], STDOUT_FILENO);					// Si hay pipe y no es el último comando, redirigimos la salida al pipe
-			i = 0;
-			while (i < num_pipes)
-			{
-				close(pipes[i][0]);
-				close(pipes[i][1]);
-				i++;
-			}
-			if (current_tkn->cmd && !is_built_in(current_tkn))
-			{
-				command_arr = create_command_array(current_tkn);
-				execve(current_tkn->cmd, command_arr, shell->envp);			// Ejecutamos el comando si no es un built-in
-				ft_freearray(command_arr, ft_arraylen(command_arr));		// Liberamos memoria si no se ha ejecutado el comando
-				exit(127);
-			}
-			else if (current_tkn->cmd && is_built_in(current_tkn) && num_pipes)
-				exit(built_in(current_tkn, shell));
-			else
-				exit(0);
-		}
-		else
-		{
-			pids[i] = pid;
-			signal(SIGINT, SIG_IGN);
-			if (current_tkn->cmd && is_built_in(current_tkn) && !num_pipes)
-				shell->exit_status = built_in(current_tkn, shell);
-			close_used_pipe(num_pipes, pipes, i);
-		}
-		current_tkn = current_tkn->next;
-		i++;
-	}
-	/* i = 0;
-	while (i < num_pipes)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	} */
-	i = 0;
-	while (i < num_pipes + 1)
-	{
-		if (i == num_pipes)
-			waitpid(pids[i], &child_status, 0);
-		else
-			waitpid(pids[i], NULL, 0);
-		i++;
-	}
-	if ((tokens->cmd && !is_built_in(tokens)) || num_pipes)
-		shell->exit_status = WEXITSTATUS(child_status);
-	free_exec_vars(tokens, pipes, pids);
-	if (WEXITSTATUS(child_status) == 4)
-		exit(101);
-}
+} */

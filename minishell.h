@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/17 20:29:54 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 12:41:10 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef struct s_heredoc
 	int		fd;
 }	t_file;
 
+typedef struct s_pipes
+{
+	int	(*pipes)[2];
+	int	num_pipes;
+}	t_pipes;
+
 //Esta struct guarda 1 solo comando con todos sus args y demases.
 typedef struct s_tokens
 {
@@ -67,13 +73,9 @@ typedef struct s_tokens
 
 void		free_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
-void		create_pipes(
-				int n_pipes,
-				int pipes[n_pipes][2],
-				t_tokens *tokens,
-				t_shell *shell
-				);
-void		close_used_pipe(int n_pipes, int pipes[n_pipes][2], int i);
+void		create_pipes(t_pipes *p, t_tokens *tokens, t_shell *shell);
+void		close_used_pipe(t_pipes *p, int i);
+void		close_all_pipes(t_pipes *p);
 void		redirect_input(char *file, t_tokens *current_tkn);
 void		redirect_output(char *file, t_tokens *current_tkn);
 void		append_output(char *file, t_tokens *current_tkn);

@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/10 21:11:27 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:36:09 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 	char	**paths;
 	char	*path_bar;
 	char	*path_bar_cmd;
-	int		path_len;
 	int		i;
 
 	if (tkn->cmd && access(tkn->cmd, X_OK) == 0)
@@ -68,24 +67,23 @@ int	find_command(t_tokens *tkn, t_shell *shell)
 	paths = path_split(shell->envp);
 	if (!paths)
 		return (100);
-	path_len = ft_arraylen(paths);
 	i = 0;
 	while (paths[i])
 	{
 		path_bar = ft_strjoin(paths[i], "/");
 		path_bar_cmd = ft_strjoin(path_bar, tkn->cmd);
 		if (!path_bar || !path_bar_cmd)
-			return (ft_freearray(paths, path_len), 0);
+			return (ft_free_multiarray((void **)paths), 0);
 		free(path_bar);
 		if (command_found(path_bar_cmd, &(tkn->cmd)))
-			return (ft_freearray(paths, path_len), 1);
+			return (ft_free_multiarray((void **)paths), 1);
 		free(path_bar_cmd);
 		i++;
 	}
 	write(2, "Command '", 9);
 	write(2, tkn->cmd, ft_strlen(tkn->cmd));
 	write(2, "' not found.\n", 13);
-	ft_freearray(paths, path_len);
+	ft_free_multiarray((void **)paths);
 	return (127);
 }
 
@@ -103,6 +101,31 @@ char	*path_and_readline(t_shell *shell)
 	input = readline(final_str);
 	free(final_str);
 	return (input);
+}
+
+void	manage_input(char *input, t_shell *shell)
+{
+	if (!input)
+	{
+		free_shell(shell);
+		ft_printf("exit\n");
+		exit(0);
+	}
+	if (*input)
+	{
+		add_history(input);
+		write_history(NULL);
+	}
+}
+
+void	tokenize_and_execute(t_shell *shell)
+{
+	t_tokens	*tokens;
+
+	tokens = tokenize_everything(*shell);
+	execute_tokens(tokens, shell);
+	ft_free_multiarray((void **)shell->user_input);
+	ft_free_multiarray((void **)shell->orig_input);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -124,24 +147,11 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		input = path_and_readline(&shell);
-		if (!input)
-		{
-			free_shell(&shell);
-			ft_printf("exit\n");
-			return (1);
-		}
-		if (*input)
-		{
-			add_history(input);
-			write_history(NULL);
-		}
+		manage_input(input, &shell);
 		shell.user_input = ft_splitquot(input, ' ');
 		shell.orig_input = array_cpy(shell.user_input);
 		free(input);
-		tokens = tokenize_everything(shell);
-		execute_tokens(tokens, &shell);
-		ft_free_multiarray((void **)shell.user_input);
-		ft_free_multiarray((void **)shell.orig_input);
+		tokenize_and_execute(&shell);
 	}
 	free_shell(&shell);
 	return (0);
