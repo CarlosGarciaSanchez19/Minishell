@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 13:36:09 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 14:53:34 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell 	shell;
 	char		*input;
-	t_tokens	*tokens;
 
 	if (argc != 1)
 		return (1);
