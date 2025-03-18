@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:52 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/17 19:22:13 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:55:39 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,21 @@ static void	close_redirect_pipe(int *fd)
 	close(fd[0]);
 }
 
+static void	expand_and_write(int fd, char **line, char *og_del, t_shell *shell)
+{
+	if (!ft_strhasdoublequote(og_del) && !ft_strhassimplequote(og_del))
+		expand_env_vars(line, *shell);
+	write(fd, *line, ft_strlen(*line));
+	write(fd, "\n", 1);
+}
+
 void	heredoc(t_tokens *tokens, t_shell *shell, char *str)
 {
 	char	*line;
 	int		fd[2];
+	char	*orig_del;
 
+	orig_del = shell->orig_input[tokens->del_pos];
 	rl_event_hook = event;
 	signal(SIGINT, sigint_handler_heredoc);
 	if (pipe(fd) < 0)
@@ -52,10 +62,7 @@ void	heredoc(t_tokens *tokens, t_shell *shell, char *str)
 			free(line);
 			break ;
 		}
-		if (!ft_strisquote(shell->orig_input[tokens->del_pos]))
-			expand_env_vars(&line, *shell);
-		write(fd[1], line, ft_strlen(line));
-		write(fd[1], "\n", 1);
+		expand_and_write(fd[1], &line, orig_del, shell);
 		free(line);
 	}
 	close_redirect_pipe(fd);

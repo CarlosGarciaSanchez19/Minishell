@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:52:06 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/06 19:41:36 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:27:56 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	my_getpid(void)
 
 void	init_shell(t_shell *shell, char **envp)
 {
-	//este pwd hay que reescribirlo en el built-in de CD a medida que te vas moviendo
 	shell->pwd = ft_strdup(my_getenv("PWD", envp));
 	shell->path = ft_strdup(my_getenv("PATH", envp));
 	shell->envp = array_cpy(envp);
@@ -71,4 +70,3 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 	shell->is_child = 0;
 }
-
