@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 16:47:48 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:36:42 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void		error_pipe(t_tokens *tokens, t_shell *shell);
 void		clean_bars(char *str);
 void		bubble_sort(char **arr);
 void		expand_env_vars(char **input, t_shell shell);
+void		free_exec_vars(t_tokens *tokens, int (*pipes)[2]);
+int			init_exec_vars_and_pipe_creat(t_tokens *tkns, t_pipes *p,
+				t_shell *shell);
 int			check_string(char **string, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);

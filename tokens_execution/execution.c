@@ -6,19 +6,11 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:19:31 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 16:22:53 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:34:44 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	free_exec_vars(t_tokens *tokens, int (*pipes)[2])
-{
-	if (tokens)
-		free_tokens(tokens);
-	if (pipes)
-		free(pipes);
-}
 
 void	redirections(t_tokens *curr_tkn, t_shell *shell, t_pipes *p, int i)
 {
@@ -74,22 +66,6 @@ pid_t	fork_redir_and_exec(t_tokens *curr, t_shell *shell, t_pipes *p, int i)
 		close_used_pipe(p, i);
 	}
 	return (pid);
-}
-
-int	init_exec_vars_and_pipe_creat(t_tokens *tkns, t_pipes *p, t_shell *shell)
-{
-	p->num_pipes = tkn_lst_size(tkns) - 1;
-	if (p->num_pipes < 0)
-		return (102);
-	p->pipes = malloc(sizeof(int [2]) * p->num_pipes);
-	if (!p->pipes)
-	{
-		free_tokens(tkns);
-		free_shell(shell);
-		exit(100);
-	}
-	create_pipes(p, tkns, shell);
-	return (0);
 }
 
 void

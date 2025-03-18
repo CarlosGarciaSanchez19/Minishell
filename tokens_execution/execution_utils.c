@@ -6,11 +6,35 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:21:55 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/26 19:36:37 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:34:49 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	free_exec_vars(t_tokens *tokens, int (*pipes)[2])
+{
+	if (tokens)
+		free_tokens(tokens);
+	if (pipes)
+		free(pipes);
+}
+
+int	init_exec_vars_and_pipe_creat(t_tokens *tkns, t_pipes *p, t_shell *shell)
+{
+	p->num_pipes = tkn_lst_size(tkns) - 1;
+	if (p->num_pipes < 0)
+		return (102);
+	p->pipes = malloc(sizeof(int [2]) * p->num_pipes);
+	if (!p->pipes)
+	{
+		free_tokens(tkns);
+		free_shell(shell);
+		exit(100);
+	}
+	create_pipes(p, tkns, shell);
+	return (0);
+}
 
 int	tkn_lst_size(t_tokens *tkn)
 {
