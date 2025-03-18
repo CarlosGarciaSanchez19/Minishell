@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_elem_aux.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/17 19:30:11 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:54:03 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
 			free((*former_token)->heredoc_del);
 		(*former_token)->heredoc_del = ft_strdup(elem + 2);
 		if ((*former_token)->heredoc_del == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	if (ft_strcmp(*new_kind, "inmediate_append") == 0)
 	{
@@ -30,16 +30,12 @@ static int	*tokenize_element_aux4(char *elem, t_tokens **former_token,
 			free((*former_token)->append_output_name);
 		(*former_token)->append_output_name = ft_strdup(elem + 2);
 		if ((*former_token)->append_output_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	else
-	{
-		//En caso de invalid habrá que dar error
-//		printf("placeholder: error! ... invalid arg");
-		exit(1);
-	}
-	return (arg_n);
+		return (100);
+	return (0);
 }
 
 /*
@@ -57,8 +53,8 @@ static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
 			free((*former_token)->redir_input_name);
 		(*former_token)->redir_input_name = ft_strdup(elem + 1);
 		if ((*former_token)->redir_input_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	if (ft_strcmp(*new_kind, "inmediate_output") == 0)
 	{
@@ -66,8 +62,8 @@ static int	*tokenize_element_aux3(char *elem, t_tokens **former_token,
 			free((*former_token)->redir_output_name);
 		(*former_token)->redir_output_name = ft_strdup(elem + 1);
 		if ((*former_token)->redir_output_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	return (tokenize_element_aux4(elem, former_token, arg_n, new_kind));
 }
@@ -81,8 +77,8 @@ static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
 			free((*former_token)->heredoc_del);
 		(*former_token)->heredoc_del = ft_strdup(elem);
 		if ((*former_token)->heredoc_del == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	if (ft_strcmp(*new_kind, "append") == 0)
 	{
@@ -90,8 +86,8 @@ static int	*tokenize_element_aux2(char *elem, t_tokens **former_token,
 			free((*former_token)->append_output_name);
 		(*former_token)->append_output_name = ft_strdup(elem);
 		if ((*former_token)->append_output_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	return (tokenize_element_aux3(elem, former_token, arg_n, new_kind));
 }
@@ -105,8 +101,8 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 			free((*former_token)->redir_input_name);
 		(*former_token)->redir_input_name = ft_strdup(elem);
 		if ((*former_token)->redir_input_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	if (ft_strcmp(*new_kind, "output") == 0)
 	{
@@ -114,8 +110,8 @@ static int	*tokenize_element_aux1(char *elem, t_tokens **former_token,
 			free((*former_token)->redir_output_name);
 		(*former_token)->redir_output_name = ft_strdup(elem);
 		if ((*former_token)->redir_output_name == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	return (tokenize_element_aux2(elem, former_token, arg_n, new_kind));
 }
@@ -130,22 +126,22 @@ int	*tokenize_element_aux0(char *elem, t_tokens **former_token,
 		(*former_token)->cmd_pipe = 1;
 		new_token = new_cmd_token();
 		if (new_token == NULL)
-			exit (1);
+			return (100);
 		(*former_token)->next = new_token;
 		(*former_token) = new_token;
-		return (arg_n);
+		return (0);
 	}
 	if (ft_strncmp(*new_kind, "special", 7) == 0)
 	{
 		(*former_token)->special = 1;
-		return (arg_n);
+		return (0);
 	}
 	if (ft_strcmp(*new_kind, "command") == 0)
 	{
 		(*former_token)->cmd = ft_strdup(elem);
 		if ((*former_token)->cmd == NULL)
-			exit (1);
-		return (arg_n);
+			return (100);
+		return (0);
 	}
 	return (tokenize_element_aux1(elem, former_token, arg_n, new_kind));
 }

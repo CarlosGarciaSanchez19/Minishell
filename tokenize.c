@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 15:48:54 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:16:20 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static int	*tokenize_element(char *elem, t_tokens **former_token,
 					sizeof(char *) * (*arg_n + 2));
 		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
 		if ((*former_token)->cmd_args[*arg_n] == NULL)
-			exit(1);
+			return (100);
 		(*former_token)->cmd_args[*arg_n + 1] = NULL;
 		(*arg_n)++;
-		return (arg_n);
+		return (0);
 	}
 	*arg_n = 0;
 	return (tokenize_element_aux0(elem, former_token, arg_n, new_kind));
@@ -280,6 +280,26 @@ int	aux_initvars_tokenize_everything(char **new_kind, int *arg_n,
 	return (0);
 }
 
+int check_quotes(t_tokens *start_token, int i, t_shell shell)
+{
+	if (clean_quotes(&(shell.user_input[i])) == 0)
+	{
+		write(2, "Error: Quotes need to be closed\n", 32);
+		shell.exit_status = 102;
+		return (free_tokens(start_token), 102);
+	}
+	return (0);
+}
+
+void	check_exit_status(t_tokens *start_token, t_shell shell)
+{
+	if (shell.exit_status)
+	{
+		free_tokens(start_token);
+		exit (shell.exit_status);
+	}
+}
+
 /*
 	Recorremos el array del input y vamos tokenizando en lista enlazada.
 	Si es el primer elemento lo guardamos como el "start" de la lista.
@@ -297,17 +317,15 @@ t_tokens	*tokenize_everything(t_shell shell)
 	i = aux_initvars_tokenize_everything(&new_kind, &arg_n, &former_token, &start_token);
 	while (shell.user_input[i])
 	{
-		if (clean_quotes(&(shell.user_input[i])) == 0)
-		{
-			write(2, "Error: Quotes need to be closed\n", 32);
-			return (free_tokens(start_token), NULL);
-		}
+		if (check_quotes(start_token, i, shell))
+			return (NULL);
 		if (new_kind && ft_strcmp(new_kind, "special_heredoc") == 0)
 			former_token->del_pos = i;
 		else if (!ft_strhassimplequote(shell.orig_input[i]))
 			expand_env_vars(&(shell.user_input[i]), shell);
 		if (shell.user_input[i] && shell.user_input[i][0])
-			tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
+			shell.exit_status = tokenize_element(shell.user_input[i], &former_token, &arg_n, &new_kind);
+		check_exit_status(start_token, shell);
 		i++;
 	}
 	if (!check_special_valid(start_token))

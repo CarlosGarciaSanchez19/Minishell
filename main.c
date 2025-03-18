@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:01:36 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 14:53:34 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:11:36 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,12 @@ void	tokenize_and_execute(t_shell *shell)
 	t_tokens	*tokens;
 
 	tokens = tokenize_everything(*shell);
+	if (!tokens)
+	{
+		ft_free_multiarray((void **)shell->user_input);
+		ft_free_multiarray((void **)shell->orig_input);
+		return ;
+	}
 	execute_tokens(tokens, shell);
 	ft_free_multiarray((void **)shell->user_input);
 	ft_free_multiarray((void **)shell->orig_input);
