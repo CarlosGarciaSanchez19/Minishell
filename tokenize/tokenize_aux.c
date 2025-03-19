@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_aux.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:01:04 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 22:43:20 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:39:43 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static char	*search_for_kind_aux1(char *former_kind)
 {
@@ -28,15 +28,15 @@ static char	*search_for_kind_aux1(char *former_kind)
 		return ("argument");
 }
 
-static char	*search_for_kind_aux0(char *elem, char *former_kind)
+static char	*search_for_kind_aux0(int i, char *former_kind, t_shell *shell)
 {
-	if (elem[0] == '>')
+	if (shell->user_input[i][0] == '>' && !ft_strisquote(shell->orig_input[i]))
 	{
-		if (elem[1] == '\0')
+		if (shell->user_input[i][1] == '\0')
 			return ("special_output");
-		if (elem[1] == '>' && elem[2] == '\0')
+		if (shell->user_input[i][1] == '>' && shell->user_input[i][2] == '\0')
 			return ("special_append");
-		if (elem[1] == '>')
+		if (shell->user_input[i][1] == '>')
 			return ("inmediate_append");
 		else
 			return ("inmediate_output");
@@ -48,23 +48,23 @@ static char	*search_for_kind_aux0(char *elem, char *former_kind)
 /*
 	Recorremos el elemento para determinar que tipo de input es.
 */
-char	*search_for_kind(char *elem, char *former_kind)
+char	*search_for_kind(int i, char *former_kind, t_shell *shell)
 {
-	if (elem[0] == '|' && elem[1] == '\0')
+	if (shell->user_input[i][0] == '|' && shell->user_input[i][1] == '\0')
 		return ("pipe");
-	if (elem[0] == '<' && !ft_strisquote(elem))
+	if (shell->user_input[i][0] == '<' && !ft_strisquote(shell->orig_input[i]))
 	{
-		if (elem[1] == '\0')
+		if (shell->user_input[i][1] == '\0')
 			return ("special_input");
-		if (elem[1] == '<' && elem[2] == '\0')
+		if (shell->user_input[i][1] == '<' && shell->user_input[i][2] == '\0')
 			return ("special_heredoc");
-		if (elem[1] == '<')
+		if (shell->user_input[i][1] == '<')
 			return ("inmediate_heredoc");
 		else
 			return ("inmediate_input");
 	}
 	else
-		return (search_for_kind_aux0(elem, former_kind));
+		return (search_for_kind_aux0(i, former_kind, shell));
 }
 
 t_tokens	*new_cmd_token(void)

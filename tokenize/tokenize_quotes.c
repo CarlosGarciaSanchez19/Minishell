@@ -6,11 +6,11 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:52:27 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/19 13:53:43 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:01:41 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int	count_quotes(char *str)
 {

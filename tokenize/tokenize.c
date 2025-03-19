@@ -6,21 +6,21 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/19 14:01:32 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:40:10 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 	En cada 'elem' sacamos su tipo como string,
 	y hacemos cosas distintas en función del tipo.
 */
-static int	tokenize_elem(char *elem, t_tokens **former_token,
-	int *arg_n, char **new_kind)
+static int	tokenize_elem(int i, t_tokens **former_token,
+	int *arg_n, t_shell *shell)
 {
-	*new_kind = search_for_kind(elem, *new_kind);
-	if (ft_strcmp(*new_kind, "argument") == 0)
+	shell->new_kd = search_for_kind(i, shell->new_kd, shell);
+	if (ft_strcmp(shell->new_kd, "argument") == 0)
 	{
 		if (*arg_n == 0)
 			(*former_token)->cmd_args = malloc(sizeof(char *) * (*arg_n + 2));
@@ -28,7 +28,7 @@ static int	tokenize_elem(char *elem, t_tokens **former_token,
 			(*former_token)->cmd_args = ft_realloc((*former_token)->cmd_args,
 					sizeof(char *) * (*arg_n + 1),
 					sizeof(char *) * (*arg_n + 2));
-		(*former_token)->cmd_args[*arg_n] = ft_strdup(elem);
+		(*former_token)->cmd_args[*arg_n] = ft_strdup(shell->user_input[i]);
 		if ((*former_token)->cmd_args[*arg_n] == NULL)
 			return (100);
 		(*former_token)->cmd_args[*arg_n + 1] = NULL;
@@ -36,7 +36,8 @@ static int	tokenize_elem(char *elem, t_tokens **former_token,
 		return (0);
 	}
 	*arg_n = 0;
-	return (tokenize_element_aux0(elem, former_token, new_kind));
+	return (tokenize_element_aux0(shell->user_input[i],
+			former_token, &(shell->new_kd)));
 }
 
 static int	check_special_valid(t_tokens *start_token)
@@ -68,10 +69,10 @@ static void	check_exit_status(t_tokens *start_token, t_shell *shell)
 	}
 }
 
-static int	aux_initvars_tokenize(char **new_kind, int *arg_n,
-	t_tokens **former_token, t_tokens **start_token)
+static int	aux_initvars_tokenize(int *arg_n, t_tokens **former_token,
+	t_tokens **start_token, t_shell *shell)
 {
-	*new_kind = NULL;
+	shell->new_kd = NULL;
 	*arg_n = 0;
 	*former_token = new_cmd_token();
 	*start_token = *former_token;
@@ -88,22 +89,21 @@ t_tokens	*tokenize_everything(t_shell *shell)
 {
 	int			i;
 	int			arg_n;
-	char		*new_kd;
 	t_tokens	*f_token;
 	t_tokens	*st_token;
 
-	i = aux_initvars_tokenize(&new_kd, &arg_n, &f_token, &st_token);
+	i = aux_initvars_tokenize(&arg_n, &f_token, &st_token, shell);
 	while (shell->user_input[i])
 	{
 		if (check_quotes(st_token, i, shell))
 			return (NULL);
-		if (new_kd && (!ft_strcmp(new_kd, "special_heredoc")
+		if (shell->new_kd && (!ft_strcmp(shell->new_kd, "special_heredoc")
 				|| !ft_strncmp(shell->user_input[i], "<<", 2)))
 			f_token->del_pos = i;
 		else if (!ft_strhassimplequote(shell->orig_input[i]))
 			expand_env_vars(&(shell->user_input[i]), *shell);
 		if (shell->user_input[i] && shell->user_input[i][0])
-			if (tokenize_elem(shell->user_input[i], &f_token, &arg_n, &new_kd))
+			if (tokenize_elem(i, &f_token, &arg_n, shell))
 				shell->exit_status = 100;
 		check_exit_status(st_token, shell);
 		i++;

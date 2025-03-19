@@ -6,7 +6,7 @@
 #    By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 13:22:45 by carlosg2          #+#    #+#              #
-#    Updated: 2025/03/19 14:06:01 by dsoriano         ###   ########.fr        #
+#    Updated: 2025/03/19 14:35:40 by dsoriano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,12 @@ BUILTINS = built-ins/cd.c built-ins/cd_aux_symbols.c built-ins/cd_aux_routes.c  
 		   built-ins/unset.c \
 		   built-ins/built-ins_utils.c
 
-TOKENIZATION =	tokens_execution/execution.c \
-				tokens_execution/execution_utils.c \
+TOKENIZATION =	tokens_execution/execution.c tokens_execution/execution_utils.c \
 				tokens_execution/pipes_management.c \
-				tokens_execution/specials_implemention.c \
-				tokens_execution/heredoc.c \
-				tokenize.c tokenize_aux.c tokenize_quotes.c tokenize_elem_aux.c \
-				tokenize_expand.c tokenize_expand_2.c
+				tokens_execution/specials_implemention.c tokens_execution/heredoc.c \
+				tokenize/tokenize.c tokenize/tokenize_aux.c tokenize/tokenize_elem_aux.c \
+				tokenize/tokenize_expand.c tokenize/tokenize_expand_2.c \
+				tokenize/tokenize_quotes.c
 
 OTHERS =	error_handling.c error_handling_2.c \
 			free_tokens.c \

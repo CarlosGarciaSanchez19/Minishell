@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_elem_aux.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:24:30 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 21:19:54 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:09:47 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int	tokenize_element_aux4(char *elem, t_tokens **former_token,
 	char **new_kind)

@@ -6,7 +6,7 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/19 14:06:44 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:10:56 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_shell
 	char	*old_pwd;
 	char	*path;
 	char	*home;
+	char	*new_kd;
 	int		pid;
 	int		exit_status;
 	int		is_child;
@@ -122,7 +123,7 @@ int			export_var(char *arg, t_shell *shell);
 int			tokenize_element_aux0(char *elem, t_tokens **former_token,
 				char **new_kind);
 char		*find_expand(char *str, int *n);
-char		*search_for_kind(char *elem, char *former_kind);
+char		*search_for_kind(int i, char *former_kind, t_shell *shell);
 char		*my_getenv(char *name, char **envp);
 char		*command_generator(const char *text, int state);
 char		**create_command_array(t_tokens *tokens);

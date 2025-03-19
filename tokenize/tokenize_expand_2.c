@@ -6,11 +6,11 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:59:27 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/19 14:01:53 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:01:34 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	aux_str_expansion_regular(char **env_var, char **str,
 	int *len_env, int prev_len)

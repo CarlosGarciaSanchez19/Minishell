@@ -6,11 +6,11 @@
 /*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:55:43 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/19 14:03:02 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:01:37 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 	Auxiliar que cambia input por big_str,
