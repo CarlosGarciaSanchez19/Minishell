@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 22:28:36 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:06:44 by dsoriano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,13 @@ void		error_fork(t_tokens *tokens, t_shell *shell);
 void		clean_bars(char *str);
 void		bubble_sort(char **arr);
 void		expand_env_vars(char **input, t_shell shell);
+void		str_expansion(char **str, int prev_len, t_shell shell);
 void		free_exec_vars(t_tokens *tokens, int (*pipes)[2]);
+void		expand_env_vars(char **input, t_shell shell);
 int			init_exec_vars_and_pipe_creat(t_tokens *tkns, t_pipes *p,
 				t_shell *shell);
 int			check_string(char **string, t_shell *shell);
+int			check_quotes(t_tokens *start_token, int i, t_shell *shell);
 int			error_file(char *string, char *arg, t_shell *shell);
 int			error_option(char arg, t_shell *shell);
 int			cd_error_args(t_shell *shell);
@@ -118,6 +121,7 @@ int			add_exported_var(char *exported_var, t_shell *shell);
 int			export_var(char *arg, t_shell *shell);
 int			tokenize_element_aux0(char *elem, t_tokens **former_token,
 				char **new_kind);
+char		*find_expand(char *str, int *n);
 char		*search_for_kind(char *elem, char *former_kind);
 char		*my_getenv(char *name, char **envp);
 char		*command_generator(const char *text, int state);
