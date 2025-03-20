@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:13:37 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/20 13:32:49 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:24:43 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	cd_minus(t_shell *shell)
 int	cd_doubleminus(t_tokens token, t_shell *shell)
 {
 	if (token.cmd_args[1])
-		cd_route(token, shell, 1);
+		cd_route(token.cmd_args, shell, 1);
 	else if (change_pwd(shell, my_getenv("HOME", shell->envp)))
 		return (100);
 	return (0);

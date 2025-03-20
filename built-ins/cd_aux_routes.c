@@ -6,15 +6,15 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:09:00 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/20 13:31:15 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:22:11 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_absolute_route(t_tokens token)
+int	is_absolute_route(char *route)
 {
-	if (access((token.cmd_args[0]), F_OK) != 0)
+	if (access(route, F_OK) != 0)
 		return (0);
 	return (1);
 }
@@ -42,7 +42,7 @@ void	clean_bars(char *str)
 	Si no lo es, probamos con ruta relativa. Si lo es hacemos el "change_pwd".
 	Si tampoco lo es, entonces es que no existe esa ruta.
 */
-int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
+int	cd_route(char **cmd_args, t_shell *shell, int arg_pos)
 {
 	char	*tempstr0;
 	char	*tempstr1;
@@ -51,14 +51,14 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 		tempstr0 = ft_strjoin(shell->pwd, "/");
 	else
 		tempstr0 = ft_strdup("/");
-	tempstr1 = ft_strjoin(tempstr0, (token.cmd_args[arg_pos]));
+	tempstr1 = ft_strjoin(tempstr0, (cmd_args[arg_pos]));
 	free(tempstr0);
-	if (access(tempstr1, F_OK) != 0 || token.cmd_args[arg_pos][0] == '/')
+	if (access(tempstr1, F_OK) != 0 || cmd_args[arg_pos][0] == '/')
 	{
-		if (!is_absolute_route(token))
-			return (error_file(tempstr1, token.cmd_args[arg_pos], shell));
+		if (!is_absolute_route(cmd_args[arg_pos]))
+			return (error_file(tempstr1, cmd_args[arg_pos], shell));
 		free(tempstr1);
-		tempstr1 = ft_strdup(token.cmd_args[arg_pos]);
+		tempstr1 = ft_strdup(cmd_args[arg_pos]);
 	}
 	clean_bars(tempstr1);
 	if (change_pwd(shell, tempstr1))

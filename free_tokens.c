@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:34:29 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/02/24 20:36:48 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:05:44 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_tokens(t_tokens *tokens)
 		if (current_tkn->cmd)
 			free(current_tkn->cmd);
 		if (current_tkn->cmd_args)
-			ft_free_multiarray((void **)current_tkn->cmd_args);
+			ft_free_multiarray((void **)(current_tkn->cmd_args));
 		if (current_tkn->redir_input_name)
 			free(current_tkn->redir_input_name);
 		if (current_tkn->redir_output_name)

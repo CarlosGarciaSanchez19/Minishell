@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:23:00 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/19 15:10:56 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:23:41 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int			is_built_in(t_tokens *tkn);
 int			ft_pwd(t_shell *shell);
 int			ft_cd(t_tokens token, t_shell *shell);
 int			change_pwd(t_shell *shell, char *new_pwd);
-int			cd_route(t_tokens token, t_shell *shell, int arg_pos);
+int			cd_route(char **cmd_args, t_shell *shell, int arg_pos);
 int			cd_barpoints(t_tokens token, t_shell *shell);
 int			cd_prime(t_tokens token, t_shell *shell);
 int			cd_minus(t_shell *shell);
