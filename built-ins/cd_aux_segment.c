@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   cd_aux_segment.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:43:16 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 16:43:47 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:36:55 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*aux_cd_splitted_loop(char *temproute)
+{
+	char	*tempstr;
+
+	tempstr = ft_substr(temproute, 0,
+			ft_strlen(temproute) - ft_strlen(ft_strrchr(temproute, '/')));
+	if (!tempstr)
+		return (NULL);
+	if (!ft_strcmp(tempstr, ""))
+	{
+		free(tempstr);
+		tempstr = ft_strdup("/");
+	}
+	if (!tempstr)
+		return (NULL);
+	free(temproute);
+	return (tempstr);
+}
 
 /*
 	Esto es lo que hacemos con cada uno de los elementos spliteados entre '/'.
@@ -24,14 +43,7 @@ static char	*ft_cd_splitted(t_tokens token, char *temproute)
 	if (!ft_strcmp(token.cmd_args[0], "."))
 		return (0);
 	if (!ft_strcmp(token.cmd_args[0], ".."))
-	{
-		tempstr = ft_substr(temproute, 0,
-				ft_strlen(temproute) - ft_strlen(ft_strrchr(temproute, '/')));
-		if (!tempstr)
-			return (NULL);
-		free(temproute);
-		return (tempstr);
-	}
+		return (aux_cd_splitted_loop(temproute));
 	else
 	{
 		tempstr = ft_strjoin(temproute, "/");

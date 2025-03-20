@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:47 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:32:33 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ int	change_pwd(t_shell *shell, char *new_pwd)
 {
 	char	**temp_pwd;
 	char	*temp_new;
+	char	cwd[1024];
 
 	if (chdir(new_pwd) == -1)
 		return (100);
-	temp_new = ft_strdup(new_pwd);
+	temp_new = ft_strdup(getcwd(cwd, sizeof(cwd)));
 	temp_pwd = ft_calloc(2, sizeof(char *));
 	if (!temp_pwd)
 		return (100);
@@ -38,28 +39,9 @@ int	change_pwd(t_shell *shell, char *new_pwd)
 	ft_freearray(temp_pwd, 1);
 	free(shell->pwd);
 	shell->pwd = ft_strdup(temp_new);
-	free(temp_new);
 	if (!(shell->pwd))
-		return (100);
-	return (0);
-}
-
-/*
-	Comprueba si es una dirección compuesta unicamente por '/' y '.'.
-	Si es así, vamos por una función específica para ese caso.
-*/
-static int	all_is_barpoint(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '/' && str[i] != '.')
-			return (0);
-		i++;
-	}
-	return (1);
+		return (free(temp_new), 100);
+	return (free(temp_new), 0);
 }
 
 int	ft_cd(t_tokens token, t_shell *shell)
@@ -80,8 +62,6 @@ int	ft_cd(t_tokens token, t_shell *shell)
 		return (cd_doubleminus(token, shell));
 	if (!ft_strncmp(token.cmd_args[0], "~", 1))
 		return (cd_prime(token, shell));
-	if (all_is_barpoint(token.cmd_args[0]))
-		return (cd_barpoints(token, shell));
 	else
 	{
 		if (token.cmd_args[0][0] == '-')

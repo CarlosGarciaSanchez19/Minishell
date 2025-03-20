@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:13:37 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/17 20:19:40 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:32:49 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int	cd_doublepoints(t_shell *shell)
 
 	tempstr = ft_substr(shell->pwd, 0,
 			ft_strlen(shell->pwd) - ft_strlen(ft_strrchr(shell->pwd, '/')));
+	if (!ft_strcmp(tempstr, ""))
+	{
+		free(tempstr);
+		tempstr = ft_strdup("/");
+	}
 	if (change_pwd(shell, tempstr))
 	{
 		free(tempstr);

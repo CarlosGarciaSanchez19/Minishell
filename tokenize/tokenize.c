@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:26:13 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/19 15:40:10 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:14:17 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ static int	tokenize_elem(int i, t_tokens **former_token,
 			former_token, &(shell->new_kd)));
 }
 
-static int	check_special_valid(t_tokens *start_token)
+static int	check_special_valid(t_tokens *start_token, t_shell *shell)
 {
 	t_tokens	*current_token;
 
+	shell->exit_status = 2;
 	current_token = start_token;
 	while (current_token)
 	{
@@ -108,7 +109,7 @@ t_tokens	*tokenize_everything(t_shell *shell)
 		check_exit_status(st_token, shell);
 		i++;
 	}
-	if (!check_special_valid(st_token))
+	if (!check_special_valid(st_token, shell))
 		return (free_tokens(st_token), NULL);
 	return (st_token);
 }

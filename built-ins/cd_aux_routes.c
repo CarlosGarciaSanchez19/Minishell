@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_aux_routes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsoriano <dsoriano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:09:00 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/18 16:45:16 by dsoriano         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:31:15 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	clean_bars(char *str)
 {
 	int	i;
 
+	if (!ft_strcmp(str, "/"))
+		return ;
 	i = ft_strlen(str) - 1;
 	while (str[i] == '/')
 		i--;
@@ -45,7 +47,10 @@ int	cd_route(t_tokens token, t_shell *shell, int arg_pos)
 	char	*tempstr0;
 	char	*tempstr1;
 
-	tempstr0 = ft_strjoin(shell->pwd, "/");
+	if (ft_strcmp(shell->pwd, "/"))
+		tempstr0 = ft_strjoin(shell->pwd, "/");
+	else
+		tempstr0 = ft_strdup("/");
 	tempstr1 = ft_strjoin(tempstr0, (token.cmd_args[arg_pos]));
 	free(tempstr0);
 	if (access(tempstr1, F_OK) != 0 || token.cmd_args[arg_pos][0] == '/')
