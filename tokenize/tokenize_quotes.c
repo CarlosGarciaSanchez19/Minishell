@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:52:27 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/20 13:44:44 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:52:23 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static int	is_emptyquote(char *str)
 	int	i;
 	int	num_quotes;
 
-	
 	i = 0;
 	while (str && str[i])
 	{
