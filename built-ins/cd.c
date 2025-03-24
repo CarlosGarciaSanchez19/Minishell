@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/20 16:42:18 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:31:32 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	change_pwd(t_shell *shell, char *new_pwd)
 {
 	char	**temp_pwd;
 	char	*temp_new;
+	char	cwd[1024];
 
 	if (chdir(new_pwd) == -1)
 		return (100);
-	temp_new = ft_strdup(getcwd(NULL, 0));
-	printf("%s\n", temp_new);
+	temp_new = ft_strdup(getcwd(cwd, sizeof(cwd)));
 	temp_pwd = ft_calloc(2, sizeof(char *));
 	if (!temp_pwd)
 		return (100);
