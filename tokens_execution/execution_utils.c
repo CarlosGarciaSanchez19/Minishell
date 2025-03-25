@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:21:55 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/25 16:05:59 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/25 21:13:19 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ char	**create_command_array(t_tokens *tokens)
 	char	**command;
 	int		i;
 
-	i = 0;
 	command = malloc(sizeof(char *) * (ft_arraylen(tokens->cmd_args) + 2));
 	if (!command)
 	{
 		free_tokens(tokens);
 		exit(100);
 	}
+	i = 0;
 	command[i] = tokens->cmd;
 	i++;
 	while (tokens->cmd_args && tokens->cmd_args[i - 1])

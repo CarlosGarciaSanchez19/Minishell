@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:27:33 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/18 22:29:40 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/25 21:28:07 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	command_not_found(char *cmd, char **paths)
 
 static	int	command_found(char *path_bar_cmd, char **cmd)
 {
-	if (access(path_bar_cmd, F_OK) == 0)
+	if (access(path_bar_cmd, F_OK) == 0
+		&& path_bar_cmd[ft_strlen(path_bar_cmd) - 1] != '/')
 	{
 		free(*cmd);
 		*cmd = path_bar_cmd;

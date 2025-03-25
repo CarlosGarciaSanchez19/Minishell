@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:52:27 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/25 19:08:24 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/25 21:33:43 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,20 @@ static void	aux_clean_quotes(int *i, int *j, int *quote1, int *quote2)
 
 int	is_emptyquote(char *str)
 {
-	int	simplequote;
-	int	doublequote;
-	int	i;
-	int	num_quotes;
+	int	simplequotes;
+	int	doublequotes;
 
-	simplequote = 0;
-	doublequote = 0;
-	i = 0;
-	while (str && str[i])
-	{
-		if (in_quot(str[i], &doublequote, &simplequote))
-			return (0);
-		i++;
-	}
-	num_quotes = count_quotes(str);
-	if (num_quotes % 2 == 0)
+	if (!str)
+		return (0);
+	simplequotes = 0;
+	while (str[simplequotes] == '\'')
+		simplequotes++;
+	doublequotes = 0;
+	while (str[doublequotes] == '\"')
+		doublequotes++;
+	if (count_quotes(str) % 2 == 0
+		&& (simplequotes == count_quotes(str)
+			|| doublequotes == count_quotes(str)))
 		return (1);
 	else
 		return (0);
@@ -75,8 +73,7 @@ int	clean_quotes(char **str)
 	char	*new_str;
 
 	aux_clean_quotes(&i, &j, &quote1, &quote2);
-	printf("%d\n", is_emptyquote(*str));
-	if (is_emptyquote(*str) || !count_quotes(*str))
+	if (!count_quotes(*str))
 		return (1);
 	new_str = malloc(ft_strlen(*str) - count_quotes(*str) + 1);
 	while (*str && (*str)[i])
