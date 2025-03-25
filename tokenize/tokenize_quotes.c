@@ -6,13 +6,13 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:52:27 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/20 13:52:23 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/25 19:08:24 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	count_quotes(char *str)
+int	count_quotes(char *str)
 {
 	int	i;
 	int	count;
@@ -43,15 +43,19 @@ static void	aux_clean_quotes(int *i, int *j, int *quote1, int *quote2)
 	*quote2 = 0;
 }
 
-static int	is_emptyquote(char *str)
+int	is_emptyquote(char *str)
 {
+	int	simplequote;
+	int	doublequote;
 	int	i;
 	int	num_quotes;
 
+	simplequote = 0;
+	doublequote = 0;
 	i = 0;
 	while (str && str[i])
 	{
-		if (!ft_isquote(str[i]))
+		if (in_quot(str[i], &doublequote, &simplequote))
 			return (0);
 		i++;
 	}
@@ -71,6 +75,7 @@ int	clean_quotes(char **str)
 	char	*new_str;
 
 	aux_clean_quotes(&i, &j, &quote1, &quote2);
+	printf("%d\n", is_emptyquote(*str));
 	if (is_emptyquote(*str) || !count_quotes(*str))
 		return (1);
 	new_str = malloc(ft_strlen(*str) - count_quotes(*str) + 1);
