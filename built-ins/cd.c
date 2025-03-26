@@ -6,11 +6,24 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/24 11:31:32 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:53:29 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	not_a_dir(t_shell *shell, char *new_pwd)
+{
+	if (chdir(new_pwd) == -1)
+	{
+		write(2, "minishell: cd: ", 15);
+		write(2, new_pwd, ft_strlen(new_pwd));
+		write(2, ": Not a directory\n", 18);
+		shell->exit_status = 1;
+		return (1);
+	}
+	return (0);
+}
 
 /*
 	Esta función actualiza el pwd y el old_pwd.
@@ -21,8 +34,8 @@ int	change_pwd(t_shell *shell, char *new_pwd)
 	char	*temp_new;
 	char	cwd[1024];
 
-	if (chdir(new_pwd) == -1)
-		return (100);
+	if (not_a_dir(shell, new_pwd))
+		return (1);
 	temp_new = ft_strdup(getcwd(cwd, sizeof(cwd)));
 	temp_pwd = ft_calloc(2, sizeof(char *));
 	if (!temp_pwd)

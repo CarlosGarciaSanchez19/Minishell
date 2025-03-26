@@ -6,7 +6,7 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:09:00 by dsoriano          #+#    #+#             */
-/*   Updated: 2025/03/20 16:22:11 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:58:29 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	cd_route(char **cmd_args, t_shell *shell, int arg_pos)
 {
 	char	*tempstr0;
 	char	*tempstr1;
+	int		exitcode;
 
 	if (ft_strcmp(shell->pwd, "/"))
 		tempstr0 = ft_strjoin(shell->pwd, "/");
@@ -61,13 +62,9 @@ int	cd_route(char **cmd_args, t_shell *shell, int arg_pos)
 		tempstr1 = ft_strdup(cmd_args[arg_pos]);
 	}
 	clean_bars(tempstr1);
-	if (change_pwd(shell, tempstr1))
-	{
-		free(tempstr1);
-		return (100);
-	}
+	exitcode = change_pwd(shell, tempstr1);
 	free(tempstr1);
-	return (0);
+	return (exitcode);
 }
 
 static int	cd_barpoints_aux(t_shell *shell)
