@@ -6,13 +6,13 @@
 /*   By: carlosg2 <carlosg2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:08:53 by carlosg2          #+#    #+#             */
-/*   Updated: 2025/03/26 12:53:29 by carlosg2         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:11:06 by carlosg2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	not_a_dir(t_shell *shell, char *new_pwd)
+static int	not_a_dir(t_shell *shell, char *new_pwd)
 {
 	if (chdir(new_pwd) == -1)
 	{
